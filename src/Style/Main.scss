@@ -1,0 +1,11 @@
+@use 'Variables' as *;
+@use 'Mixins' as *;
+
+body {
+  margin: 0;
+  font-family: $font-family;
+}
+
+html {
+  scroll-behavior: smooth;
+}

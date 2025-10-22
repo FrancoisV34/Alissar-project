@@ -1,0 +1,66 @@
+@use 'Variables' as *;
+@use 'Mixins' as *;
+
+header {
+  color: $primary-color;
+  background: $background-color;
+  opacity: 0.9;
+  padding: 20px 10vw 20px 10vw;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  gap: 5vw;
+  backdrop-filter: blur(10px);
+  font-family: $font-family;
+  .name {
+    font-size: 2em;
+    font-weight: 700;
+    font-family: $font-family;
+  }
+  .nav-ul {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    gap: 3vw;
+    font-size: 1.2em;
+    font-weight: 500;
+
+    li {
+      a {
+        position: relative;
+        display: inline-block;
+        transition: transform 0.2s ease;
+        transform-origin: center;
+        text-decoration: none;
+        color: $primary-color;
+        &::after {
+          content: '';
+          position: absolute;
+          width: 100%;
+          transform: scaleX(0);
+          height: 3px;
+          bottom: -5px;
+          left: 0;
+          background-color: $primary-color;
+          transform-origin: right;
+          transition: transform 0.4s ease-out;
+          border-radius: 2px;
+        }
+        &:hover {
+          transform: scale(1.1);
+          cursor: pointer;
+          &::after {
+            transform: scaleX(1);
+          }
+        }
+      }
+    }
+  }
+  .contact-button {
+    background-color: $primary-color;
+    color: $button-color;
+    @include general-rdv-button;
+  }
+}

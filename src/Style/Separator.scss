@@ -1,0 +1,15 @@
+@use 'Variables' as *;
+@use 'Mixins' as *;
+
+.separation {
+  &.other {
+    width: 50%;
+    border: 1px solid $primary-color;
+    align-self: center;
+    margin: 20px 0px;
+    border-radius: 10px;
+  }
+  &.first {
+    display: none;
+  }
+}

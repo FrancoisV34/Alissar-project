@@ -1,0 +1,65 @@
+@use 'variables' as *;
+@use 'sass:color';
+
+//Images display
+$radius: 10px;
+$shadow-color: #fa8072;
+$padding: 5px;
+
+@mixin image-border-radius($radius) {
+  border-radius: $radius;
+}
+
+@mixin image-shadow($shadow-color) {
+  box-shadow: 0px 0px 8px 2px rgba($shadow-color, 0.1);
+}
+@mixin image-padding($padding) {
+  padding: $padding;
+}
+//Buttons
+@mixin general-rdv-button {
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: 600;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: color.adjust($primary-color, $lightness: -10%);
+    cursor: pointer;
+  }
+}
+
+$leftpadding: 10vw;
+
+@mixin general-padding-left($leftpadding) {
+  padding-left: $leftpadding;
+}
+
+@mixin flex-space-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+//Article general
+
+$gap: 20px;
+
+@mixin article-gap($gap) {
+  gap: $gap;
+}
+
+$padding-article: 20px;
+
+@mixin article-padding($padding-article) {
+  padding: $padding-article;
+}
+
+//Texte mixin
+
+$shadow-color: #000;
+
+@mixin text-shadow($shadow-color) {
+  text-shadow: 1px 1px 2px rgba($shadow-color, 0.5);
+}

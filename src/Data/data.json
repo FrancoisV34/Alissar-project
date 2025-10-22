@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "Bienvenue dans mon cabinet d'ostéopathie à Vendargues",
+    "image": "../src/assets/Alissar.jpg"
+  },
+  {
+    "id": 2,
+    "title": "À propos de  moi",
+    "idlink": "a-propos",
+    "content": [
+      {
+        "p1": "Je suis ravie de vous accueillir dans mon cabinet d'ostéopathie à Vendargues, où je mets à votre disposition mes compétences et mon expertise pour vous aider à retrouver un équilibre optimal entre votre corps et votre esprit.",
+        "p2": "Mon approche de l'ostéopathie est centrée sur le patient, en prenant en compte vos besoins spécifiques et en adaptant les traitements en conséquence. Que vous souffriez de douleurs chroniques, de troubles musculo-squelettiques ou que vous cherchiez à améliorer votre bien-être général, je suis là pour vous accompagner sur le chemin de la santé et du confort."
+      }
+    ],
+    "image": "../src/assets/Cab.jpg"
+  },
+  {
+    "id": 3,
+    "title": "L'ostéopathie",
+    "idlink": "osteo",
+    "content": [
+      {
+        "p1": "Pour prendre rendez-vous avec moi, vous pouvez utiliser la plateforme Doctolib, qui vous permet de choisir un créneau horaire qui vous convient.",
+        "p2": "Vous pouvez également me contacter directement par téléphone au 06 52 45 12 34 pour fixer un rendez-vous ou pour toute question concernant mes services.",
+        "p3": " Je suis impatiente de vous aider à améliorer votre santé et votre bien-être."
+      }
+    ],
+    "image": "../src/assets/Visitcard.jpg"
+  },
+  {
+    "id": 4,
+    "idlink": "formations",
+    "card": [
+      {
+        "p": "Diplômée de l'École Supérieure d'Ostéopathie (ESO) de Paris en 2021, j'ai acquis une solide formation en ostéopathie.",
+        "image": "../src/assets/ESO-soleil.jpg",
+        "title": "École Supérieure d'Ostéopathie (ESO) 2021 - Paris"
+      },
+      {
+        "p": "Je me suis également formée en Ostéopathie du sport et posturologie en 2021.",
+        "image": "../src/assets/posturosport.webp",
+        "title": "Ostéopathie du sport et posturologie 2021"
+      },
+      {
+        "p": "En 2023 et 2024 j'ai décidé de me perfectionner dans la prise en charge de la femme, et plus précisément dans la santé de la femme (avec OstéoÉvolution) et dans l'accompagnement ostéopathique de la fertilité et du parcours PMA (OstéoÉvolution).",
+        "image": "../src/assets/osteopma.jpg",
+        "title": "Santé de la femme et parcours PMA 2023-2024"
+      },
+      {
+        "p": "Je suis également formée en ostéopathie uro-gynécologique en lien avec la grossesse, les accouchement et le post-partum pour mieux accompagner mes patientes dans cette étape de leur vie.",
+        "image": "../src/assets/grossesse.jpeg",
+        "title": "Ostéopathie uro-gynécologique 2023"
+      }
+    ]
+  }
+]

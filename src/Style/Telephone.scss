@@ -1,0 +1,11 @@
+@use 'Variables' as *;
+@use 'Mixins' as *;
+
+.telephone-container {
+  .telephone-button {
+    background-color: $primary-color;
+    color: $button-color;
+    @include general-rdv-button;
+    margin: 20px 0px 0px 0px;
+  }
+}

@@ -1,0 +1,129 @@
+@use 'Variables' as *;
+@use 'Mixins' as *;
+@use 'sass:color';
+
+footer {
+  display: flex;
+  flex-direction: column;
+  font-family: $font-family;
+  .all-info {
+    @include general-padding-left($leftpadding);
+    background-color: $primary-color;
+    color: $background-color;
+    display: flex;
+    flex-direction: row;
+    .name-socials {
+      width: 25%;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin: 10px;
+      justify-content: center;
+      .footer-name {
+        font-size: 1.2em;
+        font-weight: 700;
+        font-family: $font-family;
+        max-width: 150px;
+        text-align: center;
+        margin: 10px;
+        h3 {
+          margin: 0;
+          font-family: $title-family;
+        }
+      }
+      .socials-links {
+        a {
+          padding: 3px;
+          background-color: $background-color;
+          display: flex;
+          height: 20px;
+          width: 20px;
+          border-radius: 90%;
+          margin: 10px;
+          transition: transform 0.2s ease-in-out;
+          &:hover {
+            background-color: color.adjust($background-color, $lightness: -10%);
+            cursor: pointer;
+            transform: scale(1.1);
+          }
+          .docto {
+            object-fit: cover;
+          }
+        }
+      }
+    }
+    .nav-menu {
+      width: 25%;
+      display: flex;
+      align-items: center;
+      .ul-list {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        gap: 10px;
+        font-size: 1.2em;
+        font-weight: 500;
+        margin: 20px 0;
+
+        li {
+          a {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.2s ease;
+            transform-origin: center;
+            &::after {
+              content: '';
+              position: absolute;
+              width: 100%;
+              transform: scaleX(0);
+              height: 3px;
+              bottom: -5px;
+              left: 0;
+              background-color: $background-color;
+              transform-origin: right;
+              transition: transform 0.4s ease-out;
+              border-radius: 2px;
+            }
+            &:hover {
+              transform: scale(1.1);
+              cursor: pointer;
+              &::after {
+                transform: scaleX(1);
+              }
+            }
+          }
+        }
+      }
+    }
+    .adresse-tel {
+      width: 25%;
+      padding: 20px 10px;
+      h4 {
+        font-family: $font-family;
+        margin: 0;
+      }
+      .adresse {
+        font-size: 1.1em;
+        font-weight: 500;
+        line-height: 1.5em;
+      }
+      .tel {
+        font-size: 1.1em;
+        font-weight: 500;
+        line-height: 1.5em;
+      }
+    }
+  }
+  .dev-info {
+    background-color: $background-color;
+    text-align: center;
+
+    a {
+      text-decoration: none;
+      color: black;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

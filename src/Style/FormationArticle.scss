@@ -1,0 +1,52 @@
+@use 'Variables' as *;
+@use 'Mixins' as *;
+
+#formations {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 10vw 20px 10vw;
+  .formation {
+    width: 45%;
+    background-color: $background-color;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: row;
+    max-height: 40vh;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    &:hover {
+      transform: scale(1.02);
+      transition: transform 0.3s ease;
+    }
+    .formation-text {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px;
+      width: 50%;
+      .formation-title {
+        font-family: $title-family;
+        font-size: 1.5em;
+        color: $primary-color;
+        margin: 0;
+      }
+      .formation-info {
+        font-family: $font-family;
+        font-size: 1em;
+        color: $button-color;
+        margin: 0;
+      }
+    }
+    .formation-image {
+      width: 45%;
+      padding: 3px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 30px;
+        object-position: center;
+      }
+    }
+  }
+}
