@@ -47,7 +47,7 @@ export default function Footer() {
             <br /> 34740 Vendargues
           </p>
           <h4>Téléphone:</h4>
-          <p className="tel">06 95 34 48 93</p>
+          <p className="tel">06 50 34 88 73</p>
         </div>
       </section>
       <div className="dev-info">

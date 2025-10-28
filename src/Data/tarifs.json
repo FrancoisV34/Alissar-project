@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "prestation": "Consultation adulte",
+    "prix": " 60"
+  },
+  {
+    "id": 1,
+    "prestation": "Consultation enfant",
+    "prix": " 55"
+  },
+  {
+    "id": 1,
+    "prestation": "Consultation sportif",
+    "prix": " 65"
+  },
+  {
+    "id": 1,
+    "prestation": "Consultation femme enceinte",
+    "prix": " 60"
+  },
+  {
+    "id": 1,
+    "prestation": "Consultation maman + bébé",
+    "prix": " 90"
+  }
+]

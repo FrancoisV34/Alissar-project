@@ -1,4 +1,3 @@
-import Alissarselfie from '../assets/Alissar.jpg';
 import Button from '../Components/Button.jsx';
 import Data from '../Data/data.json';
 import Telephone from '../Components/Telephone.jsx';

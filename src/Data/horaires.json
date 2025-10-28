@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "jour": "lundi",
+    "horaires": "10h-20h"
+  },
+  {
+    "id": 2,
+    "jour": "mardi",
+    "horaires": "10h-20h"
+  },
+  {
+    "id": 3,
+    "jour": "mercredi",
+    "horaires": "10h-20h"
+  },
+  {
+    "id": 4,
+    "jour": "jeudi",
+    "horaires": "10h-20h"
+  },
+  {
+    "id": 5,
+    "jour": "vendredi",
+    "horaires": "10h-20h"
+  },
+  {
+    "id": 6,
+    "jour": "samedi",
+    "horaires": "10h-14h"
+  }
+]
