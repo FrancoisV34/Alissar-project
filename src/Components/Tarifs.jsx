@@ -17,6 +17,7 @@ export default function Tarifs() {
             <h3>
               {tarif.prestation} : {tarif.prix}€
             </h3>
+            <h4>{tarif.texte}</h4>
           </a>
         ))}
       </section>

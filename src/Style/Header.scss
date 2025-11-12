@@ -11,48 +11,53 @@ header {
   align-items: center;
   width: 100%;
   position: fixed;
-  gap: 5vw;
+  gap: 2vw;
   backdrop-filter: blur(10px);
   font-family: $font-family;
   .name {
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: 700;
     font-family: $font-family;
+    width: 20%;
   }
-  .nav-ul {
-    display: flex;
-    flex-direction: row;
-    list-style: none;
-    gap: 3vw;
-    font-size: 1.2em;
-    font-weight: 500;
+  .navigation-list {
+    width: 40%;
+    .nav-ul {
+      display: flex;
+      flex-direction: row;
+      list-style: none;
+      gap: 3vw;
+      font-size: 1.3em;
+      font-weight: 500;
+      padding: 0;
 
-    li {
-      a {
-        position: relative;
-        display: inline-block;
-        transition: transform 0.2s ease;
-        transform-origin: center;
-        text-decoration: none;
-        color: $primary-color;
-        &::after {
-          content: '';
-          position: absolute;
-          width: 100%;
-          transform: scaleX(0);
-          height: 3px;
-          bottom: -5px;
-          left: 0;
-          background-color: $primary-color;
-          transform-origin: right;
-          transition: transform 0.4s ease-out;
-          border-radius: 2px;
-        }
-        &:hover {
-          transform: scale(1.1);
-          cursor: pointer;
+      li {
+        a {
+          position: relative;
+          display: inline-block;
+          transition: transform 0.2s ease;
+          transform-origin: center;
+          text-decoration: none;
+          color: $primary-color;
           &::after {
-            transform: scaleX(1);
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 3px;
+            bottom: -5px;
+            left: 0;
+            background-color: $primary-color;
+            transform-origin: right;
+            transition: transform 0.4s ease-out;
+            border-radius: 2px;
+          }
+          &:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+            &::after {
+              transform: scaleX(1);
+            }
           }
         }
       }
@@ -62,5 +67,6 @@ header {
     background-color: $primary-color;
     color: $button-color;
     @include general-rdv-button;
+    font-size: 1.2em;
   }
 }

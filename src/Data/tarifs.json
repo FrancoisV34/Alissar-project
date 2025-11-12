@@ -2,26 +2,13 @@
   {
     "id": 1,
     "prestation": "Consultation adulte",
-    "prix": " 60"
+    "prix": " 60",
+    "texte": "Ceci est le prix des consultations en semaine du lundi au samedi hors jour férié."
   },
   {
     "id": 1,
-    "prestation": "Consultation enfant",
-    "prix": " 55"
-  },
-  {
-    "id": 1,
-    "prestation": "Consultation sportif",
-    "prix": " 65"
-  },
-  {
-    "id": 1,
-    "prestation": "Consultation femme enceinte",
-    "prix": " 60"
-  },
-  {
-    "id": 1,
-    "prestation": "Consultation maman + bébé",
-    "prix": " 90"
+    "prestation": "Consultation jour férié",
+    "prix": " 80",
+    "texte": "Ceci est le prix des consultations jour férié (sous réserve d'ouverture)."
   }
 ]

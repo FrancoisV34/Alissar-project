@@ -2,29 +2,35 @@
 @use 'Mixins' as *;
 
 .tarifs {
-  background-color: $background-color;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding: 20px 0 20px 0;
-  width: 50%;
+  padding: 20px 0 0 0;
+  width: 33%;
   border-radius: 30px;
+  justify-content: center;
   .presta-tarifs {
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
-    width: 50%;
+    width: 95%;
     border-radius: 30px;
     border: none;
     text-decoration: none;
+    background-color: $background-color;
+    height: 50%;
+    align-content: center;
     &:hover {
       background-color: $primary-color;
       transform: scale(1.02);
       transition: transform 0.3s ease;
-      opacity: 0.5;
     }
     h3 {
       color: $button-color;
+    }
+    h4 {
+      color: $button-color;
+      padding: 10px;
     }
   }
 }

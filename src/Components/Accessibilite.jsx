@@ -1,5 +1,6 @@
 import React from 'react';
 import Horaires from '../Data/horaires.json';
+import '../Style/Horaires.scss';
 
 export default function Accessibilite() {
   return (
