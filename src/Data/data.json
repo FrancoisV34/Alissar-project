@@ -19,7 +19,7 @@
         "p2": "Mon approche de l'ostéopathie est centrée sur le patient, en prenant en compte vos besoins spécifiques et en adaptant les traitements en conséquence. Que vous souffriez de douleurs chroniques, de troubles musculo-squelettiques ou que vous cherchiez à améliorer votre bien-être général, je suis là pour vous accompagner sur le chemin de la santé et du confort."
       }
     ],
-    "image": "../src/assets/Cab.jpg"
+    "image": "/Cab.jpg"
   },
   {
     "id": 3,
