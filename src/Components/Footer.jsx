@@ -1,4 +1,4 @@
-import Docto from '../assets/rdvdocto.png';
+import Docto from '/assets/rdvdocto.png';
 import '../Style/Footer.scss';
 
 export default function Footer() {

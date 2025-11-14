@@ -1,7 +1,7 @@
 import React from 'react';
 import '../Style/Main.scss';
 import '../Style/Homepage.scss';
-import Lightcab from '../assets/FaceCab.jpg';
+import Lightcab from '/assets/FaceCab.jpg';
 import Section from '../Components/Section';
 import FormationArticle from '../Components/FormationArticle.jsx';
 import BullePEC from '../Components/BullePEC.jsx';

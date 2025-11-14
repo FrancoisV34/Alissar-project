@@ -3,18 +3,18 @@
     "id": 1,
     "title": "4 années d'expérience",
     "content": "Ostéopathe agréée D.O depuis 2021",
-    "image": "../src/assets/AlissarLOGO.PNG"
+    "image": "/assets/AlissarLogo.PNG"
   },
   {
     "id": 2,
     "title": "Spécialisations",
     "content": "Ostéopathie de la femme, fertilité et PMA, ostéopathie uro-gynécologique, ostéopathie du sport et posturologie",
-    "image": "../src/assets/Alissar.jpg"
+    "image": "/assets/Alissar.jpg"
   },
   {
     "id": 3,
     "title": "Prise de rendez-vous facile",
     "content": "Réservez vos consultations en ligne via Doctolib ou par téléphone au 06 50 34 88 73",
-    "image": "../src/assets/Docto.png"
+    "image": "/assets/Docto.png"
   }
 ]

@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Style/Contacts.scss';
-import Docto from '../assets/rdvdocto.png';
+import Docto from '/assets/rdvdocto.png';
 
 export default function Contacts() {
   return (
