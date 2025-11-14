@@ -12,7 +12,7 @@ export default function Contacts() {
         </div>
         <div className="adresse">
           <h2>Adresse du cabinet:</h2>
-          <span>Maison de la Cadoule,</span>
+          <span>Maison Cadoule,</span>
           <span>17 Rue de la Cadoule,</span>
           <span>34740 Vendargues</span>
         </div>

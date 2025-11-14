@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "Bienvenue à mon cabinet d'ostéopathie à Vendargues",
-    "image": "Alissar.jpg",
+    "image": "/assets/Alissar.jpg",
     "content": [
       {
         "p1": "Bienvenue sur le site de mon cabinet d'ostéopathie à Vendargues !"
@@ -19,7 +19,7 @@
         "p2": "Mon approche de l'ostéopathie est centrée sur le patient, en prenant en compte vos besoins spécifiques et en adaptant les traitements en conséquence. Que vous souffriez de douleurs chroniques, de troubles musculo-squelettiques ou que vous cherchiez à améliorer votre bien-être général, je suis là pour vous accompagner sur le chemin de la santé et du confort."
       }
     ],
-    "image": "Cab.jpg"
+    "image": "/assets/Cab.jpg"
   },
   {
     "id": 3,
@@ -32,7 +32,7 @@
         "p3": " Je suis impatiente de vous aider à améliorer votre santé et votre bien-être."
       }
     ],
-    "image": "Visitcard.jpg"
+    "image": "/assets/Visitcard.jpg"
   },
   {
     "id": 4,
@@ -40,22 +40,22 @@
     "card": [
       {
         "p": "Diplômée de l'École Supérieure d'Ostéopathie (ESO) de Paris en 2021, j'ai acquis une solide formation en ostéopathie.",
-        "image": "ESO-soleil.jpg",
+        "image": "/assets/ESO-soleil.jpg",
         "title": "École Supérieure d'Ostéopathie (ESO) 2021 - Paris"
       },
       {
         "p": "Je me suis également formée en Ostéopathie du sport et posturologie en 2021.",
-        "image": "posturosport.webp",
+        "image": "/assets/posturosport.webp",
         "title": "Ostéopathie du sport et posturologie 2021"
       },
       {
         "p": "En 2023 et 2024 j'ai décidé de me perfectionner dans la prise en charge de la femme, et plus précisément dans la santé de la femme (avec OstéoÉvolution) et dans l'accompagnement ostéopathique de la fertilité et du parcours PMA (OstéoÉvolution).",
-        "image": "osteopma.jpg",
+        "image": "/assets/osteopma.jpg",
         "title": "Santé de la femme et parcours PMA 2023-2024"
       },
       {
         "p": "Je suis également formée en ostéopathie uro-gynécologique en lien avec la grossesse, les accouchement et le post-partum pour mieux accompagner mes patientes dans cette étape de leur vie.",
-        "image": "grossesse.jpeg",
+        "image": "/assets/grossesse.jpeg",
         "title": "Ostéopathie uro-gynécologique 2023"
       }
     ]
