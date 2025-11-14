@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "Bienvenue à mon cabinet d'ostéopathie à Vendargues",
-    "image": "../src/assets/Alissar.jpg",
+    "image": "Alissar.jpg",
     "content": [
       {
         "p1": "Bienvenue sur le site de mon cabinet d'ostéopathie à Vendargues !"
