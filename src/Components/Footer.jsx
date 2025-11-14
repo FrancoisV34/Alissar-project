@@ -13,6 +13,8 @@ export default function Footer() {
             <a
               href="https://www.doctolib.fr/osteopathe/vendargues/alissar-atik"
               className="doctolib"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <img src={Docto} className="docto" alt="Logo Doctolib"></img>
             </a>
@@ -22,19 +24,19 @@ export default function Footer() {
           <nav className="menu">
             <ul className="ul-list">
               <li>
-                <a>A propos</a>
+                <a href="#a-propos">A propos</a>
               </li>
               <li>
-                <a>L'ostéopathie</a>
+                <a href="#osteo">L'ostéopathie</a>
               </li>
               <li>
-                <a>Formations</a>
+                <a href="#formations">Formations</a>
               </li>
               <li>
-                <a>Tarifs</a>
+                <a href="#tarifs">Tarifs</a>
               </li>
               <li>
-                <a>Contacts</a>
+                <a href="#contacts">Contacts</a>
               </li>
             </ul>
           </nav>

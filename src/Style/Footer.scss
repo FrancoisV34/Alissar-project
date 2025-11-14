@@ -71,6 +71,8 @@ footer {
             display: inline-block;
             transition: transform 0.2s ease;
             transform-origin: center;
+            text-decoration: none;
+            color: $background-color;
             &::after {
               content: '';
               position: absolute;

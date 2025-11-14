@@ -1,0 +1,44 @@
+@use 'Variables' as *;
+@use 'Mixins' as *;
+
+.contacts {
+  background-color: $background-color;
+  color: $button-color;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  text-align: center;
+  padding: 20px;
+  .tel {
+    width: 30%;
+  }
+  .adresse {
+    width: 30%;
+    span {
+      display: block;
+    }
+  }
+  .rdvdocto {
+    width: 30%;
+    align-items: center;
+    a {
+      padding: 3px;
+      background-color: $background-color;
+      display: flex;
+      height: 40px;
+      width: 40px;
+      border-radius: 90%;
+      margin: 10px;
+      transition: transform 0.2s ease-in-out;
+      align-items: center;
+      justify-self: center;
+      &:hover {
+        transform: scale(1.1);
+      }
+      .docto-img {
+        object-fit: cover;
+      }
+    }
+  }
+}
