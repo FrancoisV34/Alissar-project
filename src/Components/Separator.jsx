@@ -1,5 +1,4 @@
-import Data from '../Data/data.json';
-import '../style/Separator.scss';
+import '../Style/Separator.scss';
 
 export default function Separator({ index = 0 }) {
   return (
