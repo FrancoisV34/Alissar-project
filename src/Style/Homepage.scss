@@ -131,8 +131,31 @@
   .googlemap {
     border-radius: 30px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+    width: 600px;
+    height: 450px;
+    align-self: center;
     iframe {
       border-radius: 30px;
+    }
+
+    @media (max-width: 1200px) {
+      width: 95%;
+      margin: auto;
+      iframe {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .tarifs-access {
+    flex-direction: column;
+    padding-right: 0;
+    margin: auto;
+    .tarifs {
+      width: 100%;
+      flex-direction: row;
     }
   }
 }

@@ -10,7 +10,11 @@
   font-size: 15px;
   position: fixed;
   top: 200px;
-  right: 0px;
+  right: 80px;
+  @media (max-width: 1600px) {
+    position: unset;
+    justify-self: center;
+  }
   span {
     color: white;
 
@@ -23,5 +27,8 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
+  }
+  @media (max-width: 1200px) {
+    display: none;
   }
 }
