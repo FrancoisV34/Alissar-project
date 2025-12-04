@@ -9,16 +9,31 @@
   justify-content: space-between;
   text-align: center;
   padding: 20px;
-  @media (max-width: 1200px) {
+  @media (min-width: 601px) and (max-width: 1200px) {
     width: unset;
+  }
+  @media (max-width: 600px) {
+    width: unset;
+    flex-direction: column;
+    align-items: center;
   }
   .tel {
     width: 30%;
+  }
+  @media (max-width: 600px) {
+    .tel {
+      width: 90%;
+    }
   }
   .adresse {
     width: 30%;
     span {
       display: block;
+    }
+  }
+  @media (max-width: 600px) {
+    .adresse {
+      width: 90%;
     }
   }
   .rdvdocto {
@@ -41,6 +56,11 @@
       .docto-img {
         object-fit: cover;
       }
+    }
+  }
+  @media (max-width: 600px) {
+    .rdvdocto {
+      width: 90%;
     }
   }
 }
