@@ -55,7 +55,7 @@
       @media (min-width: 601px) and (max-width: 1000px) {
         h2 {
           margin: 30px 10px 10px 10px;
-          font-size: 1.3em;
+          font-size: 1em;
         }
         .separation {
           margin: 15px 0;
@@ -69,9 +69,17 @@
         }
       }
       @media (max-width: 600px) {
+        h2 {
+          margin: 20px 5px 5px 5px;
+          font-size: 0.6em;
+        }
+        .separation {
+          margin: 10px 0;
+        }
         p {
           font-size: 0.5em;
           padding: 0;
+          line-height: 0.8em;
           margin: 10px 10px 10px 20px;
         }
       }
@@ -81,6 +89,12 @@
           a {
             font-size: 0.8em;
             line-height: 1.2em;
+            .contact-button {
+              padding: 6px 12px;
+            }
+            .telephone-button {
+              padding: 6px 12px;
+            }
           }
         }
       }
@@ -90,6 +104,12 @@
           a {
             font-size: 0.5em;
             line-height: 0.8em;
+            .contact-button {
+              padding: 3px 6px;
+            }
+            .telephone-button {
+              padding: 3px 6px;
+            }
           }
         }
       }
@@ -113,12 +133,22 @@
       }
       @media (min-width: 601px) and (max-width: 1200px) {
         h2 {
-          font-size: 3em;
+          font-size: 2.5em;
+        }
+        .rdv-tel {
+          button {
+            padding: 6px 12px;
+          }
         }
       }
       @media (max-width: 600px) {
         h2 {
-          font-size: 2em;
+          font-size: 1.5em;
+        }
+        .rdv-tel {
+          button {
+            padding: 3px 6px;
+          }
         }
       }
       p {
@@ -131,12 +161,12 @@
       }
       @media (min-width: 601px) and (max-width: 1200px) {
         p {
-          font-size: 1.2em;
+          font-size: 0.8em;
         }
       }
       @media (max-width: 600px) {
         p {
-          font-size: 1em;
+          font-size: 0.5em;
         }
       }
     }
