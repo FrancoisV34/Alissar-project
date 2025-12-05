@@ -8,7 +8,7 @@ header {
   padding: 20px 10vw 20px 10vw;
   margin: 0;
   display: flex;
-  align-items: center;
+  align-items: baseline;
   width: 100%;
   position: fixed;
   gap: 2vw;
@@ -128,12 +128,13 @@ header {
 
     .name {
       font-size: 0.3em;
-      width: 10%;
+      width: 20%;
     }
     .navigation-list {
-      width: 60%;
+      width: 50%;
       .nav-ul {
         justify-content: space-around;
+        gap: 0;
         li {
           a {
             font-size: 0.2em;
@@ -143,7 +144,7 @@ header {
       }
     }
     a {
-      width: 25%;
+      width: 20%;
       text-align: center;
       .contact-button {
         font-size: 0.2em;
