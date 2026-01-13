@@ -3,17 +3,48 @@
 
 header {
   color: $primary-color;
-  background: $background-color;
-  opacity: 0.9;
-  padding: 20px 10vw 20px 10vw;
+  justify-content: center;
+  background: $background-gradient;
+  @include liquid-glass;
+  padding: 15px 0;
   margin: 0;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   width: 100%;
   position: fixed;
   gap: 2vw;
-  backdrop-filter: blur(10px);
   font-family: $font-family;
+  z-index: 1000;
+  @include fade-in;
+  border-bottom: 2px solid $primary-gradient;
+  position: relative;
+  min-height: 70px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      $secondary-color,
+      transparent
+    );
+    animation: header-shimmer 4s ease-in-out infinite;
+  }
+
+  @keyframes header-shimmer {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
   .name {
     font-size: 1.5em;
     font-weight: 700;

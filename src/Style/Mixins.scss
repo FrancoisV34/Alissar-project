@@ -2,7 +2,7 @@
 @use 'sass:color';
 
 //Images display
-$radius: 10px;
+$radius: 15px;
 $shadow-color: #fa8072;
 $padding: 5px;
 
@@ -11,23 +11,104 @@ $padding: 5px;
 }
 
 @mixin image-shadow($shadow-color) {
-  box-shadow: 0px 0px 8px 2px rgba($shadow-color, 0.1);
+  box-shadow: 0px 8px 32px 0 rgba($shadow-color, 0.15);
+  filter: drop-shadow(0 4px 8px rgba($shadow-color, 0.1));
 }
+
 @mixin image-padding($padding) {
   padding: $padding;
 }
-//Buttons
+
+// Modern glassmorphism effect
+@mixin glassmorphism {
+  background: $glass-gradient;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid $glass-border;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+// Enhanced button styles
 @mixin general-rdv-button {
   border: none;
-  padding: 10px 20px;
+  padding: 12px 24px;
   font-size: 1em;
   font-weight: 600;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  &:hover {
-    background-color: color.adjust($primary-color, $lightness: -10%);
-    cursor: pointer;
+  border-radius: 25px;
+  background: $primary-gradient;
+  color: $button-color;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba($primary-color, 0.3);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s;
   }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary-color, 0.4);
+    cursor: pointer;
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Floating animation
+@mixin float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+// Fade in animation
+@mixin fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Enhanced text shadow
+@mixin elegant-text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 $leftpadding: 10vw;
@@ -44,22 +125,113 @@ $leftpadding: 10vw;
 
 //Article general
 
-$gap: 20px;
+$gap: 30px;
 
 @mixin article-gap($gap) {
   gap: $gap;
 }
 
-$padding-article: 20px;
+$padding-article: 30px;
 
 @mixin article-padding($padding-article) {
   padding: $padding-article;
 }
 
-//Texte mixin
+// Enhanced text mixin
+@mixin elegant-text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
+}
 
-$shadow-color: #000;
+// Liquid flow animation
+@mixin liquid-flow {
+  animation: liquidFlow 8s ease-in-out infinite;
+}
 
-@mixin text-shadow($shadow-color) {
-  text-shadow: 1px 1px 2px rgba($shadow-color, 0.5);
+@keyframes liquidFlow {
+  0%,
+  100% {
+    transform: translateX(0) scale(1);
+    border-radius: 25px;
+  }
+  25% {
+    transform: translateX(5px) scale(1.02);
+    border-radius: 30px 20px 25px 30px;
+  }
+  50% {
+    transform: translateX(-3px) scale(0.98);
+    border-radius: 20px 30px 30px 20px;
+  }
+  75% {
+    transform: translateX(2px) scale(1.01);
+    border-radius: 28px 22px 20px 28px;
+  }
+}
+
+// Enhanced glassmorphism with liquid effect
+@mixin liquid-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.06) 75%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+// Optimized image styling
+@mixin optimized-image {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform-origin: center;
+
+  &:hover {
+    transform: scale(1.08) rotate(1deg);
+    filter: brightness(1.1) contrast(1.1) saturate(1.2);
+  }
+}
+
+// Fluid typography scaling
+@mixin fluid-text($min-size, $max-size, $min-vw: 320px, $max-vw: 1200px) {
+  font-size: clamp(
+    #{$min-size},
+    #{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - #{$min-vw}) /
+          (#{$max-vw} - #{$min-vw})),
+    #{$max-size}
+  );
+}
+
+// Liquid ripple effect
+@mixin liquid-ripple {
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.3) 0%,
+      transparent 70%
+    );
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease-out;
+  }
+
+  &:hover::before {
+    width: 300px;
+    height: 300px;
+  }
 }

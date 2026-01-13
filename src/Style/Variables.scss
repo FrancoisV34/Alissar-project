@@ -3,6 +3,32 @@
 $primary-color: #fa8072;
 $secondary-color: #ffd700;
 $background-color: #fcf1f0;
+$accent-color: #ff6b6b;
+$dark-primary: #e57373;
+$light-primary: #ffb3ba;
+$glass-bg: rgba(255, 255, 255, 0.25);
+$glass-border: rgba(255, 255, 255, 0.18);
+$shadow-light: rgba(0, 0, 0, 0.1);
+$shadow-medium: rgba(0, 0, 0, 0.15);
+$shadow-strong: rgba(0, 0, 0, 0.25);
+
 $font-family: 'work sans', sans-serif;
 $title-family: 'raleway', sans-serif;
 $button-color: #393737;
+
+// Gradients
+$primary-gradient: linear-gradient(
+  135deg,
+  $primary-color 0%,
+  $accent-color 100%
+);
+$background-gradient: linear-gradient(
+  135deg,
+  $background-color 0%,
+  #f8e8e8 100%
+);
+$glass-gradient: linear-gradient(
+  135deg,
+  $glass-bg 0%,
+  rgba(255, 255, 255, 0.1) 100%
+);

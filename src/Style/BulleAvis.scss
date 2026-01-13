@@ -2,32 +2,53 @@
 @use 'Mixins' as *;
 
 .avis-container {
-  width: 150px;
-  background-color: black;
+  width: 160px;
+  background: $glass-gradient;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid $glass-border;
   border-radius: 50px;
-  padding: 20px;
+  padding: 25px 20px;
   text-align: center;
-  font-size: 15px;
+  font-size: 16px;
   position: fixed;
   top: 200px;
   right: 80px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  @include float-animation;
+  transition: all 0.3s ease;
+  z-index: 100;
+
+  &:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+
   @media (max-width: 1600px) {
     position: unset;
     justify-self: center;
   }
+
   span {
-    color: white;
+    color: $button-color;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 
     &.etoile {
-      color: gold;
+      color: $secondary-color;
+      filter: drop-shadow(0 0 3px rgba($secondary-color, 0.3));
+      font-size: 18px;
     }
   }
+
   .etoiles {
-    gap: 10px;
+    gap: 8px;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
+    margin-bottom: 10px;
   }
+
   @media (max-width: 1200px) {
     display: none;
   }

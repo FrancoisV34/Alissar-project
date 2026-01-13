@@ -2,13 +2,34 @@
 @use 'Mixins' as *;
 
 .telephone-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  @include fade-in;
+
   .telephone-button {
-    background-color: $primary-color;
+    background: $primary-gradient;
     color: $button-color;
     @include general-rdv-button;
     margin: 20px 0px 0px 0px;
     font-size: 1.2em;
     line-height: 1.8em;
-    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '📞';
+      margin-right: 8px;
+      font-size: 1.1em;
+    }
+
+    &:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 30px rgba($primary-color, 0.4);
+    }
   }
 }
