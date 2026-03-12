@@ -70,7 +70,7 @@ footer {
             background: $secondary-color;
             border-color: $secondary-color;
             cursor: pointer;
-            transform: scale(1.15) translateY(-2px);
+            transform: translateY(-1px);
             box-shadow: 0 8px 25px rgba($secondary-color, 0.4);
           }
 
@@ -117,7 +117,7 @@ footer {
               border-radius: 2px;
             }
             &:hover {
-              transform: scale(1.1);
+              transform: translateY(-1px);
               cursor: pointer;
               &::after {
                 transform: scaleX(1);
@@ -218,14 +218,4 @@ footer {
     }
   }
 
-  [data-mantine-color-scheme='dark'] & {
-    .dev-info {
-      background-color: $dark-bg;
-      color: $dark-text-muted;
-
-      a {
-        color: $dark-text;
-      }
-    }
-  }
 }

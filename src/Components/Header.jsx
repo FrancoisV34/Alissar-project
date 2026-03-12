@@ -2,9 +2,18 @@ import React from 'react';
 import '../Style/Header.scss';
 import Button from './Button.jsx';
 import { useMantineColorScheme } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import useStore from '../store/useStore.js';
 
 export default function Header() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useStore();
+
+  function handleLogout() {
+    logout();
+    navigate('/');
+  }
 
   return (
     <header>
@@ -36,6 +45,23 @@ export default function Header() {
       >
         {colorScheme === 'dark' ? '☀️' : '🌙'}
       </button>
+      {isAuthenticated ? (
+        <div className="auth-section">
+          <span className="auth-email">{user?.email}</span>
+          {user?.role === 'admin' && (
+            <button className="btn-auth" onClick={() => navigate('/admin')}>
+              Dashboard
+            </button>
+          )}
+          <button className="btn-auth btn-logout" onClick={handleLogout}>
+            Déconnexion
+          </button>
+        </div>
+      ) : (
+        <button className="btn-auth btn-login" onClick={() => navigate('/login')}>
+          Connexion
+        </button>
+      )}
       <Button />
     </header>
   );

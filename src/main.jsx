@@ -1,10 +1,17 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MantineProvider, createTheme, localStorageColorSchemeManager } from '@mantine/core';
 import '@mantine/core/styles.css';
 import Homepage from './Pages/Homepage.jsx';
+import LoginPage from './Pages/LoginPage.jsx';
+import AdminDashboard from './Pages/AdminDashboard.jsx';
+import PatientSpace from './Pages/PatientSpace.jsx';
+import ChangePasswordPage from './Pages/ChangePasswordPage.jsx';
+import ProtectedRoute from './Components/ProtectedRoute.jsx';
 import './Style/Main.scss';
+import './Style/DarkMode.scss';
 import Layout from './Components/Layout.jsx';
 
 const queryClient = new QueryClient({
@@ -41,9 +48,21 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <MantineProvider theme={theme} colorSchemeManager={colorSchemeManager} defaultColorScheme="light">
-        <Layout>
-          <Homepage />
-        </Layout>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout><Homepage /></Layout>} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/change-password" element={<ChangePasswordPage />} />
+            </Route>
+            <Route element={<ProtectedRoute role="admin" />}>
+              <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />
+            </Route>
+            <Route element={<ProtectedRoute role="patient" />}>
+              <Route path="/espace-patient" element={<Layout><PatientSpace /></Layout>} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
       </MantineProvider>
     </QueryClientProvider>
   </StrictMode>

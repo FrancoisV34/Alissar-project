@@ -68,6 +68,20 @@ db.exec(`
     note REAL NOT NULL,
     nb_avis INTEGER NOT NULL
   );
+
+  CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT NOT NULL DEFAULT 'patient',
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
 `);
+
+const cols = db.pragma('table_info(users)').map(c => c.name);
+if (!cols.includes('nom'))                  db.exec('ALTER TABLE users ADD COLUMN nom TEXT');
+if (!cols.includes('prenom'))               db.exec('ALTER TABLE users ADD COLUMN prenom TEXT');
+if (!cols.includes('telephone'))            db.exec('ALTER TABLE users ADD COLUMN telephone TEXT');
+if (!cols.includes('must_change_password')) db.exec('ALTER TABLE users ADD COLUMN must_change_password INTEGER NOT NULL DEFAULT 0');
 
 export default db;

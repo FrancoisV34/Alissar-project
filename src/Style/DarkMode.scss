@@ -1,0 +1,130 @@
+@use 'Variables' as *;
+
+// ============================================================
+// DARK MODE — Overrides centralisés
+// Tous les surcharges dark sont ici, nulle part ailleurs.
+// [data-mantine-color-scheme='dark'] est posé sur <html> par Mantine.
+// ============================================================
+
+[data-mantine-color-scheme='dark'] {
+  // Header
+  header {
+    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
+    transition: background 0.3s ease;
+
+    .name,
+    .navigation-list .nav-ul li a {
+      color: $dark-text;
+      transition: color 0.3s ease;
+
+      &::after {
+        background-color: $primary-color;
+      }
+    }
+  }
+
+  // Presentation sections (Homepage)
+  .presentation {
+    color: $dark-text;
+    background: rgba($dark-surface, 0.85);
+    transition: background 0.3s ease, color 0.3s ease;
+
+    &.first p {
+      color: rgba(240, 230, 228, 0.9);
+    }
+
+    &.other {
+      background-color: $dark-bg;
+    }
+
+    .text-pres p {
+      color: $dark-text-muted;
+    }
+  }
+
+  // Tarifs-access wrapper
+  .tarifs-access {
+    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
+    transition: background 0.3s ease;
+  }
+
+  // Tarifs cards
+  .tarifs {
+    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
+    transition: background 0.3s ease;
+
+    .presta-tarifs {
+      h3,
+      h4 {
+        color: $dark-text;
+        transition: color 0.3s ease;
+      }
+    }
+  }
+
+  // Horaires (section .access)
+  .access {
+    background: $dark-glass-gradient;
+    border-color: $dark-glass-border;
+    transition: background 0.3s ease, border-color 0.3s ease;
+
+    .heures {
+      color: $dark-text;
+      transition: color 0.3s ease;
+    }
+  }
+
+  // BullePEC
+  .bulle-pec {
+    background: $dark-glass-gradient;
+    border-color: $dark-glass-border;
+    transition: background 0.3s ease, border-color 0.3s ease;
+
+    .pec-text {
+      color: $dark-text-muted;
+      transition: color 0.3s ease;
+    }
+  }
+
+  // Formation cards
+  .formation {
+    background: $dark-glass-gradient;
+    border-color: $dark-glass-border;
+    transition: background 0.3s ease, border-color 0.3s ease;
+
+    .formation-infos {
+      color: $dark-text-muted;
+      transition: color 0.3s ease;
+    }
+  }
+
+  // BulleAvis (widget flottant avis)
+  .avis-container {
+    background: $dark-glass-gradient;
+    border-color: $dark-glass-border;
+    transition: background 0.3s ease, border-color 0.3s ease;
+
+    span:not(.etoile) {
+      color: $dark-text;
+      transition: color 0.3s ease;
+    }
+  }
+
+  // Contacts
+  .contacts {
+    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
+    color: $dark-text;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  // Footer dev-info
+  footer .dev-info {
+    background-color: $dark-bg;
+    color: $dark-text-muted;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    a {
+      color: $dark-text;
+    }
+  }
+}

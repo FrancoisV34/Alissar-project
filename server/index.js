@@ -7,6 +7,11 @@ import pecRouter from './routes/pec.js';
 import tarifsRouter from './routes/tarifs.js';
 import horairesRouter from './routes/horaires.js';
 import contactRouter from './routes/contact.js';
+import authRouter from './routes/auth.js';
+import adminTarifsRouter from './routes/admin/tarifs.js';
+import adminHorairesRouter from './routes/admin/horaires.js';
+import adminFormationsRouter from './routes/admin/formations.js';
+import adminUsersRouter from './routes/admin/users.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -20,6 +25,11 @@ app.use('/api/pec', pecRouter);
 app.use('/api/tarifs', tarifsRouter);
 app.use('/api/horaires', horairesRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/admin/tarifs', adminTarifsRouter);
+app.use('/api/admin/horaires', adminHorairesRouter);
+app.use('/api/admin/formations', adminFormationsRouter);
+app.use('/api/admin/users', adminUsersRouter);
 
 app.listen(PORT, () => {
   console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);

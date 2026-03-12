@@ -108,7 +108,7 @@
       &:hover {
         background: $primary-gradient;
         border-color: $primary-color;
-        transform: scale(1.15) translateY(-3px);
+        transform: translateY(-1px);
         box-shadow: 0 8px 25px rgba($primary-color, 0.3);
 
         &::before {
@@ -141,8 +141,4 @@
     }
   }
 
-  [data-mantine-color-scheme='dark'] & {
-    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
-    color: $dark-text;
-  }
 }

@@ -84,7 +84,7 @@ header {
             border-radius: 2px;
           }
           &:hover {
-            transform: scale(1.1);
+            transform: translateY(-1px);
             cursor: pointer;
             &::after {
               transform: scaleX(1);
@@ -99,6 +99,49 @@ header {
     color: $button-color;
     @include general-rdv-button;
     font-size: 1.2em;
+  }
+
+  .auth-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+
+    .auth-email {
+      font-size: 0.85em;
+      color: $primary-color;
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .btn-auth {
+    background: transparent;
+    border: 1.5px solid $primary-color;
+    border-radius: 20px;
+    color: $primary-color;
+    padding: 5px 14px;
+    font-size: 0.9em;
+    font-family: $font-family;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgba($primary-color, 0.12);
+      transform: translateY(-1px);
+    }
+
+    &.btn-logout {
+      border-color: #c0392b;
+      color: #c0392b;
+      &:hover {
+        background: rgba(#c0392b, 0.1);
+      }
+    }
   }
 
   .dark-mode-toggle {
@@ -118,22 +161,10 @@ header {
 
     &:hover {
       background: rgba($primary-color, 0.15);
-      transform: scale(1.1);
+      transform: translateY(-1px);
     }
   }
 
-  [data-mantine-color-scheme='dark'] & {
-    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
-
-    .name,
-    .navigation-list .nav-ul li a {
-      color: $dark-text;
-
-      &::after {
-        background-color: $primary-color;
-      }
-    }
-  }
 }
 
 @media (max-width: 1600px) {

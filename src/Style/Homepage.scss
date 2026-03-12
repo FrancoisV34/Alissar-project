@@ -333,7 +333,7 @@
     transition: all 0.3s ease;
 
     &:hover {
-      transform: scale(1.02);
+      transform: translateY(-1px);
       box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
     }
 
@@ -377,23 +377,4 @@
 .avis {
   width: 95%;
   margin: auto;
-}
-
-[data-mantine-color-scheme='dark'] {
-  .presentation {
-    color: $dark-text;
-    background: rgba($dark-surface, 0.85);
-
-    &.other {
-      background-color: $dark-bg;
-    }
-
-    .text-pres p {
-      color: $dark-text-muted;
-    }
-  }
-
-  .tarifs-access {
-    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
-  }
 }

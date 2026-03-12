@@ -40,3 +40,9 @@ $dark-glass-bg: rgba(255, 255, 255, 0.08);
 $dark-glass-border: rgba(255, 255, 255, 0.12);
 $dark-text: #f0e6e4;
 $dark-text-muted: #c9b8b6;
+$dark-glass-gradient: linear-gradient(
+  135deg,
+  $dark-glass-bg 0%,
+  rgba(255, 255, 255, 0.04) 100%
+);
+$dark-surface-hover: #1e2d50;

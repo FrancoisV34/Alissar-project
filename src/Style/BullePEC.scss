@@ -46,7 +46,7 @@
     }
 
     &:hover {
-      transform: translateY(-8px) scale(1.02);
+      transform: translateY(-1px);
       box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
     }
     @media (min-width: 1001px) and (max-width: 1600px) {
