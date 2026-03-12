@@ -32,3 +32,11 @@ $glass-gradient: linear-gradient(
   $glass-bg 0%,
   rgba(255, 255, 255, 0.1) 100%
 );
+
+// Dark mode variables
+$dark-bg: #1a1a2e;
+$dark-surface: #16213e;
+$dark-glass-bg: rgba(255, 255, 255, 0.08);
+$dark-glass-border: rgba(255, 255, 255, 0.12);
+$dark-text: #f0e6e4;
+$dark-text-muted: #c9b8b6;

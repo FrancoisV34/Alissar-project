@@ -217,4 +217,15 @@ footer {
       line-height: 0.5em;
     }
   }
+
+  [data-mantine-color-scheme='dark'] & {
+    .dev-info {
+      background-color: $dark-bg;
+      color: $dark-text-muted;
+
+      a {
+        color: $dark-text;
+      }
+    }
+  }
 }

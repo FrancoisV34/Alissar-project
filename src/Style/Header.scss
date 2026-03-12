@@ -100,6 +100,40 @@ header {
     @include general-rdv-button;
     font-size: 1.2em;
   }
+
+  .dark-mode-toggle {
+    background: transparent;
+    border: 1.5px solid $primary-color;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.2s ease;
+    padding: 0;
+    flex-shrink: 0;
+
+    &:hover {
+      background: rgba($primary-color, 0.15);
+      transform: scale(1.1);
+    }
+  }
+
+  [data-mantine-color-scheme='dark'] & {
+    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
+
+    .name,
+    .navigation-list .nav-ul li a {
+      color: $dark-text;
+
+      &::after {
+        background-color: $primary-color;
+      }
+    }
+  }
 }
 
 @media (max-width: 1600px) {

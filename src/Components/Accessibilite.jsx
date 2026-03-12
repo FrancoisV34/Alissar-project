@@ -1,16 +1,20 @@
 import React from 'react';
-import Horaires from '../Data/horaires.json';
 import '../Style/Horaires.scss';
+import { useHoraires } from '../hooks/useHoraires.js';
 
 export default function Accessibilite() {
+  const { data: horaires, isLoading, isError } = useHoraires();
+
+  if (isLoading) return <div className="loading-placeholder" />;
+  if (isError) return null;
+
   return (
     <section className="access">
       <h2>Horaires d'ouvertures</h2>
-
       <div className="horaires">
         <ul className="jours-heures">
-          {Horaires.map((horaire, index) => (
-            <li className="heures" key={index}>
+          {horaires.map((horaire) => (
+            <li className="heures" key={horaire.id}>
               {`${horaire.jour} : ${horaire.horaires}`}
             </li>
           ))}

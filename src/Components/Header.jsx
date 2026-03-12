@@ -1,8 +1,11 @@
 import React from 'react';
 import '../Style/Header.scss';
 import Button from './Button.jsx';
+import { useMantineColorScheme } from '@mantine/core';
 
 export default function Header() {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+
   return (
     <header>
       <h1 className="title name">Alissar ATIK Ostéopathe</h1>
@@ -25,6 +28,14 @@ export default function Header() {
           </li>
         </ul>
       </nav>
+      <button
+        className="dark-mode-toggle"
+        onClick={toggleColorScheme}
+        aria-label={colorScheme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+        title={colorScheme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+      >
+        {colorScheme === 'dark' ? '☀️' : '🌙'}
+      </button>
       <Button />
     </header>
   );

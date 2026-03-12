@@ -140,4 +140,9 @@
       }
     }
   }
+
+  [data-mantine-color-scheme='dark'] & {
+    background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
+    color: $dark-text;
+  }
 }

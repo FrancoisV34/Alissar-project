@@ -1,0 +1,73 @@
+import Database from 'better-sqlite3';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const DB_PATH = join(__dirname, 'database.sqlite');
+
+const db = new Database(DB_PATH);
+
+db.pragma('journal_mode = WAL');
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS sections (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    idlink TEXT,
+    image TEXT,
+    sort_order INTEGER NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS section_paragraphs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    section_id INTEGER REFERENCES sections(id),
+    sort_order INTEGER NOT NULL,
+    text TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS formations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT,
+    image TEXT,
+    sort_order INTEGER NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS pec_bubbles (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    content TEXT,
+    image TEXT,
+    sort_order INTEGER NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS tarifs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    prestation TEXT NOT NULL,
+    prix INTEGER NOT NULL,
+    texte TEXT,
+    sort_order INTEGER NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS horaires (
+    id INTEGER PRIMARY KEY,
+    jour TEXT NOT NULL,
+    horaires TEXT NOT NULL,
+    sort_order INTEGER NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS contact_info (
+    id INTEGER PRIMARY KEY DEFAULT 1,
+    phone TEXT NOT NULL,
+    address TEXT NOT NULL,
+    doctolib_url TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS avis_summary (
+    id INTEGER PRIMARY KEY DEFAULT 1,
+    note REAL NOT NULL,
+    nb_avis INTEGER NOT NULL
+  );
+`);
+
+export default db;

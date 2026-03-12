@@ -1,7 +1,11 @@
 import Docto from '/assets/rdvdocto.png';
 import '../Style/Footer.scss';
+import { useContact } from '../hooks/useContact.js';
 
 export default function Footer() {
+  const { data } = useContact();
+  const contact = data?.contact;
+
   return (
     <footer>
       <section className="all-info">
@@ -11,45 +15,39 @@ export default function Footer() {
           </div>
           <div className="socials-links">
             <a
-              href="https://www.doctolib.fr/osteopathe/vendargues/alissar-atik"
+              href={contact?.doctolib_url ?? 'https://www.doctolib.fr/osteopathe/vendargues/alissar-atik'}
               className="doctolib"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={Docto} className="docto" alt="Logo Doctolib"></img>
+              <img src={Docto} className="docto" alt="Logo Doctolib" />
             </a>
           </div>
         </div>
         <div className="nav-menu">
           <nav className="menu">
             <ul className="ul-list">
-              <li>
-                <a href="#a-propos">A propos</a>
-              </li>
-              <li>
-                <a href="#osteo">L'ostéopathie</a>
-              </li>
-              <li>
-                <a href="#formations">Formations</a>
-              </li>
-              <li>
-                <a href="#tarifs">Tarifs</a>
-              </li>
-              <li>
-                <a href="#contacts">Contacts</a>
-              </li>
+              <li><a href="#a-propos">A propos</a></li>
+              <li><a href="#osteo">L'ostéopathie</a></li>
+              <li><a href="#formations">Formations</a></li>
+              <li><a href="#tarifs">Tarifs</a></li>
+              <li><a href="#contacts">Contacts</a></li>
             </ul>
           </nav>
         </div>
         <div className="adresse-tel">
           <h4>Adresse : </h4>
           <p className="adresse">
-            Maison Cadoule
-            <br /> 17 rue de la cadoule
-            <br /> 34740 Vendargues
+            {contact ? (
+              contact.address.split(', ').map((line, i) => (
+                <span key={i}>{line}<br /></span>
+              ))
+            ) : (
+              <>Maison Cadoule<br />17 rue de la cadoule<br />34740 Vendargues</>
+            )}
           </p>
           <h4>Téléphone:</h4>
-          <p className="tel">06 50 34 88 73</p>
+          <p className="tel">{contact?.phone ?? '06 50 34 88 73'}</p>
         </div>
       </section>
       <div className="dev-info">

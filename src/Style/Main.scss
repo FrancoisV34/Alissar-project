@@ -13,6 +13,7 @@ body {
   background-attachment: fixed;
   min-height: 100vh;
   position: relative;
+  transition: background 0.3s ease, color 0.3s ease;
 
   &::before {
     content: '';
@@ -34,6 +35,20 @@ body {
     pointer-events: none;
     z-index: -1;
   }
+
+  [data-mantine-color-scheme='dark'] & {
+    background: linear-gradient(
+      135deg,
+      $dark-bg 0%,
+      $dark-surface 100%
+    );
+    color: $dark-text;
+  }
+}
+
+.loading-placeholder {
+  min-height: 200px;
+  width: 100%;
 }
 
 html {

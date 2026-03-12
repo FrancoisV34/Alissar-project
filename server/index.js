@@ -1,0 +1,26 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import sectionsRouter from './routes/sections.js';
+import formationsRouter from './routes/formations.js';
+import pecRouter from './routes/pec.js';
+import tarifsRouter from './routes/tarifs.js';
+import horairesRouter from './routes/horaires.js';
+import contactRouter from './routes/contact.js';
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/sections', sectionsRouter);
+app.use('/api/formations', formationsRouter);
+app.use('/api/pec', pecRouter);
+app.use('/api/tarifs', tarifsRouter);
+app.use('/api/horaires', horairesRouter);
+app.use('/api/contact', contactRouter);
+
+app.listen(PORT, () => {
+  console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
+});
