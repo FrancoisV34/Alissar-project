@@ -13,6 +13,8 @@ dist-ssr
 *.local
 .env
 server/database.sqlite
+server/database.sqlite-shm
+server/database.sqlite-wal
 
 # Editor directories and files
 .vscode/*
