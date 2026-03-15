@@ -56,9 +56,14 @@ export default function Header() {
         <div className="auth-section">
           <span className="auth-email">{user?.email}</span>
           {['admin', 'alissar'].includes(user?.role) && (
-            <button className="btn-auth" onClick={() => navigate('/admin')}>
-              Dashboard
-            </button>
+            <>
+              <button className="btn-auth" onClick={() => navigate('/admin')}>
+                Dashboard
+              </button>
+              <button className="btn-auth" onClick={() => navigate('/admin/osteo')}>
+                Logiciel Ostéo
+              </button>
+            </>
           )}
           {user?.role === 'patient' && (
             <button className="btn-auth" onClick={() => navigate('/espace-patient')}>

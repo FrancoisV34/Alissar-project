@@ -14,6 +14,8 @@ import adminFormationsRouter from './routes/admin/formations.js';
 import adminUsersRouter from './routes/admin/users.js';
 import adminConsultationsRouter from './routes/admin/consultations.js';
 import adminStatsRouter from './routes/admin/stats.js';
+import adminPatientsRouter from './routes/admin/patients.js';
+import adminOsteoRouter from './routes/admin/osteo.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -34,6 +36,8 @@ app.use('/api/admin/formations', adminFormationsRouter);
 app.use('/api/admin/users', adminUsersRouter);
 app.use('/api/admin/consultations', adminConsultationsRouter);
 app.use('/api/admin/stats', adminStatsRouter);
+app.use('/api/admin/patients', adminPatientsRouter);
+app.use('/api/admin/osteo', adminOsteoRouter);
 
 app.listen(PORT, () => {
   console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);

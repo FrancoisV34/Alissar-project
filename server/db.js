@@ -86,6 +86,31 @@ db.exec(`
     notes TEXT,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS patient_profiles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER UNIQUE NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    date_naissance TEXT,
+    sexe TEXT,
+    adresse TEXT,
+    medecin_traitant TEXT,
+    antecedents_medicaux TEXT
+  );
+
+  CREATE TABLE IF NOT EXISTS consult_osteo (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    patient_id INTEGER NOT NULL REFERENCES users(id),
+    date TEXT NOT NULL,
+    motif TEXT,
+    anamnese TEXT,
+    antecedents TEXT,
+    examen_clinique TEXT,
+    tests_osteo TEXT,
+    traitement TEXT,
+    conseils TEXT,
+    montant REAL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
 `);
 
 const cols = db.pragma('table_info(users)').map(c => c.name);

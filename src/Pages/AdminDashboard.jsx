@@ -26,27 +26,7 @@ import { DatePickerInput } from '@mantine/dates';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import 'dayjs/locale/fr';
-
-const BASE_URL = '/api';
-
-function authHeaders() {
-  const token = localStorage.getItem('alissar-token');
-  return {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-}
-
-async function apiFetch(path, options = {}) {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    ...options,
-    headers: { ...authHeaders(), ...options.headers },
-  });
-  if (res.status === 204) return null;
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error ?? `Erreur ${res.status}`);
-  return data;
-}
+import { apiFetch } from '../utils/api.js';
 
 // ── Tarifs ──────────────────────────────────────────────────────────────────
 

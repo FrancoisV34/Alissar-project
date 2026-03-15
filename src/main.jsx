@@ -10,6 +10,8 @@ import LoginPage from './Pages/LoginPage.jsx';
 import AdminDashboard from './Pages/AdminDashboard.jsx';
 import PatientSpace from './Pages/PatientSpace.jsx';
 import ChangePasswordPage from './Pages/ChangePasswordPage.jsx';
+import OsteoSoftware from './Pages/OsteoSoftware.jsx';
+import OsteoConsultation from './Pages/OsteoConsultation.jsx';
 import ProtectedRoute from './Components/ProtectedRoute.jsx';
 import './Style/Main.scss';
 import './Style/DarkMode.scss';
@@ -58,6 +60,8 @@ createRoot(document.getElementById('root')).render(
             </Route>
             <Route element={<ProtectedRoute role={['admin', 'alissar']} />}>
               <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />
+              <Route path="/admin/osteo" element={<Layout><OsteoSoftware /></Layout>} />
+              <Route path="/admin/osteo/consultation/:patientId" element={<Layout><OsteoConsultation /></Layout>} />
             </Route>
             <Route element={<ProtectedRoute role="patient" />}>
               <Route path="/espace-patient" element={<Layout><PatientSpace /></Layout>} />
