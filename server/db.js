@@ -76,6 +76,16 @@ db.exec(`
     role TEXT NOT NULL DEFAULT 'patient',
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS consultations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT NOT NULL,
+    patient_nom TEXT,
+    prestation TEXT NOT NULL,
+    montant REAL NOT NULL,
+    notes TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
 `);
 
 const cols = db.pragma('table_info(users)').map(c => c.name);

@@ -12,6 +12,8 @@ import adminTarifsRouter from './routes/admin/tarifs.js';
 import adminHorairesRouter from './routes/admin/horaires.js';
 import adminFormationsRouter from './routes/admin/formations.js';
 import adminUsersRouter from './routes/admin/users.js';
+import adminConsultationsRouter from './routes/admin/consultations.js';
+import adminStatsRouter from './routes/admin/stats.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,6 +32,8 @@ app.use('/api/admin/tarifs', adminTarifsRouter);
 app.use('/api/admin/horaires', adminHorairesRouter);
 app.use('/api/admin/formations', adminFormationsRouter);
 app.use('/api/admin/users', adminUsersRouter);
+app.use('/api/admin/consultations', adminConsultationsRouter);
+app.use('/api/admin/stats', adminStatsRouter);
 
 app.listen(PORT, () => {
   console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);

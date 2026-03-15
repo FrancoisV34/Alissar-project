@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MantineProvider, createTheme, localStorageColorSchemeManager } from '@mantine/core';
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import Homepage from './Pages/Homepage.jsx';
 import LoginPage from './Pages/LoginPage.jsx';
 import AdminDashboard from './Pages/AdminDashboard.jsx';
@@ -55,7 +56,7 @@ createRoot(document.getElementById('root')).render(
             <Route element={<ProtectedRoute />}>
               <Route path="/change-password" element={<ChangePasswordPage />} />
             </Route>
-            <Route element={<ProtectedRoute role="admin" />}>
+            <Route element={<ProtectedRoute role={['admin', 'alissar']} />}>
               <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />
             </Route>
             <Route element={<ProtectedRoute role="patient" />}>

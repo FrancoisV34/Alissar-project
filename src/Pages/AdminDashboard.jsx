@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useStore from '../store/useStore.js';
 import {
   Container,
   Title,
@@ -16,8 +17,15 @@ import {
   Text,
   Select,
   Badge,
+  SegmentedControl,
+  ColorSwatch,
+  Popover,
+  ColorPicker,
 } from '@mantine/core';
+import { DatePickerInput } from '@mantine/dates';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
+import 'dayjs/locale/fr';
 
 const BASE_URL = '/api';
 
@@ -405,9 +413,232 @@ function UtilisateursTab() {
   );
 }
 
+// ── Stats (CA) ──────────────────────────────────────────────────────────────
+
+const PERIOD_OPTIONS = [
+  { label: 'Année', value: 'year' },
+  { label: 'Mois', value: 'month' },
+  { label: 'Semaine', value: 'week' },
+  { label: 'Jour', value: 'day' },
+];
+
+const MONTH_NAMES = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+function StatsTab() {
+  const qc = useQueryClient();
+  const now = new Date();
+  const [period, setPeriod] = useState('month');
+  const [navYear, setNavYear] = useState(now.getFullYear());
+  const [navMonth, setNavMonth] = useState(now.getMonth() + 1);
+  const [barColor, setBarColor] = useState(() => localStorage.getItem('alissar-chart-color') || '#228be6');
+
+  function handleColorChange(color) {
+    setBarColor(color);
+    localStorage.setItem('alissar-chart-color', color);
+  }
+
+  // Build query params
+  const queryParams = new URLSearchParams({ period });
+  if (period !== 'year') queryParams.set('year', navYear);
+  if (period === 'day') queryParams.set('month', navMonth);
+
+  const { data: chartData = [] } = useQuery({
+    queryKey: ['stats-revenue', period, navYear, navMonth],
+    queryFn: () => apiFetch(`/admin/stats/revenue?${queryParams}`),
+  });
+
+  // Navigation label
+  let navLabel = '';
+  if (period === 'month' || period === 'week') navLabel = String(navYear);
+  if (period === 'day') navLabel = `${MONTH_NAMES[navMonth - 1]} ${navYear}`;
+
+  function navPrev() {
+    if (period === 'day') {
+      if (navMonth === 1) { setNavMonth(12); setNavYear(y => y - 1); }
+      else setNavMonth(m => m - 1);
+    } else {
+      setNavYear(y => y - 1);
+    }
+  }
+
+  function navNext() {
+    if (period === 'day') {
+      if (navMonth === 12) { setNavMonth(1); setNavYear(y => y + 1); }
+      else setNavMonth(m => m + 1);
+    } else {
+      setNavYear(y => y + 1);
+    }
+  }
+
+  // Consultation CRUD
+  const { data: consultations = [] } = useQuery({
+    queryKey: ['consultations'],
+    queryFn: () => apiFetch('/admin/consultations'),
+  });
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [form, setForm] = useState({ date: null, patient_nom: '', prestation: '', montant: '', notes: '' });
+
+  function openCreate() {
+    setEditing(null);
+    setForm({ date: null, patient_nom: '', prestation: '', montant: '', notes: '' });
+    setModalOpen(true);
+  }
+
+  function openEdit(c) {
+    setEditing(c);
+    setForm({
+      date: c.date ? new Date(c.date) : null,
+      patient_nom: c.patient_nom ?? '',
+      prestation: c.prestation,
+      montant: String(c.montant),
+      notes: c.notes ?? '',
+    });
+    setModalOpen(true);
+  }
+
+  function invalidateAll() {
+    qc.invalidateQueries({ queryKey: ['consultations'] });
+    qc.invalidateQueries({ queryKey: ['stats-revenue'] });
+  }
+
+  const saveMutation = useMutation({
+    mutationFn: () => {
+      const dateStr = form.date instanceof Date
+        ? form.date.toISOString().slice(0, 10)
+        : form.date;
+      const body = {
+        date: dateStr,
+        patient_nom: form.patient_nom || null,
+        prestation: form.prestation,
+        montant: Number(form.montant),
+        notes: form.notes || null,
+      };
+      if (editing) {
+        return apiFetch(`/admin/consultations/${editing.id}`, { method: 'PUT', body: JSON.stringify(body) });
+      }
+      return apiFetch('/admin/consultations', { method: 'POST', body: JSON.stringify(body) });
+    },
+    onSuccess: () => { invalidateAll(); setModalOpen(false); },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => apiFetch(`/admin/consultations/${id}`, { method: 'DELETE' }),
+    onSuccess: () => invalidateAll(),
+  });
+
+  const euroFormatter = (value) => `${Number(value).toLocaleString('fr-FR')} €`;
+
+  return (
+    <>
+      {/* Period selector + color picker */}
+      <Group justify="space-between" mb="md">
+        <SegmentedControl
+          data={PERIOD_OPTIONS}
+          value={period}
+          onChange={setPeriod}
+        />
+        <Popover position="bottom-end" shadow="md">
+          <Popover.Target>
+            <ActionIcon variant="subtle" size="lg" title="Couleur du graphique">
+              <ColorSwatch color={barColor} size={20} />
+            </ActionIcon>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <ColorPicker
+              value={barColor}
+              onChange={handleColorChange}
+              swatches={['#228be6','#fa5252','#40c057','#fab005','#7950f2','#fd7e14','#20c997','#e64980','#be4bdb','#15aabf']}
+            />
+          </Popover.Dropdown>
+        </Popover>
+      </Group>
+
+      {/* Navigation */}
+      {period !== 'year' && (
+        <Group justify="center" mb="md">
+          <Button variant="subtle" size="sm" onClick={navPrev}>&#8592;</Button>
+          <Text fw={600}>{navLabel}</Text>
+          <Button variant="subtle" size="sm" onClick={navNext}>&#8594;</Button>
+        </Group>
+      )}
+
+      {/* Chart */}
+      <div style={{ width: '100%', height: 350 }}>
+        <ResponsiveContainer>
+          <BarChart data={chartData} margin={{ top: 10, right: 20, left: 20, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="label" />
+            <YAxis tickFormatter={euroFormatter} />
+            <Tooltip formatter={(value) => euroFormatter(value)} labelFormatter={(l) => `Période : ${l}`} />
+            <Bar dataKey="total" fill={barColor} radius={[4, 4, 0, 0]} name="CA" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Consultations list */}
+      <Group justify="space-between" mt="xl" mb="md">
+        <Title order={4}>Consultations</Title>
+        <Button size="sm" onClick={openCreate}>+ Ajouter une consultation</Button>
+      </Group>
+      <Table striped highlightOnHover>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Date</Table.Th>
+            <Table.Th>Patient</Table.Th>
+            <Table.Th>Prestation</Table.Th>
+            <Table.Th>Montant</Table.Th>
+            <Table.Th>Notes</Table.Th>
+            <Table.Th>Actions</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {consultations.map((c) => (
+            <Table.Tr key={c.id}>
+              <Table.Td>{new Date(c.date).toLocaleDateString('fr-FR')}</Table.Td>
+              <Table.Td>{c.patient_nom ?? '—'}</Table.Td>
+              <Table.Td>{c.prestation}</Table.Td>
+              <Table.Td>{Number(c.montant).toLocaleString('fr-FR')} €</Table.Td>
+              <Table.Td>{c.notes ?? '—'}</Table.Td>
+              <Table.Td>
+                <Group gap="xs">
+                  <Button size="xs" variant="light" onClick={() => openEdit(c)}>Modifier</Button>
+                  <Button size="xs" color="red" variant="light" onClick={() => deleteMutation.mutate(c.id)}>Supprimer</Button>
+                </Group>
+              </Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+
+      {/* Modal CRUD */}
+      <Modal centered opened={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Modifier la consultation' : 'Nouvelle consultation'}>
+        <Stack gap="sm">
+          <DatePickerInput
+            label="Date"
+            value={form.date}
+            onChange={(d) => setForm({ ...form, date: d })}
+            locale="fr"
+            valueFormat="DD/MM/YYYY"
+            required
+          />
+          <TextInput label="Prestation" value={form.prestation} onChange={(e) => setForm({ ...form, prestation: e.target.value })} required />
+          <TextInput label="Montant (€)" type="number" value={form.montant} onChange={(e) => setForm({ ...form, montant: e.target.value })} required />
+          <TextInput label="Patient (optionnel)" value={form.patient_nom} onChange={(e) => setForm({ ...form, patient_nom: e.target.value })} />
+          <Textarea label="Notes (optionnel)" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
+          <Button onClick={() => saveMutation.mutate()} loading={saveMutation.isPending}>Enregistrer</Button>
+        </Stack>
+      </Modal>
+    </>
+  );
+}
+
 // ── Dashboard principal ───────────────────────────────────────────────────────
 
 export default function AdminDashboard() {
+  const { user } = useStore();
+
   return (
     <Container size="lg" py="xl">
       <Title order={2} mb="xl">Dashboard Admin</Title>
@@ -417,12 +648,16 @@ export default function AdminDashboard() {
           <Tabs.Tab value="horaires">Horaires</Tabs.Tab>
           <Tabs.Tab value="formations">Formations</Tabs.Tab>
           <Tabs.Tab value="utilisateurs">Utilisateurs</Tabs.Tab>
+          {['admin', 'alissar'].includes(user?.role) && (
+            <Tabs.Tab value="stats">Stats</Tabs.Tab>
+          )}
         </Tabs.List>
 
         <Tabs.Panel value="tarifs"><TarifsTab /></Tabs.Panel>
         <Tabs.Panel value="horaires"><HorairesTab /></Tabs.Panel>
         <Tabs.Panel value="formations"><FormationsTab /></Tabs.Panel>
         <Tabs.Panel value="utilisateurs"><UtilisateursTab /></Tabs.Panel>
+        <Tabs.Panel value="stats"><StatsTab /></Tabs.Panel>
       </Tabs>
     </Container>
   );
