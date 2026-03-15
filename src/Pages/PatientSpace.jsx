@@ -1,18 +1,17 @@
-import { Container, Title, Text, Paper } from '@mantine/core';
-import useStore from '../store/useStore.js';
+import { Container, Title, Tabs, Text } from '@mantine/core';
 
 export default function PatientSpace() {
-  const { user } = useStore();
-
   return (
-    <Container size="md" py="xl">
-      <Paper radius="md" p="xl" withBorder>
-        <Title order={2} mb="md">Espace Patient</Title>
-        <Text c="dimmed">Bienvenue, {user?.email}</Text>
-        <Text mt="md">
-          Votre espace personnel sera disponible prochainement.
-        </Text>
-      </Paper>
+    <Container size="lg" py="xl">
+      <Title order={2} mb="xl">Mon espace</Title>
+      <Tabs defaultValue="factures">
+        <Tabs.List mb="lg">
+          <Tabs.Tab value="factures">Mes factures</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="factures">
+          <Text c="dimmed">En cours de développement</Text>
+        </Tabs.Panel>
+      </Tabs>
     </Container>
   );
 }

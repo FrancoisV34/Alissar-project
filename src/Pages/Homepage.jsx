@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../Style/Main.scss';
 import '../Style/Homepage.scss';
 import Lightcab from '/assets/FaceCab.jpg';
@@ -13,6 +14,14 @@ import BaniereAvis from '../Components/BaniereAvis.jsx';
 import Contacts from '../Components/Contacts.jsx';
 
 export default function Homepage() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    const el = document.getElementById(hash.slice(1));
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, [hash]);
+
   return (
     <>
       <div className="backimg">

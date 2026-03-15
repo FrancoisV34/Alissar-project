@@ -15,25 +15,32 @@ export default function Header() {
     navigate('/');
   }
 
+  function handleNavClick(e, anchor) {
+    if (window.location.pathname !== '/') {
+      e.preventDefault();
+      window.location.href = `/#${anchor}`;
+    }
+  }
+
   return (
     <header>
       <h1 className="title name">Alissar ATIK Ostéopathe</h1>
       <nav className="navigation-list">
         <ul className="nav-ul">
           <li>
-            <a href="#a-propos">A propos</a>
+            <a href="/#a-propos" onClick={(e) => handleNavClick(e, 'a-propos')}>A propos</a>
           </li>
           <li>
-            <a href="#osteo">L'ostéopathie</a>
+            <a href="/#osteo" onClick={(e) => handleNavClick(e, 'osteo')}>L'ostéopathie</a>
           </li>
           <li>
-            <a href="#formations">Formations</a>
+            <a href="/#formations" onClick={(e) => handleNavClick(e, 'formations')}>Formations</a>
           </li>
           <li>
-            <a href="#tarifs">Tarifs</a>
+            <a href="/#tarifs" onClick={(e) => handleNavClick(e, 'tarifs')}>Tarifs</a>
           </li>
           <li>
-            <a href="#contacts">Contacts</a>
+            <a href="/#contacts" onClick={(e) => handleNavClick(e, 'contacts')}>Contacts</a>
           </li>
         </ul>
       </nav>
@@ -51,6 +58,11 @@ export default function Header() {
           {user?.role === 'admin' && (
             <button className="btn-auth" onClick={() => navigate('/admin')}>
               Dashboard
+            </button>
+          )}
+          {user?.role === 'patient' && (
+            <button className="btn-auth" onClick={() => navigate('/espace-patient')}>
+              Mon espace
             </button>
           )}
           <button className="btn-auth btn-logout" onClick={handleLogout}>
