@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'Email et mot de passe requis' });
   }
 
-  const validRoles = ['admin', 'patient'];
+  const validRoles = ['admin', 'patient', 'alissar'];
   if (!validRoles.includes(role)) {
     return res.status(400).json({ error: 'Rôle invalide' });
   }

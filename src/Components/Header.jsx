@@ -55,7 +55,7 @@ export default function Header() {
       {isAuthenticated ? (
         <div className="auth-section">
           <span className="auth-email">{user?.email}</span>
-          {user?.role === 'admin' && (
+          {['admin', 'alissar'].includes(user?.role) && (
             <button className="btn-auth" onClick={() => navigate('/admin')}>
               Dashboard
             </button>
