@@ -1,8 +1,10 @@
-//Couleurs
+// ============================================================
+// COULEURS
+// ============================================================
 
 $primary-color: #fa8072;
 $secondary-color: #ffd700;
-$background-color: #fcf1f0;
+$background-color: #faf5f4;
 $accent-color: #ff6b6b;
 $dark-primary: #e57373;
 $light-primary: #ffb3ba;
@@ -12,9 +14,14 @@ $shadow-light: rgba(0, 0, 0, 0.1);
 $shadow-medium: rgba(0, 0, 0, 0.15);
 $shadow-strong: rgba(0, 0, 0, 0.25);
 
+// Text colors (Apple-style)
+$text-primary: #1d1d1f;
+$text-secondary: #6e6e73;
+$text-tertiary: #86868b;
+
 $font-family: 'work sans', sans-serif;
 $title-family: 'raleway', sans-serif;
-$button-color: #393737;
+$button-color: #1d1d1f;
 
 // Gradients
 $primary-gradient: linear-gradient(
@@ -39,10 +46,42 @@ $dark-surface: #16213e;
 $dark-glass-bg: rgba(255, 255, 255, 0.08);
 $dark-glass-border: rgba(255, 255, 255, 0.12);
 $dark-text: #f0e6e4;
-$dark-text-muted: #c9b8b6;
+$dark-text-muted: #d4c8c6;
 $dark-glass-gradient: linear-gradient(
   135deg,
   $dark-glass-bg 0%,
   rgba(255, 255, 255, 0.04) 100%
 );
 $dark-surface-hover: #1e2d50;
+
+// ============================================================
+// TYPOGRAPHIE
+// ============================================================
+
+$text-xs: 0.75rem;     // 12px
+$text-sm: 0.875rem;    // 14px
+$text-base: 1rem;      // 16px
+$text-lg: 1.125rem;    // 18px
+$text-xl: 1.25rem;     // 20px
+$text-2xl: 1.5rem;     // 24px
+$text-3xl: 2rem;       // 32px
+$text-4xl: 2.5rem;     // 40px
+
+// ============================================================
+// BREAKPOINTS
+// ============================================================
+
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-2xl: 1536px;
+
+// ============================================================
+// LAYOUT
+// ============================================================
+
+$content-max-width: 1200px;
+$header-max-width: 1400px;
+$section-gap: 80px;
+$transition-speed: 0.25s;

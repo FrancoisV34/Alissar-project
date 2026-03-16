@@ -1,7 +1,22 @@
 @use 'Variables' as *;
 @use 'sass:color';
 
-//Images display
+// ============================================================
+// LAYOUT
+// ============================================================
+
+@mixin content-container {
+  max-width: $content-max-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+// ============================================================
+// IMAGES
+// ============================================================
+
 $radius: 15px;
 $shadow-color: #fa8072;
 $padding: 5px;
@@ -19,7 +34,10 @@ $padding: 5px;
   padding: $padding;
 }
 
-// Modern glassmorphism effect
+// ============================================================
+// GLASSMORPHISM
+// ============================================================
+
 @mixin glassmorphism {
   background: $glass-gradient;
   backdrop-filter: blur(16px);
@@ -28,7 +46,26 @@ $padding: 5px;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
 }
 
-// Enhanced button styles
+@mixin liquid-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.06) 75%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+// ============================================================
+// BUTTONS
+// ============================================================
+
 @mixin general-rdv-button {
   border: none;
   padding: 12px 24px;
@@ -37,7 +74,7 @@ $padding: 5px;
   border-radius: 25px;
   background: $primary-gradient;
   color: $button-color;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all $transition-speed cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba($primary-color, 0.3);
   position: relative;
   overflow: hidden;
@@ -59,7 +96,7 @@ $padding: 5px;
   }
 
   &:hover {
-    transform: translateY(-1px);
+    transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba($primary-color, 0.4);
     cursor: pointer;
 
@@ -73,9 +110,13 @@ $padding: 5px;
   }
 }
 
-// Floating animation
+// ============================================================
+// ANIMATIONS (subtiles, Apple-style)
+// ============================================================
+
+// Float animation — amplitude réduite
 @mixin float-animation {
-  animation: float 6s ease-in-out infinite;
+  animation: float 8s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -83,14 +124,14 @@ $padding: 5px;
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
   }
   100% {
     transform: translateY(0px);
   }
 }
 
-// Fade in animation
+// Fade in — mouvement réduit
 @mixin fade-in {
   animation: fadeIn 0.8s ease-out;
 }
@@ -98,7 +139,7 @@ $padding: 5px;
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -106,10 +147,14 @@ $padding: 5px;
   }
 }
 
-// Enhanced text shadow
+// Text shadow
 @mixin elegant-text-shadow {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
 }
+
+// ============================================================
+// LEGACY PADDING (kept for compatibility, prefer content-container)
+// ============================================================
 
 $leftpadding: 10vw;
 
@@ -123,8 +168,7 @@ $leftpadding: 10vw;
   align-items: center;
 }
 
-//Article general
-
+// Article general
 $gap: 30px;
 
 @mixin article-gap($gap) {
@@ -135,67 +179,6 @@ $padding-article: 30px;
 
 @mixin article-padding($padding-article) {
   padding: $padding-article;
-}
-
-// Enhanced text mixin
-@mixin elegant-text-shadow {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
-}
-
-// Liquid flow animation
-@mixin liquid-flow {
-  animation: liquidFlow 8s ease-in-out infinite;
-}
-
-@keyframes liquidFlow {
-  0%,
-  100% {
-    transform: translateX(0) scale(1);
-    border-radius: 25px;
-  }
-  25% {
-    transform: translateX(5px) scale(1.02);
-    border-radius: 30px 20px 25px 30px;
-  }
-  50% {
-    transform: translateX(-3px) scale(0.98);
-    border-radius: 20px 30px 30px 20px;
-  }
-  75% {
-    transform: translateX(2px) scale(1.01);
-    border-radius: 28px 22px 20px 28px;
-  }
-}
-
-// Enhanced glassmorphism with liquid effect
-@mixin liquid-glass {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.15) 0%,
-    rgba(255, 255, 255, 0.08) 25%,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.06) 75%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
-}
-
-// Optimized image styling
-@mixin optimized-image {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  object-fit: cover;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  transform-origin: center;
-
-  &:hover {
-    transform: scale(1.08) rotate(1deg);
-    filter: brightness(1.1) contrast(1.1) saturate(1.2);
-  }
 }
 
 // Fluid typography scaling
@@ -233,5 +216,19 @@ $padding-article: 30px;
   &:hover::before {
     width: 300px;
     height: 300px;
+  }
+}
+
+// Optimized image styling — hover réduit
+@mixin optimized-image {
+  transition: all $transition-speed cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform-origin: center;
+
+  &:hover {
+    transform: scale(1.03);
+    filter: brightness(1.05) contrast(1.05);
   }
 }

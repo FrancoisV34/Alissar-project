@@ -1,24 +1,48 @@
 @use 'Variables' as *;
 @use 'Mixins' as *;
 
+// ============================================================
+// BACKGROUND IMAGE
+// ============================================================
 .backimg {
   width: 100%;
   height: 100vh;
   position: fixed;
   z-index: -1;
-  margin-top: 50px;
+  margin-top: 0;
+
   .cabimg {
     filter: brightness(95%) contrast(1.1) saturate(1.2);
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.4;
+    opacity: 0.55;
     object-position: center;
   }
+
+  // Gradient overlay pour lisibilité
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: linear-gradient(
+      to top,
+      rgba($background-color, 0.95) 0%,
+      rgba($background-color, 0.3) 60%,
+      transparent 100%
+    );
+  }
 }
+
+// ============================================================
+// PRESENTATION SECTIONS
+// ============================================================
 .presentation {
   @include liquid-glass;
-  color: black;
+  color: $text-primary;
   display: flex;
   flex-direction: row-reverse;
   justify-content: flex-end;
@@ -30,122 +54,115 @@
   @include fade-in;
   position: relative;
 
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      $secondary-color,
-      transparent
-    );
-    animation: shimmer 3s ease-in-out infinite;
-  }
-
-  @keyframes shimmer {
-    0%,
-    100% {
-      opacity: 0;
-    }
-    50% {
-      opacity: 1;
-    }
-  }
   .rdv-tel {
     display: flex;
-    gap: 25px;
+    gap: 16px;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+
+    // Normalize children so both buttons align
+    > a,
+    > .telephone-container {
+      margin: 0;
+      padding: 0;
+    }
   }
+
   &.reverse {
     flex-direction: row;
     justify-content: flex-start;
   }
+
+  // ============================================================
+  // OTHER SECTIONS — Content sections with text + image
+  // ============================================================
   &.other {
     background-color: $background-color;
-    padding: 0 0 0 10vw;
-    @media (max-width: 1000px) {
-      padding: 0;
-    }
+    @include content-container;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-bottom: $section-gap;
+
     .text-pres {
       justify-content: space-between;
-      padding: 40px 0 40px 0;
-      @media (max-width: 1000px) {
-        padding: 10px 0 10px 0;
-      }
+      padding: 40px 0;
+
       h2 {
         text-align: center;
         padding: 0;
+        font-size: $text-2xl;
       }
-      @media (min-width: 601px) and (max-width: 1000px) {
-        h2 {
-          margin: 30px 10px 10px 10px;
-          font-size: 1em;
-        }
-        .separation {
-          margin: 15px 0;
-        }
 
-        p {
-          padding: 0;
-          margin: 10px 10px 10px 20px;
-          font-size: 0.8em;
-          line-height: 1em;
-        }
+      p {
+        font-size: $text-base;
+        line-height: 1.5;
+        padding-left: 0;
       }
-      @media (max-width: 600px) {
+
+      @media (max-width: $bp-lg) {
+        padding: 20px 0;
         h2 {
-          margin: 20px 5px 5px 5px;
-          font-size: 0.6em;
-        }
-        .separation {
-          margin: 10px 0;
+          margin: 20px 10px;
+          font-size: $text-xl;
         }
         p {
-          font-size: 0.5em;
           padding: 0;
-          line-height: 0.8em;
           margin: 10px 10px 10px 20px;
+          font-size: $text-sm;
+          line-height: 1.5;
         }
       }
-      @media (min-width: 601px) and (max-width: 1000px) {
+
+      @media (max-width: $bp-sm) {
+        h2 {
+          margin: 15px 5px;
+          font-size: $text-lg;
+        }
+        p {
+          font-size: $text-sm;
+          padding: 0;
+          line-height: 1.4;
+          margin: 10px 10px 10px 15px;
+        }
+      }
+
+      // Buttons responsive
+      @media (max-width: $bp-lg) {
         .rdv-tel {
-          gap: 0px;
+          gap: 10px;
           a {
-            font-size: 0.8em;
-            line-height: 1.2em;
-            .contact-button {
-              padding: 6px 12px;
-            }
+            font-size: $text-sm;
+            .contact-button,
             .telephone-button {
-              padding: 6px 12px;
+              padding: 8px 14px;
             }
           }
         }
       }
-      @media (max-width: 600px) {
+      @media (max-width: $bp-sm) {
         .rdv-tel {
-          gap: 0px;
+          gap: 8px;
+          flex-direction: column;
+          align-items: center;
           a {
-            font-size: 0.5em;
-            line-height: 0.8em;
-            .contact-button {
-              padding: 3px 6px;
-            }
+            font-size: $text-sm;
+            .contact-button,
             .telephone-button {
-              padding: 3px 6px;
+              padding: 8px 16px;
             }
           }
         }
       }
     }
   }
+
+  // ============================================================
+  // HERO SECTION (first)
+  // ============================================================
   &.first {
-    height: 80vh;
+    height: 100vh;
     flex-direction: row-reverse;
     background: linear-gradient(
       135deg,
@@ -154,12 +171,19 @@
     );
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    padding-top: 80px;
+    margin-bottom: $section-gap;
 
     .text-pres {
       width: 56%;
       @include fade-in;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
       h2 {
-        @include fluid-text(2rem, 5rem);
+        @include fluid-text(1.5rem, 3.5rem);
         font-weight: 800;
         font-family: $title-family;
         background: $primary-gradient;
@@ -169,135 +193,158 @@
         margin: 0;
         text-align: center;
         padding: 0 0 20px 0;
-        @include elegant-text-shadow;
-        letter-spacing: 2px;
+        letter-spacing: 3px;
         text-transform: uppercase;
-        line-height: 1.1;
+        line-height: 1.2;
       }
-      @media (min-width: 601px) and (max-width: 1200px) {
-        h2 {
-          letter-spacing: 1px;
-        }
-        .rdv-tel {
-          button {
-            padding: 8px 16px;
-          }
-        }
-      }
-      @media (max-width: 600px) {
-        h2 {
-          letter-spacing: 0.5px;
-          padding: 0 0 15px 0;
-        }
-        .rdv-tel {
-          button {
-            padding: 6px 12px;
-          }
-        }
-      }
+
       p {
-        @include fluid-text(0.9rem, 1.5rem);
-        font-weight: 400;
-        line-height: 1.7em;
+        @include fluid-text(0.9rem, 1.3rem);
+        font-weight: 500;
+        line-height: 1.7;
         margin: 25px 0;
         text-align: center;
         padding: 0 4vw;
-        color: rgba(0, 0, 0, 0.85);
+        color: $text-secondary;
         @include fade-in;
         animation-delay: 0.5s;
         animation-fill-mode: both;
         font-style: italic;
       }
-      @media (min-width: 601px) and (max-width: 1200px) {
-        p {
-          line-height: 1.6em;
-        }
+
+      @media (max-width: $bp-xl) {
+        h2 { letter-spacing: 1px; }
+        .rdv-tel button { padding: 8px 16px; }
       }
-      @media (max-width: 600px) {
-        p {
-          line-height: 1.5em;
-          margin: 20px 0;
+      @media (max-width: $bp-sm) {
+        h2 {
+          letter-spacing: 0.5px;
+          padding: 0 0 15px 0;
         }
+        .rdv-tel button { padding: 8px 14px; }
       }
     }
+
     .img-pres {
       display: none;
-      align-items: center;
+    }
+
+    // Scroll indicator
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      height: 40px;
+      border: 2px solid rgba($primary-color, 0.4);
+      border-radius: 12px;
+      z-index: 10;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 8px;
+      background: $primary-color;
+      border-radius: 2px;
+      animation: scrollPulse 2s ease-in-out infinite;
+      z-index: 10;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        opacity: 0.3;
+        transform: translateX(-50%) translateY(12px);
+      }
     }
   }
 
+  // ============================================================
+  // IMAGE PRESENTATION (shared)
+  // ============================================================
   .img-pres {
     width: auto;
     @include image-border-radius($radius);
-    margin: 40px 40px 40px 40px;
+    margin: 40px;
     align-content: center;
     img {
       width: 100%;
-      height: 50vh;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
       @include image-border-radius($radius);
       @include image-shadow($shadow-color);
     }
   }
 
-  @media (min-width: 601px) and (max-width: 1200px) {
+  @media (max-width: $bp-xl) {
     .img-pres {
       margin: 20px;
       max-width: 40%;
     }
   }
-  @media (max-width: 600px) {
+  @media (max-width: $bp-sm) {
     .img-pres {
       margin: 0 10px;
       img {
-        height: 33vh;
+        aspect-ratio: 4 / 3;
       }
     }
   }
 
+  // ============================================================
+  // TEXT PRESENTATION (shared)
+  // ============================================================
   .text-pres {
     width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     h2 {
-      @include general-padding-left($leftpadding);
-      font-size: 1.5em;
+      font-size: $text-2xl;
       font-weight: 500;
       font-family: $title-family;
       margin: 30px 20px 20px 20px;
       padding-bottom: 10px;
+      padding-left: 0;
     }
 
     p {
-      @include general-padding-left($leftpadding);
-      font-size: 1.1em;
+      font-size: $text-lg;
       font-weight: 500;
-      line-height: 1.2em;
+      line-height: 1.5;
       margin: 30px 20px 20px 20px;
+      padding-left: 0;
     }
+
     .contact-button {
       background-color: $primary-color;
-      color: $button-color;
+      color: white;
       @include general-rdv-button;
-      margin: 20px 0px 0px 0px;
-      font-size: 1.2em;
-      line-height: 1.8em;
-      box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+      margin: 0;
+      font-size: $text-lg;
+      line-height: 1.8;
     }
-    @media (min-width: 601px) and (max-width: 1200px) {
-      a {
-        font-size: 1em;
-        line-height: 1.5em;
-      }
+
+    @media (max-width: $bp-xl) {
+      a { font-size: $text-base; line-height: 1.5; }
     }
-    @media (max-width: 600px) {
-      a {
-        font-size: 0.8em;
-        line-height: 1.2em;
-      }
+    @media (max-width: $bp-sm) {
+      a { font-size: $text-sm; line-height: 1.4; }
     }
-    @media (max-width: 1000px) {
-      padding: 120px 15px 30px 15px;
+
+    @media (max-width: $bp-lg) {
+      padding: 80px 15px 30px 15px;
       margin: 0 15px;
       .rdv-tel {
         flex-direction: column;
@@ -308,73 +355,85 @@
   }
 }
 
+// ============================================================
+// TARIFS-ACCESS SECTION
+// ============================================================
 .tarifs-access {
-  display: flex;
-  flex-direction: row;
-  padding: 60px 200px;
-  gap: 5%;
-  margin: 0 0 60px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr;
+  gap: 24px;
+  @include content-container;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  margin-bottom: $section-gap;
   background: $background-gradient;
-  border-radius: 30px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   @include fade-in;
 
   .googlemap {
-    border-radius: 30px;
+    border-radius: 20px;
     background: $glass-gradient;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 2px solid $glass-border;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    width: 600px;
-    height: 450px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 400px;
     align-self: center;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all $transition-speed ease;
+    grid-column: 3;
 
     &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
     }
 
     iframe {
-      border-radius: 28px;
+      border-radius: 18px;
       width: 100%;
       height: 100%;
       border: none;
     }
+  }
+}
 
-    @media (max-width: 1200px) {
-      width: 100%;
-      margin: auto;
-      iframe {
-        width: 100%;
-      }
+@media (max-width: $bp-xl) {
+  .tarifs-access {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+
+    .googlemap {
+      grid-column: 1 / -1;
+      height: 350px;
     }
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: $bp-md) {
   .tarifs-access {
-    flex-direction: column;
-    padding: 40px 20px;
-    margin: 20px auto 40px auto;
-    width: 90%;
-    gap: 30px;
+    grid-template-columns: 1fr;
+    padding-top: 40px;
+    padding-bottom: 40px;
     border-radius: 20px;
 
     .tarifs {
-      padding: 0;
       width: 100%;
-      flex-direction: row;
     }
     .access {
       width: 100%;
     }
+    .googlemap {
+      height: 300px;
+    }
   }
 }
 
+// ============================================================
+// AVIS SECTION
+// ============================================================
 .avis {
-  width: 95%;
-  margin: auto;
+  @include content-container;
+  margin-bottom: $section-gap;
 }

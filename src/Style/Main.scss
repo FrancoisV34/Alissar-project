@@ -4,16 +4,13 @@
 body {
   margin: 0;
   font-family: $font-family;
-  background: linear-gradient(
-    135deg,
-    $background-color 0%,
-    rgba($background-color, 0.95) 50%,
-    rgba($background-color, 0.9) 100%
-  );
+  color: $text-primary;
+  background: $background-color;
   background-attachment: fixed;
   min-height: 100vh;
   position: relative;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background $transition-speed ease, color $transition-speed ease;
+  line-height: 1.5;
 
   &::before {
     content: '';
@@ -24,12 +21,12 @@ body {
     height: 100%;
     background: radial-gradient(
         ellipse at top,
-        rgba($primary-color, 0.03) 0%,
+        rgba($primary-color, 0.02) 0%,
         transparent 50%
       ),
       radial-gradient(
         ellipse at bottom,
-        rgba($secondary-color, 0.02) 0%,
+        rgba($secondary-color, 0.01) 0%,
         transparent 50%
       );
     pointer-events: none;

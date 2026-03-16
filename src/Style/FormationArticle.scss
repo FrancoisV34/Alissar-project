@@ -6,27 +6,30 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 30px;
-  padding: 40px 20px;
+  gap: 24px;
+  @include content-container;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin-bottom: $section-gap;
   @include fade-in;
-  @media (max-width: 1000px) {
+
+  @media (max-width: $bp-lg) {
     flex-direction: column;
-    width: 90%;
-    margin: auto;
+    align-items: center;
   }
 
   .formation {
-    width: 45%;
+    width: calc(50% - 12px);
     background: $glass-gradient;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
+    border-radius: 20px;
     display: flex;
     flex-direction: row;
-    height: 35vh;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 280px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all $transition-speed cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
 
@@ -36,57 +39,56 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 2px;
       background: $primary-gradient;
-      border-radius: 30px 30px 0 0;
+      border-radius: 20px 20px 0 0;
     }
 
     &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
-    @media (max-width: 1000px) {
+
+    @media (max-width: $bp-lg) {
       width: 100%;
+      max-width: 600px;
     }
+
+    @media (max-width: $bp-sm) {
+      flex-direction: column;
+      min-height: auto;
+    }
+
     .formation-text {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      padding: 20px;
+      padding: 24px;
       width: 50%;
+
       .formation-title {
         font-family: $title-family;
-        font-size: 1.5em;
+        font-size: $text-xl;
         color: $primary-color;
         margin: 0;
       }
       .formation-infos {
         font-family: $font-family;
-        font-size: 1em;
-        color: $button-color;
+        font-size: $text-base;
+        color: $text-secondary;
         margin: 0;
+        line-height: 1.5;
       }
-    }
 
-    @media (min-width: 1001px) and (max-width: 1600px) {
-      .formation-text {
-        .formation-title {
-          font-size: 1em;
-        }
-        .formation-infos {
-          font-size: 0.7em;
-        }
+      @media (max-width: $bp-xl) {
+        .formation-title { font-size: $text-lg; }
+        .formation-infos { font-size: $text-sm; }
       }
-    }
 
-    @media (max-width: 1000px) {
-      .formation-text {
-        .formation-title {
-          font-size: 0.8em;
-        }
-        .formation-infos {
-          font-size: 0.5em;
-        }
+      @media (max-width: $bp-sm) {
+        width: 100%;
+        .formation-title { font-size: $text-lg; }
+        .formation-infos { font-size: $text-sm; }
       }
     }
 
@@ -95,21 +97,22 @@
       padding: 5px;
       align-content: center;
       overflow: hidden;
-      border-radius: 35px;
+      border-radius: 20px;
 
       img {
         width: 100%;
         height: 100%;
         @include optimized-image;
-        border-radius: 30px;
-        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border-radius: 16px;
       }
-    }
-    @media (max-width: 1600px) {
-      .formation-image {
+
+      @media (max-width: $bp-sm) {
+        width: 100%;
+        height: 200px;
+
         img {
-          width: 95%;
-          height: 95%;
+          height: 200px;
+          object-fit: cover;
         }
       }
     }

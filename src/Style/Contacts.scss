@@ -3,17 +3,19 @@
 
 .contacts {
   background: $background-gradient;
-  color: $button-color;
+  color: $text-primary;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   text-align: center;
-  padding: 40px 20px;
+  padding: 40px 24px;
   border-radius: 20px;
   margin: 0;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  @include content-container;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   @include fade-in;
   position: relative;
+  margin-bottom: $section-gap;
 
   &::before {
     content: '';
@@ -21,49 +23,35 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 2px;
     background: $primary-gradient;
     border-radius: 20px 20px 0 0;
   }
-  @media (min-width: 601px) and (max-width: 1200px) {
-    width: unset;
-    h2 {
-      font-size: 1em;
-    }
-    span {
-      font-size: 0.7em;
-    }
+
+  @media (max-width: $bp-xl) {
+    h2 { font-size: $text-lg; }
+    span { font-size: $text-sm; }
   }
-  @media (max-width: 600px) {
-    width: unset;
+
+  @media (max-width: $bp-sm) {
     flex-direction: column;
     align-items: center;
-    h2 {
-      font-size: 0.6em;
-    }
-    span {
-      font-size: 0.3em;
-    }
+    gap: 24px;
+    h2 { font-size: $text-base; }
+    span { font-size: $text-sm; }
   }
+
   .tel {
     width: 30%;
+    @media (max-width: $bp-sm) { width: 90%; }
   }
-  @media (max-width: 600px) {
-    .tel {
-      width: 90%;
-    }
-  }
+
   .adresse {
     width: 30%;
-    span {
-      display: block;
-    }
+    span { display: block; }
+    @media (max-width: $bp-sm) { width: 90%; }
   }
-  @media (max-width: 600px) {
-    .adresse {
-      width: 90%;
-    }
-  }
+
   .rdvdocto {
     width: 30%;
     align-items: center;
@@ -82,7 +70,7 @@
       width: 50px;
       border-radius: 50%;
       margin: 10px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all $transition-speed cubic-bezier(0.4, 0, 0.2, 1);
       align-items: center;
       justify-content: center;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -108,7 +96,7 @@
       &:hover {
         background: $primary-gradient;
         border-color: $primary-color;
-        transform: translateY(-1px);
+        transform: translateY(-4px);
         box-shadow: 0 8px 25px rgba($primary-color, 0.3);
 
         &::before {
@@ -123,22 +111,16 @@
         z-index: 1;
       }
     }
-  }
-  @media (max-width: 600px) {
-    .rdvdocto {
+
+    @media (max-width: $bp-sm) {
       width: 90%;
-      justify-content: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       a {
-        width: 20px;
-        height: 20px;
+        width: 40px;
+        height: 40px;
         .docto-img {
-          width: 30px;
+          width: 100%;
         }
       }
     }
   }
-
 }

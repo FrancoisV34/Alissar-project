@@ -6,31 +6,31 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
-  padding: 30px 0 0 0;
-  width: 33%;
-  border-radius: 30px;
+  gap: 20px;
+  padding: 24px 0 0 0;
+  width: 100%;
+  border-radius: 20px;
   justify-content: center;
   background: $background-gradient;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   @include fade-in;
-  transition: all 0.3s ease;
+  transition: all $transition-speed ease;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
   }
 
   .presta-tarifs {
     @include liquid-glass;
     @include liquid-ripple;
     width: 95%;
-    border-radius: 30px;
+    border-radius: 16px;
     border: none;
     text-decoration: none;
     height: 50%;
     align-content: center;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all $transition-speed cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
 
@@ -53,8 +53,8 @@
     &:hover {
       background: $primary-gradient;
       border-color: $primary-color;
-      transform: translateY(-1px);
-      box-shadow: 0 20px 50px rgba($primary-color, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba($primary-color, 0.3);
 
       &::before {
         left: 100%;
@@ -68,29 +68,29 @@
     }
 
     h3 {
-      color: $button-color;
+      color: $text-primary;
       font-weight: 800;
       margin: 20px 0 15px 0;
       @include fluid-text(1.1rem, 1.4rem);
-      @include elegant-text-shadow;
       text-transform: uppercase;
       letter-spacing: 1px;
-      transition: all 0.3s ease;
+      transition: all $transition-speed ease;
     }
 
     h4 {
-      color: $button-color;
+      color: $text-secondary;
       padding: 20px 15px;
       font-weight: 500;
       @include fluid-text(0.9rem, 1.1rem);
       line-height: 1.5;
-      transition: all 0.3s ease;
+      transition: all $transition-speed ease;
     }
   }
-  @media (min-width: 601px) and (max-width: 1200px) {
-    font-size: 0.8em;
+
+  @media (max-width: $bp-xl) {
+    font-size: $text-sm;
   }
-  @media (max-width: 600px) {
-    font-size: 0.5em;
+  @media (max-width: $bp-sm) {
+    font-size: $text-sm;
   }
 }

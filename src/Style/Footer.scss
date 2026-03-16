@@ -7,15 +7,17 @@ footer {
   flex-direction: column;
   font-family: $font-family;
   @include fade-in;
+
   .all-info {
-    @include general-padding-left($leftpadding);
+    padding-left: 40px;
     background: $primary-gradient;
     color: $background-color;
     display: flex;
     flex-direction: row;
     box-shadow: 0 -10px 40px rgba($primary-color, 0.3);
     border-top: 3px solid $secondary-color;
-    @media (max-width: 600px) {
+
+    @media (max-width: $bp-sm) {
       flex-direction: column;
       align-items: center;
       padding: 0;
@@ -28,14 +30,16 @@ footer {
       flex-direction: column;
       margin: 10px;
       justify-content: center;
-      @media (max-width: 600px) {
+
+      @media (max-width: $bp-sm) {
         width: 90%;
         flex-direction: row;
         gap: 30px;
-        font-size: 0.6em;
+        font-size: $text-sm;
       }
+
       .footer-name {
-        font-size: 1.2em;
+        font-size: $text-xl;
         font-weight: 700;
         font-family: $font-family;
         max-width: 150px;
@@ -46,9 +50,11 @@ footer {
           font-family: $title-family;
         }
       }
-      @media (min-width: 601px) and (max-width: 1200px) {
-        font-size: 0.8em;
+
+      @media (max-width: $bp-xl) {
+        font-size: $text-sm;
       }
+
       .socials-links {
         display: flex;
         gap: 15px;
@@ -63,14 +69,14 @@ footer {
           width: 24px;
           border-radius: 50%;
           margin: 10px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all $transition-speed cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 
           &:hover {
             background: $secondary-color;
             border-color: $secondary-color;
             cursor: pointer;
-            transform: translateY(-1px);
+            transform: translateY(-4px);
             box-shadow: 0 8px 25px rgba($secondary-color, 0.4);
           }
 
@@ -82,140 +88,130 @@ footer {
         }
       }
     }
+
     .nav-menu {
       width: 25%;
       display: flex;
       align-items: center;
+
       .ul-list {
         display: flex;
         flex-direction: column;
         list-style: none;
         gap: 10px;
-        font-size: 1.2em;
+        font-size: $text-xl;
         font-weight: 500;
         margin: 20px 0;
 
-        li {
-          a {
-            position: relative;
-            display: inline-block;
-            transition: transform 0.2s ease;
-            transform-origin: center;
-            text-decoration: none;
-            color: $background-color;
+        li a {
+          position: relative;
+          display: inline-block;
+          transition: transform $transition-speed ease;
+          transform-origin: center;
+          text-decoration: none;
+          color: $background-color;
+
+          &::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: $background-color;
+            transform-origin: right;
+            transition: transform 0.3s ease-out;
+            border-radius: 2px;
+          }
+          &:hover {
+            transform: translateY(-2px);
+            cursor: pointer;
             &::after {
-              content: '';
-              position: absolute;
-              width: 100%;
-              transform: scaleX(0);
-              height: 3px;
-              bottom: -5px;
-              left: 0;
-              background-color: $background-color;
-              transform-origin: right;
-              transition: transform 0.4s ease-out;
-              border-radius: 2px;
-            }
-            &:hover {
-              transform: translateY(-1px);
-              cursor: pointer;
-              &::after {
-                transform: scaleX(1);
-              }
+              transform: scaleX(1);
             }
           }
         }
       }
-      @media (min-width: 601px) and (max-width: 1200px) {
-        .ul-list {
-          font-size: 1em;
-        }
+
+      @media (max-width: $bp-xl) {
+        .ul-list { font-size: $text-base; }
       }
 
-      @media (max-width: 600px) {
+      @media (max-width: $bp-sm) {
         .ul-list {
           padding: 0;
           flex-direction: row;
           justify-content: space-around;
           flex-wrap: wrap;
-          font-size: 0.6em;
+          font-size: $text-sm;
         }
       }
     }
-    @media (max-width: 600px) {
+
+    @media (max-width: $bp-sm) {
       .nav-menu {
         width: 95%;
-        nav {
-          width: 100%;
-        }
+        nav { width: 100%; }
       }
     }
+
     .adresse-tel {
       width: 25%;
       padding: 20px 10px;
+
       h4 {
         font-family: $font-family;
         margin: 0;
       }
+
       .adresse {
-        font-size: 1.1em;
+        font-size: $text-lg;
         font-weight: 500;
-        line-height: 1.5em;
+        line-height: 1.5;
       }
-      @media (min-width: 601px) and (max-width: 1200px) {
-        .adresse {
-          font-size: 1em;
-          line-height: 1.2em;
-        }
-      }
-      @media (max-width: 600px) {
-        .adresse {
-          font-size: 0.7em;
-          line-height: 0.9em;
-        }
-      }
+
       .tel {
-        font-size: 1.1em;
+        font-size: $text-lg;
         font-weight: 500;
-        line-height: 1.5em;
+        line-height: 1.5;
       }
-      @media (min-width: 601px) and (max-width: 1200px) {
-        .tel {
-          font-size: 1em;
-          line-height: 1.2em;
+
+      @media (max-width: $bp-xl) {
+        .adresse, .tel {
+          font-size: $text-base;
+          line-height: 1.4;
         }
       }
-      @media (max-width: 600px) {
-        .tel {
-          font-size: 0.7em;
-          line-height: 0.9em;
+
+      @media (max-width: $bp-sm) {
+        .adresse, .tel {
+          font-size: $text-sm;
+          line-height: 1.3;
         }
       }
     }
   }
+
   .dev-info {
     background-color: $background-color;
     text-align: center;
+    font-size: $text-sm;
+    padding: 8px 0;
 
     a {
       text-decoration: none;
-      color: black;
+      color: $text-primary;
       &:hover {
         text-decoration: underline;
       }
     }
   }
-  @media (min-width: 601px) and (max-width: 1200px) {
-    .dev-info {
-      font-size: 0.8em;
-      line-height: 0.8em;
-    }
-  }
-  @media (max-width: 600px) {
-    .dev-info {
-      font-size: 0.5em;
-      line-height: 0.5em;
-    }
-  }
 
+  @media (max-width: $bp-sm) {
+    .dev-info {
+      font-size: $text-xs;
+      line-height: 1.3;
+    }
+  }
 }

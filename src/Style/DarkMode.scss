@@ -2,7 +2,6 @@
 
 // ============================================================
 // DARK MODE — Overrides centralisés
-// Tous les surcharges dark sont ici, nulle part ailleurs.
 // [data-mantine-color-scheme='dark'] est posé sur <html> par Mantine.
 // ============================================================
 
@@ -10,16 +9,33 @@
   // Header
   header {
     background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
-    transition: background 0.3s ease;
+    transition: background $transition-speed ease;
 
     .name,
     .navigation-list .nav-ul li a {
       color: $dark-text;
-      transition: color 0.3s ease;
+      transition: color $transition-speed ease;
 
       &::after {
         background-color: $primary-color;
       }
+    }
+
+    .hamburger .bar {
+      background: $dark-text;
+    }
+
+    .header-drawer {
+      background: $dark-bg;
+    }
+
+    .btn-auth {
+      color: $dark-text;
+      border-color: rgba($primary-color, 0.6);
+    }
+
+    .dark-mode-toggle {
+      border-color: rgba($dark-text, 0.2);
     }
   }
 
@@ -27,7 +43,7 @@
   .presentation {
     color: $dark-text;
     background: rgba($dark-surface, 0.85);
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background $transition-speed ease, color $transition-speed ease;
 
     &.first p {
       color: rgba(240, 230, 228, 0.9);
@@ -45,19 +61,19 @@
   // Tarifs-access wrapper
   .tarifs-access {
     background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
-    transition: background 0.3s ease;
+    transition: background $transition-speed ease;
   }
 
   // Tarifs cards
   .tarifs {
     background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
-    transition: background 0.3s ease;
+    transition: background $transition-speed ease;
 
     .presta-tarifs {
       h3,
       h4 {
         color: $dark-text;
-        transition: color 0.3s ease;
+        transition: color $transition-speed ease;
       }
     }
   }
@@ -66,11 +82,11 @@
   .access {
     background: $dark-glass-gradient;
     border-color: $dark-glass-border;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition: background $transition-speed ease, border-color $transition-speed ease;
 
     .heures {
       color: $dark-text;
-      transition: color 0.3s ease;
+      transition: color $transition-speed ease;
     }
   }
 
@@ -78,11 +94,11 @@
   .bulle-pec {
     background: $dark-glass-gradient;
     border-color: $dark-glass-border;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition: background $transition-speed ease, border-color $transition-speed ease;
 
     .pec-text {
       color: $dark-text-muted;
-      transition: color 0.3s ease;
+      transition: color $transition-speed ease;
     }
   }
 
@@ -90,11 +106,11 @@
   .formation {
     background: $dark-glass-gradient;
     border-color: $dark-glass-border;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition: background $transition-speed ease, border-color $transition-speed ease;
 
     .formation-infos {
       color: $dark-text-muted;
-      transition: color 0.3s ease;
+      transition: color $transition-speed ease;
     }
   }
 
@@ -102,11 +118,11 @@
   .avis-container {
     background: $dark-glass-gradient;
     border-color: $dark-glass-border;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition: background $transition-speed ease, border-color $transition-speed ease;
 
     span:not(.etoile) {
       color: $dark-text;
-      transition: color 0.3s ease;
+      transition: color $transition-speed ease;
     }
   }
 
@@ -114,14 +130,14 @@
   .contacts {
     background: linear-gradient(135deg, $dark-surface 0%, $dark-bg 100%);
     color: $dark-text;
-    transition: background 0.3s ease, color 0.3s ease;
+    transition: background $transition-speed ease, color $transition-speed ease;
   }
 
   // Footer dev-info
   footer .dev-info {
     background-color: $dark-bg;
     color: $dark-text-muted;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color $transition-speed ease, color $transition-speed ease;
 
     a {
       color: $dark-text;

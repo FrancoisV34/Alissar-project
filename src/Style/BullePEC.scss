@@ -4,14 +4,16 @@
 .pretarifs {
   display: flex;
   flex-direction: row;
-  gap: 30px;
-  width: 80%;
-  margin: auto;
-  padding: 20px 0;
+  gap: 24px;
+  @include content-container;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: $section-gap;
   @include fade-in;
-  @media (max-width: 1000px) {
+
+  @media (max-width: $bp-lg) {
     flex-direction: column;
-    width: 90%;
+    align-items: center;
     gap: 20px;
   }
 
@@ -22,15 +24,14 @@
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 25px;
-    padding: 25px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    width: 30%;
-    margin: 20px auto;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    margin: 0;
     text-align: center;
-    height: 20vh;
     gap: 20px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all $transition-speed cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
 
@@ -40,23 +41,20 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 2px;
       background: $primary-gradient;
-      border-radius: 25px 25px 0 0;
+      border-radius: 20px 20px 0 0;
     }
 
     &:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-    }
-    @media (min-width: 1001px) and (max-width: 1600px) {
-      padding: 10px 10px 30px 10px;
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
     }
 
-    @media (max-width: 1000px) {
-      width: 95%;
-      padding: 10px 10px 10px 10px;
-      margin: 10px auto;
+    @media (max-width: $bp-lg) {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
     }
 
     .img-container {
@@ -66,10 +64,11 @@
       .img-pec {
         align-self: center;
         width: 33%;
-        border-radius: 30px;
+        border-radius: 20px;
       }
     }
-    @media (max-width: 1000px) {
+
+    @media (max-width: $bp-lg) {
       .img-container {
         height: 50%;
         width: 25%;
@@ -79,41 +78,37 @@
         }
       }
     }
-    @media (max-width: 600px) {
+
+    @media (max-width: $bp-sm) {
       .img-container {
         .img-pec {
-          max-height: 10vh;
+          max-height: 80px;
         }
       }
     }
+
     .title-pec {
       font-family: $title-family;
-      font-size: 1.8em;
+      font-size: $text-xl;
       color: $primary-color;
       margin-bottom: 10px;
     }
 
-    @media (min-width: 1001px) and (max-width: 1600px) {
-      .title-pec {
-        font-size: 1em;
-      }
-      .pec-text {
-        font-size: 0.7em;
-      }
+    @media (max-width: $bp-xl) {
+      .title-pec { font-size: $text-lg; }
+      .pec-text { font-size: $text-sm; }
     }
-    @media (max-width: 1000px) {
-      .title-pec {
-        font-size: 0.8em;
-      }
-      .pec-text {
-        font-size: 0.5em;
-      }
+
+    @media (max-width: $bp-sm) {
+      .title-pec { font-size: $text-base; }
+      .pec-text { font-size: $text-sm; }
     }
+
     .pec-text {
       font-family: $font-family;
-      font-size: 0.8em;
-      color: $button-color;
-      line-height: 1.5em;
+      font-size: $text-sm;
+      color: $text-secondary;
+      line-height: 1.5;
     }
   }
 }

@@ -5,14 +5,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  @include fade-in;
 
   .telephone-button {
     background: $primary-gradient;
     color: $button-color;
     @include general-rdv-button;
-    margin: 20px 0px 0px 0px;
     font-size: 1.2em;
     line-height: 1.8em;
     font-weight: 600;
@@ -22,13 +19,13 @@
     overflow: hidden;
 
     &::before {
-      content: '📞';
+      content: '';
       margin-right: 8px;
       font-size: 1.1em;
     }
 
     &:hover {
-      transform: translateY(-1px);
+      transform: translateY(-4px);
       box-shadow: 0 10px 30px rgba($primary-color, 0.4);
     }
   }
