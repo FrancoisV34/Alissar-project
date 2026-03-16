@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -19,6 +19,7 @@ import {
 import { DatePickerInput } from '@mantine/dates';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../utils/api.js';
+import EditPatientModal from '../components/EditPatientModal.jsx';
 
 const emptyForm = {
   date: new Date(),
@@ -40,6 +41,7 @@ export default function OsteoConsultation() {
   const [form, setForm] = useState({ ...emptyForm });
   const [editingId, setEditingId] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
+  const [editingPatientId, setEditingPatientId] = useState(null);
 
   // Fetch patient info
   const { data: patient, isLoading: loadingPatient } = useQuery({
@@ -52,6 +54,16 @@ export default function OsteoConsultation() {
     queryKey: ['osteo-consults', patientId],
     queryFn: () => apiFetch(`/admin/osteo/patient/${patientId}`),
   });
+
+  // Pré-remplir les antécédents depuis le profil patient (nouvelle consultation uniquement)
+  useEffect(() => {
+    if (patient?.antecedents_medicaux && editingId === null) {
+      setForm((prev) => ({
+        ...prev,
+        antecedents: patient.antecedents_medicaux,
+      }));
+    }
+  }, [patient]);
 
   // Create / update mutation
   const saveMutation = useMutation({
@@ -175,6 +187,9 @@ export default function OsteoConsultation() {
             {patient.antecedents_medicaux && (
               <Text size="sm" c="dimmed">Antécédents : {patient.antecedents_medicaux}</Text>
             )}
+            <Button size="xs" variant="light" mt="xs" onClick={() => setEditingPatientId(patientId)}>
+              Modifier
+            </Button>
           </div>
         </Group>
       </Paper>
@@ -307,6 +322,12 @@ export default function OsteoConsultation() {
           </Table>
         )}
       </Paper>
+
+      <EditPatientModal
+        patientId={editingPatientId}
+        onClose={() => setEditingPatientId(null)}
+        onSuccess={(qc) => qc.invalidateQueries({ queryKey: ['patient', patientId] })}
+      />
 
       {/* Modale suppression */}
       <Modal

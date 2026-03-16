@@ -18,6 +18,7 @@ import {
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { apiFetch } from '../utils/api.js';
+import EditPatientModal from '../components/EditPatientModal.jsx';
 
 function PatientModal({ opened, onClose }) {
   const navigate = useNavigate();
@@ -170,6 +171,7 @@ function formatDate(dateStr) {
 
 export default function OsteoSoftware() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingPatientId, setEditingPatientId] = useState(null);
   const navigate = useNavigate();
 
   const { data: recent = [], isLoading } = useQuery({
@@ -198,6 +200,7 @@ export default function OsteoSoftware() {
                 <Table.Th>Patient</Table.Th>
                 <Table.Th>Motif</Table.Th>
                 <Table.Th>Montant</Table.Th>
+                <Table.Th>Action</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -211,6 +214,11 @@ export default function OsteoSoftware() {
                   <Table.Td>{c.nom} {c.prenom}</Table.Td>
                   <Table.Td>{c.motif || '—'}</Table.Td>
                   <Table.Td>{c.montant != null ? `${c.montant} €` : '—'}</Table.Td>
+                  <Table.Td>
+                    <Button size="xs" variant="light" onClick={(e) => { e.stopPropagation(); setEditingPatientId(c.patient_id); }}>
+                      Modifier
+                    </Button>
+                  </Table.Td>
                 </Table.Tr>
               ))}
             </Table.Tbody>
@@ -219,6 +227,12 @@ export default function OsteoSoftware() {
       </Paper>
 
       <PatientModal opened={modalOpen} onClose={() => setModalOpen(false)} />
+
+      <EditPatientModal
+        patientId={editingPatientId}
+        onClose={() => setEditingPatientId(null)}
+        onSuccess={(qc) => qc.invalidateQueries({ queryKey: ['osteo-recent'] })}
+      />
     </Container>
   );
 }
