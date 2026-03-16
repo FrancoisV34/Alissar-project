@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore.js';
 import {
   Container,
@@ -21,6 +22,7 @@ import {
   ColorSwatch,
   Popover,
   ColorPicker,
+  FileInput,
 } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -406,6 +408,7 @@ const MONTH_NAMES = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet',
 
 function StatsTab() {
   const qc = useQueryClient();
+  const navigate = useNavigate();
   const now = new Date();
   const [period, setPeriod] = useState('month');
   const [navYear, setNavYear] = useState(now.getFullYear());
@@ -575,17 +578,28 @@ function StatsTab() {
         </Table.Thead>
         <Table.Tbody>
           {consultations.map((c) => (
-            <Table.Tr key={c.id}>
+            <Table.Tr key={`${c.source}-${c.id}`}>
               <Table.Td>{new Date(c.date).toLocaleDateString('fr-FR')}</Table.Td>
               <Table.Td>{c.patient_nom ?? '—'}</Table.Td>
-              <Table.Td>{c.prestation}</Table.Td>
+              <Table.Td>
+                <Group gap="xs">
+                  {c.source === 'osteo' && <Badge size="xs" variant="light" color="teal">Ostéo</Badge>}
+                  {c.prestation}
+                </Group>
+              </Table.Td>
               <Table.Td>{Number(c.montant).toLocaleString('fr-FR')} €</Table.Td>
               <Table.Td>{c.notes ?? '—'}</Table.Td>
               <Table.Td>
-                <Group gap="xs">
-                  <Button size="xs" variant="light" onClick={() => openEdit(c)}>Modifier</Button>
-                  <Button size="xs" color="red" variant="light" onClick={() => deleteMutation.mutate(c.id)}>Supprimer</Button>
-                </Group>
+                {c.source === 'admin' ? (
+                  <Group gap="xs">
+                    <Button size="xs" variant="light" onClick={() => openEdit(c)}>Modifier</Button>
+                    <Button size="xs" color="red" variant="light" onClick={() => deleteMutation.mutate(c.id)}>Supprimer</Button>
+                  </Group>
+                ) : (
+                  <Button size="xs" variant="subtle" color="teal" onClick={() => navigate(`/admin/osteo/consultation/${c.patient_id}`)}>
+                    Voir dans Ostéo →
+                  </Button>
+                )}
               </Table.Td>
             </Table.Tr>
           ))}
@@ -614,6 +628,247 @@ function StatsTab() {
   );
 }
 
+// ── Sections ─────────────────────────────────────────────────────────────────
+
+function toIdlink(title) {
+  return title
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+async function apiFetchMultipart(path, method, formData) {
+  const token = localStorage.getItem('alissar-token');
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  const res = await fetch(`/api${path}`, { method, headers, body: formData });
+  if (res.status === 204) return null;
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error ?? `Erreur ${res.status}`);
+  return data;
+}
+
+function SectionsTab() {
+  const qc = useQueryClient();
+  const { data: sections = [] } = useQuery({
+    queryKey: ['admin-sections'],
+    queryFn: () => apiFetch('/admin/sections'),
+  });
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [form, setForm] = useState({ title: '', sort_order: '', imageFile: null });
+  const [newParagraph, setNewParagraph] = useState('');
+  const [editingParagraph, setEditingParagraph] = useState(null); // { id, text }
+
+  function openCreate() {
+    setEditing(null);
+    setForm({ title: '', sort_order: '', imageFile: null });
+    setNewParagraph('');
+    setEditingParagraph(null);
+    setModalOpen(true);
+  }
+
+  function openEdit(s) {
+    setEditing(s);
+    setForm({ title: s.title, sort_order: String(s.sort_order), imageFile: null });
+    setNewParagraph('');
+    setEditingParagraph(null);
+    setModalOpen(true);
+  }
+
+  const saveMutation = useMutation({
+    mutationFn: () => {
+      const fd = new FormData();
+      fd.append('title', form.title);
+      fd.append('sort_order', form.sort_order);
+      if (form.imageFile) fd.append('image', form.imageFile);
+      if (editing) {
+        return apiFetchMultipart(`/admin/sections/${editing.id}`, 'PUT', fd);
+      }
+      return apiFetchMultipart('/admin/sections', 'POST', fd);
+    },
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['admin-sections'] }); setModalOpen(false); },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => apiFetch(`/admin/sections/${id}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-sections'] }),
+  });
+
+  const addParagraphMutation = useMutation({
+    mutationFn: ({ sectionId, text }) =>
+      apiFetch(`/admin/sections/${sectionId}/paragraphs`, { method: 'POST', body: JSON.stringify({ text }) }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['admin-sections'] });
+      setNewParagraph('');
+    },
+  });
+
+  const updateParagraphMutation = useMutation({
+    mutationFn: ({ sectionId, pid, text }) =>
+      apiFetch(`/admin/sections/${sectionId}/paragraphs/${pid}`, { method: 'PUT', body: JSON.stringify({ text }) }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['admin-sections'] });
+      setEditingParagraph(null);
+    },
+  });
+
+  const deleteParagraphMutation = useMutation({
+    mutationFn: ({ sectionId, pid }) =>
+      apiFetch(`/admin/sections/${sectionId}/paragraphs/${pid}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-sections'] }),
+  });
+
+  // Use the editing section's paragraphs from fresh query data
+  const editingSection = editing ? sections.find((s) => s.id === editing.id) : null;
+
+  return (
+    <>
+      <Group justify="flex-end" mb="md">
+        <Button size="sm" onClick={openCreate}>+ Ajouter</Button>
+      </Group>
+      <Table striped highlightOnHover>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Ordre</Table.Th>
+            <Table.Th>Titre</Table.Th>
+            <Table.Th>idlink</Table.Th>
+            <Table.Th>Image</Table.Th>
+            <Table.Th>Paragraphes</Table.Th>
+            <Table.Th>Actions</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {sections.map((s) => (
+            <Table.Tr key={s.id}>
+              <Table.Td>{s.sort_order}</Table.Td>
+              <Table.Td>{s.title}</Table.Td>
+              <Table.Td><Text size="xs" c="dimmed">{s.idlink}</Text></Table.Td>
+              <Table.Td>
+                {s.image
+                  ? <img src={`/uploads/${s.image}`} alt="" style={{ maxHeight: 40, borderRadius: 4 }} />
+                  : '—'}
+              </Table.Td>
+              <Table.Td>{s.paragraphs?.length ?? 0}</Table.Td>
+              <Table.Td>
+                <Group gap="xs">
+                  <Button size="xs" variant="light" onClick={() => openEdit(s)}>Modifier</Button>
+                  <Button size="xs" color="red" variant="light" onClick={() => deleteMutation.mutate(s.id)}>Supprimer</Button>
+                </Group>
+              </Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+
+      <Modal
+        centered
+        size="lg"
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+        title={editing ? 'Modifier la section' : 'Nouvelle section'}
+      >
+        <Stack gap="sm">
+          <TextInput
+            label="Titre"
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            required
+          />
+          {form.title && (
+            <Text size="xs" c="dimmed">idlink : {toIdlink(form.title)}</Text>
+          )}
+          <TextInput
+            label="Ordre d'affichage"
+            type="number"
+            value={form.sort_order}
+            onChange={(e) => setForm({ ...form, sort_order: e.target.value })}
+          />
+          {editing?.image && !form.imageFile && (
+            <img src={`/uploads/${editing.image}`} alt="" style={{ maxHeight: 80, borderRadius: 8 }} />
+          )}
+          <FileInput
+            label="Image"
+            accept="image/*"
+            placeholder="Choisir une image"
+            value={form.imageFile}
+            onChange={(file) => setForm({ ...form, imageFile: file })}
+          />
+
+          {editing && (
+            <>
+              <Title order={5} mt="sm">Paragraphes</Title>
+              {(editingSection?.paragraphs ?? []).map((p) => (
+                <Stack key={p.id} gap={4}>
+                  {editingParagraph?.id === p.id ? (
+                    <Group align="flex-end" gap="xs">
+                      <Textarea
+                        style={{ flex: 1 }}
+                        value={editingParagraph.text}
+                        onChange={(e) => setEditingParagraph({ ...editingParagraph, text: e.target.value })}
+                        autosize
+                        minRows={2}
+                      />
+                      <Stack gap={4}>
+                        <Button
+                          size="xs"
+                          loading={updateParagraphMutation.isPending}
+                          onClick={() => updateParagraphMutation.mutate({ sectionId: editing.id, pid: p.id, text: editingParagraph.text })}
+                        >
+                          OK
+                        </Button>
+                        <Button size="xs" variant="subtle" onClick={() => setEditingParagraph(null)}>Annuler</Button>
+                      </Stack>
+                    </Group>
+                  ) : (
+                    <Group gap="xs" align="flex-start">
+                      <Text size="sm" style={{ flex: 1 }}>{p.text}</Text>
+                      <Button size="xs" variant="light" onClick={() => setEditingParagraph({ id: p.id, text: p.text })}>Modifier</Button>
+                      <Button
+                        size="xs"
+                        color="red"
+                        variant="light"
+                        loading={deleteParagraphMutation.isPending}
+                        onClick={() => deleteParagraphMutation.mutate({ sectionId: editing.id, pid: p.id })}
+                      >
+                        Supprimer
+                      </Button>
+                    </Group>
+                  )}
+                </Stack>
+              ))}
+              <Group align="flex-end" gap="xs" mt="xs">
+                <Textarea
+                  style={{ flex: 1 }}
+                  placeholder="Nouveau paragraphe..."
+                  value={newParagraph}
+                  onChange={(e) => setNewParagraph(e.target.value)}
+                  autosize
+                  minRows={2}
+                />
+                <Button
+                  size="sm"
+                  disabled={!newParagraph.trim()}
+                  loading={addParagraphMutation.isPending}
+                  onClick={() => addParagraphMutation.mutate({ sectionId: editing.id, text: newParagraph.trim() })}
+                >
+                  Ajouter
+                </Button>
+              </Group>
+            </>
+          )}
+
+          <Button mt="sm" onClick={() => saveMutation.mutate()} loading={saveMutation.isPending}>
+            Enregistrer
+          </Button>
+        </Stack>
+      </Modal>
+    </>
+  );
+}
+
 // ── Dashboard principal ───────────────────────────────────────────────────────
 
 export default function AdminDashboard() {
@@ -627,6 +882,7 @@ export default function AdminDashboard() {
           <Tabs.Tab value="tarifs">Tarifs</Tabs.Tab>
           <Tabs.Tab value="horaires">Horaires</Tabs.Tab>
           <Tabs.Tab value="formations">Formations</Tabs.Tab>
+          <Tabs.Tab value="sections">Sections</Tabs.Tab>
           <Tabs.Tab value="utilisateurs">Utilisateurs</Tabs.Tab>
           {['admin', 'alissar'].includes(user?.role) && (
             <Tabs.Tab value="stats">Stats</Tabs.Tab>
@@ -636,6 +892,7 @@ export default function AdminDashboard() {
         <Tabs.Panel value="tarifs"><TarifsTab /></Tabs.Panel>
         <Tabs.Panel value="horaires"><HorairesTab /></Tabs.Panel>
         <Tabs.Panel value="formations"><FormationsTab /></Tabs.Panel>
+        <Tabs.Panel value="sections"><SectionsTab /></Tabs.Panel>
         <Tabs.Panel value="utilisateurs"><UtilisateursTab /></Tabs.Panel>
         <Tabs.Panel value="stats"><StatsTab /></Tabs.Panel>
       </Tabs>
