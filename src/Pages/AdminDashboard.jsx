@@ -658,13 +658,13 @@ function SectionsTab() {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ title: '', sort_order: '', imageFile: null });
+  const [form, setForm] = useState({ title: '', sort_order: '', imageFile: null, localParagraphs: [] });
   const [newParagraph, setNewParagraph] = useState('');
   const [editingParagraph, setEditingParagraph] = useState(null); // { id, text }
 
   function openCreate() {
     setEditing(null);
-    setForm({ title: '', sort_order: '', imageFile: null });
+    setForm({ title: '', sort_order: '', imageFile: null, localParagraphs: [] });
     setNewParagraph('');
     setEditingParagraph(null);
     setModalOpen(true);
@@ -672,14 +672,14 @@ function SectionsTab() {
 
   function openEdit(s) {
     setEditing(s);
-    setForm({ title: s.title, sort_order: String(s.sort_order), imageFile: null });
+    setForm({ title: s.title, sort_order: String(s.sort_order), imageFile: null, localParagraphs: [] });
     setNewParagraph('');
     setEditingParagraph(null);
     setModalOpen(true);
   }
 
   const saveMutation = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       const fd = new FormData();
       fd.append('title', form.title);
       fd.append('sort_order', form.sort_order);
@@ -687,7 +687,11 @@ function SectionsTab() {
       if (editing) {
         return apiFetchMultipart(`/admin/sections/${editing.id}`, 'PUT', fd);
       }
-      return apiFetchMultipart('/admin/sections', 'POST', fd);
+      const section = await apiFetchMultipart('/admin/sections', 'POST', fd);
+      for (const text of form.localParagraphs) {
+        await apiFetch(`/admin/sections/${section.id}/paragraphs`, { method: 'POST', body: JSON.stringify({ text }) });
+      }
+      return section;
     },
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['admin-sections'] }); setModalOpen(false); },
   });
@@ -797,68 +801,91 @@ function SectionsTab() {
             onChange={(file) => setForm({ ...form, imageFile: file })}
           />
 
-          {editing && (
-            <>
-              <Title order={5} mt="sm">Paragraphes</Title>
-              {(editingSection?.paragraphs ?? []).map((p) => (
-                <Stack key={p.id} gap={4}>
-                  {editingParagraph?.id === p.id ? (
-                    <Group align="flex-end" gap="xs">
-                      <Textarea
-                        style={{ flex: 1 }}
-                        value={editingParagraph.text}
-                        onChange={(e) => setEditingParagraph({ ...editingParagraph, text: e.target.value })}
-                        autosize
-                        minRows={2}
-                      />
-                      <Stack gap={4}>
-                        <Button
-                          size="xs"
-                          loading={updateParagraphMutation.isPending}
-                          onClick={() => updateParagraphMutation.mutate({ sectionId: editing.id, pid: p.id, text: editingParagraph.text })}
-                        >
-                          OK
-                        </Button>
-                        <Button size="xs" variant="subtle" onClick={() => setEditingParagraph(null)}>Annuler</Button>
-                      </Stack>
-                    </Group>
-                  ) : (
-                    <Group gap="xs" align="flex-start">
-                      <Text size="sm" style={{ flex: 1 }}>{p.text}</Text>
-                      <Button size="xs" variant="light" onClick={() => setEditingParagraph({ id: p.id, text: p.text })}>Modifier</Button>
+          <>
+            <Title order={5} mt="sm">Paragraphes</Title>
+
+            {/* Mode édition : paragraphes persistés, CRUD direct API */}
+            {editing && (editingSection?.paragraphs ?? []).map((p) => (
+              <Stack key={p.id} gap={4}>
+                {editingParagraph?.id === p.id ? (
+                  <Group align="flex-end" gap="xs">
+                    <Textarea
+                      style={{ flex: 1 }}
+                      value={editingParagraph.text}
+                      onChange={(e) => setEditingParagraph({ ...editingParagraph, text: e.target.value })}
+                      autosize
+                      minRows={2}
+                    />
+                    <Stack gap={4}>
                       <Button
                         size="xs"
-                        color="red"
-                        variant="light"
-                        loading={deleteParagraphMutation.isPending}
-                        onClick={() => deleteParagraphMutation.mutate({ sectionId: editing.id, pid: p.id })}
+                        loading={updateParagraphMutation.isPending}
+                        onClick={() => updateParagraphMutation.mutate({ sectionId: editing.id, pid: p.id, text: editingParagraph.text })}
                       >
-                        Supprimer
+                        OK
                       </Button>
-                    </Group>
-                  )}
-                </Stack>
-              ))}
-              <Group align="flex-end" gap="xs" mt="xs">
-                <Textarea
-                  style={{ flex: 1 }}
-                  placeholder="Nouveau paragraphe..."
-                  value={newParagraph}
-                  onChange={(e) => setNewParagraph(e.target.value)}
-                  autosize
-                  minRows={2}
-                />
+                      <Button size="xs" variant="subtle" onClick={() => setEditingParagraph(null)}>Annuler</Button>
+                    </Stack>
+                  </Group>
+                ) : (
+                  <Group gap="xs" align="flex-start">
+                    <Text size="sm" style={{ flex: 1 }}>{p.text}</Text>
+                    <Button size="xs" variant="light" onClick={() => setEditingParagraph({ id: p.id, text: p.text })}>Modifier</Button>
+                    <Button
+                      size="xs"
+                      color="red"
+                      variant="light"
+                      loading={deleteParagraphMutation.isPending}
+                      onClick={() => deleteParagraphMutation.mutate({ sectionId: editing.id, pid: p.id })}
+                    >
+                      Supprimer
+                    </Button>
+                  </Group>
+                )}
+              </Stack>
+            ))}
+
+            {/* Mode création : paragraphes locaux, envoyés au submit */}
+            {!editing && form.localParagraphs.map((text, i) => (
+              <Group key={i} gap="xs" align="flex-start">
+                <Text size="sm" style={{ flex: 1 }}>{text}</Text>
                 <Button
-                  size="sm"
-                  disabled={!newParagraph.trim()}
-                  loading={addParagraphMutation.isPending}
-                  onClick={() => addParagraphMutation.mutate({ sectionId: editing.id, text: newParagraph.trim() })}
+                  size="xs"
+                  color="red"
+                  variant="light"
+                  onClick={() => setForm({ ...form, localParagraphs: form.localParagraphs.filter((_, j) => j !== i) })}
                 >
-                  Ajouter
+                  Supprimer
                 </Button>
               </Group>
-            </>
-          )}
+            ))}
+
+            <Group align="flex-end" gap="xs" mt="xs">
+              <Textarea
+                style={{ flex: 1 }}
+                placeholder="Nouveau paragraphe..."
+                value={newParagraph}
+                onChange={(e) => setNewParagraph(e.target.value)}
+                autosize
+                minRows={2}
+              />
+              <Button
+                size="sm"
+                disabled={!newParagraph.trim()}
+                loading={editing ? addParagraphMutation.isPending : false}
+                onClick={() => {
+                  if (editing) {
+                    addParagraphMutation.mutate({ sectionId: editing.id, text: newParagraph.trim() });
+                  } else {
+                    setForm({ ...form, localParagraphs: [...form.localParagraphs, newParagraph.trim()] });
+                    setNewParagraph('');
+                  }
+                }}
+              >
+                Ajouter
+              </Button>
+            </Group>
+          </>
 
           <Button mt="sm" onClick={() => saveMutation.mutate()} loading={saveMutation.isPending}>
             Enregistrer
