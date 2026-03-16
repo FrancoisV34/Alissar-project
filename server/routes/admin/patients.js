@@ -88,12 +88,17 @@ router.put('/:id', (req, res) => {
   const target = db.prepare('SELECT id FROM users WHERE id = ? AND role = ?').get(req.params.id, 'patient');
   if (!target) return res.status(404).json({ error: 'Patient introuvable' });
 
-  const { nom, prenom, telephone, date_naissance, sexe, adresse, medecin_traitant, antecedents_medicaux } = req.body;
+  const { nom, prenom, email, telephone, date_naissance, sexe, adresse, medecin_traitant, antecedents_medicaux } = req.body;
+
+  if (email) {
+    const conflict = db.prepare('SELECT id FROM users WHERE email = ? AND id != ?').get(email, req.params.id);
+    if (conflict) return res.status(409).json({ error: 'Email déjà utilisé' });
+  }
 
   const updatePatient = db.transaction(() => {
     db.prepare(
-      'UPDATE users SET nom = ?, prenom = ?, telephone = ? WHERE id = ?'
-    ).run(nom ?? null, prenom ?? null, telephone ?? null, req.params.id);
+      'UPDATE users SET nom = ?, prenom = ?, telephone = ?, email = ? WHERE id = ?'
+    ).run(nom ?? null, prenom ?? null, telephone ?? null, email ?? null, req.params.id);
 
     const existing = db.prepare('SELECT id FROM patient_profiles WHERE user_id = ?').get(req.params.id);
     if (existing) {
