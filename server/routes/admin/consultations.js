@@ -8,9 +8,18 @@ router.use(authenticate, requireRole('admin', 'alissar'));
 
 // GET /api/admin/consultations
 router.get('/', (req, res) => {
-  const rows = db.prepare(
-    'SELECT * FROM consultations ORDER BY date DESC'
-  ).all();
+  const rows = db.prepare(`
+    SELECT id, date, patient_nom, prestation, montant, notes, created_at, 'admin' AS source, NULL AS patient_id
+    FROM consultations
+    UNION ALL
+    SELECT co.id, co.date, (u.nom || ' ' || u.prenom) AS patient_nom,
+           COALESCE(co.motif, 'Ostéopathie') AS prestation,
+           co.montant, co.conseils AS notes, co.created_at, 'osteo' AS source, co.patient_id
+    FROM consult_osteo co
+    JOIN users u ON u.id = co.patient_id
+    WHERE co.montant IS NOT NULL
+    ORDER BY date DESC
+  `).all();
   res.json(rows);
 });
 
