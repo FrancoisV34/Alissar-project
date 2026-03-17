@@ -1,13 +1,18 @@
 import React from 'react';
 import '../Style/Homepage.scss';
+import { useSiteConfig } from '../hooks/useSiteConfig.js';
 
 export default function BaniereAvis() {
+  const { data: config } = useSiteConfig();
+  const widgetId = config?.elfsight_widget_id;
+
+  if (!widgetId) return null;
+
   return (
     <div className="avis" width="90%">
-      {/*<!-- Elfsight Google Reviews | Untitled Google Reviews -->*/}
       <script src="https://elfsightcdn.com/platform.js" async></script>
       <div
-        className="elfsight-app-73273fa4-b4e0-4dcb-bc3b-defed4702386"
+        className={`elfsight-app-${widgetId}`}
         data-elfsight-app-lazy
       ></div>
     </div>

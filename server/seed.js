@@ -10,9 +10,41 @@ db.exec(`
   DELETE FROM horaires;
   DELETE FROM contact_info;
   DELETE FROM avis_summary;
+  DELETE FROM site_config;
+  DELETE FROM external_links;
 `);
 
-// --- Sections (ids 1-3 from data.json) ---
+// --- Site Config ---
+db.prepare(`
+  INSERT INTO site_config (id, site_name, practitioner_name, profession, phone, email, address, geo_lat, geo_lng, maps_embed_url, logo_url, favicon_url, theme_color, meta_description, copyright_name, elfsight_widget_id, avis_note, avis_count)
+  VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`).run(
+  'Mon Cabinet',
+  'Dr. Dupont',
+  'Praticien',
+  '01 23 45 67 89',
+  'contact@moncabinet.fr',
+  '1 Rue Exemple, 75001 Paris',
+  48.8566,
+  2.3522,
+  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937595!2d2.3522!3d48.8566',
+  '/assets/logo.png',
+  '/favicon.png',
+  '#fa8072',
+  'Cabinet de praticien. Consultations personnalisees. Prise de rendez-vous en ligne.',
+  'Mon Cabinet',
+  null,
+  5,
+  0
+);
+
+// --- External Links ---
+const insertLink = db.prepare(
+  'INSERT INTO external_links (type, url, label, sort_order) VALUES (?, ?, ?, ?)'
+);
+insertLink.run('booking', 'https://www.doctolib.fr', 'Prendre rendez-vous', 1);
+
+// --- Sections ---
 const insertSection = db.prepare(
   'INSERT INTO sections (id, title, idlink, image, sort_order) VALUES (?, ?, ?, ?, ?)'
 );
@@ -23,32 +55,32 @@ const insertParagraph = db.prepare(
 const sections = [
   {
     id: 1,
-    title: "Bienvenue à mon cabinet d'ostéopathie à Vendargues",
+    title: 'Bienvenue dans notre cabinet',
     idlink: null,
-    image: '/assets/Alissar.jpg',
+    image: '/assets/practitioner.jpg',
     paragraphs: [
-      "Bienvenue sur le site de mon cabinet d'ostéopathie à Vendargues !"
+      'Bienvenue sur le site de notre cabinet. Nous vous proposons des soins personnalises et adaptes a vos besoins.'
     ]
   },
   {
     id: 2,
-    title: 'À propos de  moi',
+    title: 'A propos',
     idlink: 'a-propos',
     image: '/assets/Cab.jpg',
     paragraphs: [
-      "Je suis ravie de vous accueillir dans mon cabinet d'ostéopathie à Vendargues, où je vous propose des soins personnalisés et adaptés à vos besoins spécifiques. Diplômée de l'École Supérieure d'Ostéopathie (ESO) de Paris en 2021, j'ai acquis une solide formation qui me permet de traiter une large variété de pathologies et de troubles fonctionnels.",
-      "Mon approche de l'ostéopathie est centrée sur le patient. Je prends le temps d'écouter vos préoccupations et de comprendre votre historique médical pour vous offrir un traitement sur mesure. Que vous souffriez de douleurs chroniques, de blessures sportives, ou que vous cherchiez simplement à améliorer votre bien-être général, je suis là pour vous aider."
+      'Notre praticien vous accueille dans un cadre chaleureux et professionnel. Diplome et experimente, il vous propose des soins adaptes a vos besoins specifiques.',
+      'Notre approche est centree sur le patient. Nous prenons le temps d\'ecouter vos preoccupations et de comprendre votre historique medical pour vous offrir un traitement sur mesure.'
     ]
   },
   {
     id: 3,
-    title: "L'ostéopathie",
+    title: 'Nos services',
     idlink: 'osteo',
     image: '/assets/Visitcard.jpg',
     paragraphs: [
-      "Pour prendre rendez-vous avec moi, vous pouvez utiliser la plateforme Doctolib, où vous trouverez mes disponibilités en temps réel et pourrez réserver votre consultation en quelques clics. C'est simple, rapide et sécurisé.",
-      'Vous pouvez également me contacter directement par téléphone au 06 52 45 12 34. Je serai ravie de répondre à vos questions et de vous aider à trouver le créneau qui vous convient le mieux.',
-      "Je suis impatiente de vous aider à améliorer votre santé et votre bien-être."
+      'Pour prendre rendez-vous, vous pouvez utiliser notre plateforme de reservation en ligne, ou vous trouverez nos disponibilites en temps reel.',
+      'Vous pouvez egalement nous contacter directement par telephone. Nous serons ravis de repondre a vos questions et de vous aider a trouver le creneau qui vous convient le mieux.',
+      'Nous sommes impatients de vous aider a ameliorer votre sante et votre bien-etre.'
     ]
   }
 ];
@@ -61,35 +93,23 @@ const seedSections = db.transaction(() => {
 });
 seedSections();
 
-// --- Formations (id 4 from data.json) ---
+// --- Formations ---
 const insertFormation = db.prepare(
   'INSERT INTO formations (title, description, image, sort_order) VALUES (?, ?, ?, ?)'
 );
 
 const formations = [
   {
-    title: "École Supérieure d'Ostéopathie (ESO) 2021 - Paris",
-    description: "Diplômée de l'École Supérieure d'Ostéopathie (ESO) de Paris en 2021, j'ai acquis une formation complète et rigoureuse dans le domaine de l'ostéopathie. Cette école reconnue m'a permis de développer des compétences solides pour traiter efficacement mes patients.",
+    title: 'Formation professionnelle 2021',
+    description: 'Formation initiale complete dans le domaine de la sante. Cette formation reconnue a permis de developper des competences solides.',
     image: '/assets/ESO-soleil.jpg',
     sort_order: 1
   },
   {
-    title: 'Ostéopathie du sport et posturologie 2021',
-    description: "Je me suis également formée en Ostéopathie du sport et posturologie en 2021. Cette spécialisation me permet de mieux comprendre et traiter les blessures sportives, ainsi que les problèmes de posture qui peuvent affecter les performances sportives et la vie quotidienne.",
+    title: 'Specialisation 2022',
+    description: 'Formation complementaire permettant de mieux comprendre et traiter des pathologies specifiques.',
     image: '/assets/posturosport.webp',
     sort_order: 2
-  },
-  {
-    title: 'Santé de la femme et parcours PMA 2023-2024',
-    description: "En 2023 et 2024 j'ai décidé de me perfectionner dans la prise en charge de la femme en me formant dans la santé de la femme et le suivi du parcours PMA (Procréation Médicalement Assistée). Je suis donc en mesure de vous accompagner tout au long de votre parcours PMA, de la stimulation ovarienne à la grossesse.",
-    image: '/assets/osteopma.jpg',
-    sort_order: 3
-  },
-  {
-    title: 'Ostéopathie uro-gynécologique 2023',
-    description: "Je suis également formée en ostéopathie uro-gynécologique, ce qui me permet de prendre en charge les troubles urinaires et gynécologiques tels que les douleurs pelviennes, les troubles menstruels, et les problèmes liés à la ménopause.",
-    image: '/assets/grossesse.jpeg',
-    sort_order: 4
   }
 ];
 
@@ -100,15 +120,15 @@ const seedFormations = db.transaction(() => {
 });
 seedFormations();
 
-// --- PEC Bubbles (textePEC.json) ---
+// --- PEC Bubbles ---
 const insertPec = db.prepare(
   'INSERT INTO pec_bubbles (id, title, content, image, sort_order) VALUES (?, ?, ?, ?, ?)'
 );
 
 const pecBubbles = [
-  { id: 1, title: "4 années d'expérience", content: "Ostéopathe agréée D.O depuis 2021", image: '/assets/AlissarLogo.PNG', sort_order: 1 },
-  { id: 2, title: "Spécialisations", content: "Ostéopathie de la femme, fertilité et PMA, ostéopathie uro-gynécologique, ostéopathie du sport et posturologie", image: '/assets/Alissar.jpg', sort_order: 2 },
-  { id: 3, title: "Prise de rendez-vous facile", content: "Réservez vos consultations en ligne via Doctolib ou par téléphone au 06 50 34 88 73", image: '/assets/Docto.png', sort_order: 3 }
+  { id: 1, title: 'Experience professionnelle', content: 'Praticien diplome et experimente', image: '/assets/logo.png', sort_order: 1 },
+  { id: 2, title: 'Specialisations', content: 'Prise en charge adaptee a chaque patient', image: '/assets/practitioner.jpg', sort_order: 2 },
+  { id: 3, title: 'Prise de rendez-vous facile', content: 'Reservez vos consultations en ligne ou par telephone', image: '/assets/Docto.png', sort_order: 3 }
 ];
 
 const seedPec = db.transaction(() => {
@@ -118,14 +138,14 @@ const seedPec = db.transaction(() => {
 });
 seedPec();
 
-// --- Tarifs (tarifs.json — fix duplicate id) ---
+// --- Tarifs ---
 const insertTarif = db.prepare(
   'INSERT INTO tarifs (prestation, prix, texte, sort_order) VALUES (?, ?, ?, ?)'
 );
 
 const tarifs = [
-  { prestation: 'Consultation adulte', prix: 60, texte: 'Ceci est le prix des consultations en semaine du lundi au samedi hors jour férié.', sort_order: 1 },
-  { prestation: 'Consultation jour férié', prix: 80, texte: 'Ceci est le prix des consultations jour férié (sous réserve d\'ouverture).', sort_order: 2 }
+  { prestation: 'Consultation adulte', prix: 60, texte: 'Prix des consultations en semaine du lundi au samedi hors jour ferie.', sort_order: 1 },
+  { prestation: 'Consultation jour ferie', prix: 80, texte: 'Prix des consultations jour ferie (sous reserve d\'ouverture).', sort_order: 2 }
 ];
 
 const seedTarifs = db.transaction(() => {
@@ -135,7 +155,7 @@ const seedTarifs = db.transaction(() => {
 });
 seedTarifs();
 
-// --- Horaires (horaires.json) ---
+// --- Horaires ---
 const insertHoraire = db.prepare(
   'INSERT INTO horaires (id, jour, horaires, sort_order) VALUES (?, ?, ?, ?)'
 );
@@ -156,19 +176,16 @@ const seedHoraires = db.transaction(() => {
 });
 seedHoraires();
 
-// --- Contact Info ---
+// --- Legacy tables (kept for backward compat, seeded from site_config) ---
+const config = db.prepare('SELECT * FROM site_config WHERE id = 1').get();
+const bookingLink = db.prepare("SELECT url FROM external_links WHERE type = 'booking' ORDER BY sort_order LIMIT 1").get();
+
 db.prepare(
   'INSERT INTO contact_info (id, phone, address, doctolib_url) VALUES (?, ?, ?, ?)'
-).run(
-  1,
-  '06 50 34 88 73',
-  'Maison Cadoule, 17 Rue de la Cadoule, 34740 Vendargues',
-  'https://www.doctolib.fr/osteopathe/vendargues/alissar-atik'
-);
+).run(1, config.phone, config.address, bookingLink?.url ?? 'https://www.doctolib.fr');
 
-// --- Avis Summary ---
 db.prepare(
   'INSERT INTO avis_summary (id, note, nb_avis) VALUES (?, ?, ?)'
-).run(1, 5, 155);
+).run(1, config.avis_note ?? 5, config.avis_count ?? 0);
 
-console.log('✅ Seed terminé avec succès.');
+console.log('Seed termine avec succes.');

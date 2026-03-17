@@ -20,6 +20,10 @@ import adminStatsRouter from './routes/admin/stats.js';
 import adminPatientsRouter from './routes/admin/patients.js';
 import adminOsteoRouter from './routes/admin/osteo.js';
 import adminSectionsRouter from './routes/admin/sections.js';
+import siteConfigRouter from './routes/siteConfig.js';
+import adminSiteConfigRouter from './routes/admin/siteConfig.js';
+import externalLinksRouter from './routes/externalLinks.js';
+import adminExternalLinksRouter from './routes/admin/externalLinks.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -46,6 +50,10 @@ app.use('/api/admin/stats', adminStatsRouter);
 app.use('/api/admin/patients', adminPatientsRouter);
 app.use('/api/admin/osteo', adminOsteoRouter);
 app.use('/api/admin/sections', adminSectionsRouter);
+app.use('/api/site-config', siteConfigRouter);
+app.use('/api/admin/site-config', adminSiteConfigRouter);
+app.use('/api/external-links', externalLinksRouter);
+app.use('/api/admin/external-links', adminExternalLinksRouter);
 
 app.listen(PORT, () => {
   console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);

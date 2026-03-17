@@ -413,11 +413,11 @@ function StatsTab() {
   const [period, setPeriod] = useState('month');
   const [navYear, setNavYear] = useState(now.getFullYear());
   const [navMonth, setNavMonth] = useState(now.getMonth() + 1);
-  const [barColor, setBarColor] = useState(() => localStorage.getItem('alissar-chart-color') || '#228be6');
+  const [barColor, setBarColor] = useState(() => localStorage.getItem('mb-chart-color') || '#228be6');
 
   function handleColorChange(color) {
     setBarColor(color);
-    localStorage.setItem('alissar-chart-color', color);
+    localStorage.setItem('mb-chart-color', color);
   }
 
   // Build query params
@@ -640,7 +640,7 @@ function toIdlink(title) {
 }
 
 async function apiFetchMultipart(path, method, formData) {
-  const token = localStorage.getItem('alissar-token');
+  const token = localStorage.getItem('mb-token');
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
   const res = await fetch(`/api${path}`, { method, headers, body: formData });
   if (res.status === 204) return null;
@@ -896,6 +896,197 @@ function SectionsTab() {
   );
 }
 
+// ── Site Config ──────────────────────────────────────────────────────────────
+
+const SITE_CONFIG_FIELDS = [
+  { key: 'site_name', label: 'Nom du site' },
+  { key: 'practitioner_name', label: 'Nom du praticien' },
+  { key: 'profession', label: 'Profession' },
+  { key: 'phone', label: 'Téléphone' },
+  { key: 'email', label: 'Email' },
+  { key: 'address', label: 'Adresse' },
+  { key: 'geo_lat', label: 'Latitude', type: 'number' },
+  { key: 'geo_lng', label: 'Longitude', type: 'number' },
+  { key: 'maps_embed_url', label: 'URL iframe Google Maps' },
+  { key: 'logo_url', label: 'URL du logo' },
+  { key: 'favicon_url', label: 'URL du favicon' },
+  { key: 'theme_color', label: 'Couleur du thème' },
+  { key: 'meta_description', label: 'Meta description' },
+  { key: 'copyright_name', label: 'Nom pour le copyright' },
+  { key: 'elfsight_widget_id', label: 'Elfsight Widget ID' },
+  { key: 'avis_note', label: 'Note avis', type: 'number' },
+  { key: 'avis_count', label: 'Nombre d\'avis', type: 'number' },
+];
+
+function SiteConfigTab() {
+  const qc = useQueryClient();
+  const { data: config } = useQuery({
+    queryKey: ['site-config'],
+    queryFn: () => apiFetch('/site-config'),
+  });
+
+  const [form, setForm] = useState({});
+  const [initialized, setInitialized] = useState(false);
+
+  if (config && !initialized) {
+    const initial = {};
+    for (const f of SITE_CONFIG_FIELDS) {
+      initial[f.key] = config[f.key] ?? '';
+    }
+    setForm(initial);
+    setInitialized(true);
+  }
+
+  const saveMutation = useMutation({
+    mutationFn: () => {
+      const body = {};
+      for (const f of SITE_CONFIG_FIELDS) {
+        const val = form[f.key];
+        if (f.type === 'number') {
+          body[f.key] = val === '' ? null : Number(val);
+        } else {
+          body[f.key] = val || null;
+        }
+      }
+      return apiFetch('/admin/site-config', { method: 'PUT', body: JSON.stringify(body) });
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['site-config'] });
+      qc.invalidateQueries({ queryKey: ['contact'] });
+    },
+  });
+
+  if (!initialized) return <Text>Chargement...</Text>;
+
+  return (
+    <Stack gap="sm" maw={600}>
+      {SITE_CONFIG_FIELDS.map((f) => (
+        <TextInput
+          key={f.key}
+          label={f.label}
+          type={f.type === 'number' ? 'number' : 'text'}
+          value={form[f.key] ?? ''}
+          onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+        />
+      ))}
+      <Button onClick={() => saveMutation.mutate()} loading={saveMutation.isPending}>
+        Enregistrer
+      </Button>
+      {saveMutation.isSuccess && <Text c="green" size="sm">Configuration sauvegardée</Text>}
+    </Stack>
+  );
+}
+
+// ── External Links ──────────────────────────────────────────────────────────
+
+function ExternalLinksTab() {
+  const qc = useQueryClient();
+  const { data: links = [] } = useQuery({
+    queryKey: ['external-links'],
+    queryFn: () => apiFetch('/admin/external-links'),
+  });
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [form, setForm] = useState({ type: '', url: '', label: '', sort_order: '' });
+
+  function openCreate() {
+    setEditing(null);
+    setForm({ type: '', url: '', label: '', sort_order: '' });
+    setModalOpen(true);
+  }
+
+  function openEdit(link) {
+    setEditing(link);
+    setForm({ type: link.type, url: link.url, label: link.label ?? '', sort_order: String(link.sort_order) });
+    setModalOpen(true);
+  }
+
+  const saveMutation = useMutation({
+    mutationFn: () => {
+      const body = {
+        type: form.type,
+        url: form.url,
+        label: form.label || null,
+        sort_order: form.sort_order ? Number(form.sort_order) : undefined,
+      };
+      if (editing) {
+        return apiFetch(`/admin/external-links/${editing.id}`, { method: 'PUT', body: JSON.stringify(body) });
+      }
+      return apiFetch('/admin/external-links', { method: 'POST', body: JSON.stringify(body) });
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['external-links'] });
+      setModalOpen(false);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => apiFetch(`/admin/external-links/${id}`, { method: 'DELETE' }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['external-links'] }),
+  });
+
+  return (
+    <>
+      <Group justify="flex-end" mb="md">
+        <Button size="sm" onClick={openCreate}>+ Ajouter</Button>
+      </Group>
+      <Table striped highlightOnHover>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Type</Table.Th>
+            <Table.Th>URL</Table.Th>
+            <Table.Th>Label</Table.Th>
+            <Table.Th>Ordre</Table.Th>
+            <Table.Th>Actions</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {links.map((l) => (
+            <Table.Tr key={l.id}>
+              <Table.Td><Badge variant="light">{l.type}</Badge></Table.Td>
+              <Table.Td><Text size="sm" truncate="end" maw={300}>{l.url}</Text></Table.Td>
+              <Table.Td>{l.label ?? '—'}</Table.Td>
+              <Table.Td>{l.sort_order}</Table.Td>
+              <Table.Td>
+                <Group gap="xs">
+                  <Button size="xs" variant="light" onClick={() => openEdit(l)}>Modifier</Button>
+                  <Button size="xs" color="red" variant="light" onClick={() => deleteMutation.mutate(l.id)}>Supprimer</Button>
+                </Group>
+              </Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+
+      <Modal centered opened={modalOpen} onClose={() => setModalOpen(false)} title={editing ? 'Modifier le lien' : 'Nouveau lien'}>
+        <Stack gap="sm">
+          <Select
+            label="Type"
+            data={[
+              { value: 'booking', label: 'Réservation' },
+              { value: 'social', label: 'Réseau social' },
+              { value: 'website', label: 'Site web' },
+              { value: 'other', label: 'Autre' },
+            ]}
+            value={form.type}
+            onChange={(v) => setForm({ ...form, type: v })}
+            searchable
+            creatable
+            getCreateLabel={(q) => `+ Créer "${q}"`}
+            onCreate={(q) => { setForm({ ...form, type: q }); return q; }}
+            required
+          />
+          <TextInput label="URL" value={form.url} onChange={(e) => setForm({ ...form, url: e.target.value })} required />
+          <TextInput label="Label" value={form.label} onChange={(e) => setForm({ ...form, label: e.target.value })} />
+          <TextInput label="Ordre" type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: e.target.value })} />
+          <Button onClick={() => saveMutation.mutate()} loading={saveMutation.isPending}>Enregistrer</Button>
+        </Stack>
+      </Modal>
+    </>
+  );
+}
+
 // ── Dashboard principal ───────────────────────────────────────────────────────
 
 export default function AdminDashboard() {
@@ -911,9 +1102,11 @@ export default function AdminDashboard() {
           <Tabs.Tab value="formations">Formations</Tabs.Tab>
           <Tabs.Tab value="sections">Sections</Tabs.Tab>
           <Tabs.Tab value="utilisateurs">Utilisateurs</Tabs.Tab>
-          {['admin', 'alissar'].includes(user?.role) && (
+          {['admin', 'praticien'].includes(user?.role) && (
             <Tabs.Tab value="stats">Stats</Tabs.Tab>
           )}
+          <Tabs.Tab value="site-config">Configuration</Tabs.Tab>
+          <Tabs.Tab value="external-links">Liens externes</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="tarifs"><TarifsTab /></Tabs.Panel>
@@ -922,6 +1115,8 @@ export default function AdminDashboard() {
         <Tabs.Panel value="sections"><SectionsTab /></Tabs.Panel>
         <Tabs.Panel value="utilisateurs"><UtilisateursTab /></Tabs.Panel>
         <Tabs.Panel value="stats"><StatsTab /></Tabs.Panel>
+        <Tabs.Panel value="site-config"><SiteConfigTab /></Tabs.Panel>
+        <Tabs.Panel value="external-links"><ExternalLinksTab /></Tabs.Panel>
       </Tabs>
     </Container>
   );

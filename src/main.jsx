@@ -26,7 +26,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const colorSchemeManager = localStorageColorSchemeManager({ key: 'alissar-color-scheme' });
+const colorSchemeManager = localStorageColorSchemeManager({ key: 'mb-color-scheme' });
 
 const theme = createTheme({
   primaryColor: 'salmon',
@@ -58,7 +58,7 @@ createRoot(document.getElementById('root')).render(
             <Route element={<ProtectedRoute />}>
               <Route path="/change-password" element={<ChangePasswordPage />} />
             </Route>
-            <Route element={<ProtectedRoute role={['admin', 'alissar']} />}>
+            <Route element={<ProtectedRoute role={['admin', 'praticien']} />}>
               <Route path="/admin" element={<Layout><AdminDashboard /></Layout>} />
               <Route path="/admin/osteo" element={<Layout><OsteoSoftware /></Layout>} />
               <Route path="/admin/osteo/consultation/:patientId" element={<Layout><OsteoConsultation /></Layout>} />

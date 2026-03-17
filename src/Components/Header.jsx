@@ -4,6 +4,7 @@ import Button from './Button.jsx';
 import { useMantineColorScheme } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore.js';
+import { useSiteConfig } from '../hooks/useSiteConfig.js';
 
 export default function Header() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -12,6 +13,11 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const drawerRef = useRef(null);
   const hamburgerRef = useRef(null);
+  const { data: config } = useSiteConfig();
+
+  const displayName = config
+    ? `${config.practitioner_name} ${config.profession}`
+    : '';
 
   function handleLogout() {
     logout();
@@ -52,7 +58,7 @@ export default function Header() {
   return (
     <header>
       <div className="header-inner">
-        <h1 className="title name">Alissar ATIK Ostéopathe</h1>
+        <h1 className="title name">{displayName}</h1>
 
         {/* Actions bar — always visible in header */}
         <div className="header-actions">
@@ -67,7 +73,7 @@ export default function Header() {
 
           {isAuthenticated ? (
             <div className="auth-section">
-              {['admin', 'alissar'].includes(user?.role) && (
+              {['admin', 'praticien'].includes(user?.role) && (
                 <>
                   <button className="btn-auth btn-nav-desktop" onClick={() => navigate('/admin')}>
                     Dashboard
@@ -132,7 +138,7 @@ export default function Header() {
           </nav>
 
           {/* Auth nav buttons — visible in drawer only on small screens */}
-          {isAuthenticated && ['admin', 'alissar'].includes(user?.role) && (
+          {isAuthenticated && ['admin', 'praticien'].includes(user?.role) && (
             <div className="drawer-auth">
               <button className="btn-auth btn-nav-drawer" onClick={() => { navigate('/admin'); setMenuOpen(false); }}>
                 Dashboard

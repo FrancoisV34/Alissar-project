@@ -1,9 +1,16 @@
 import React from 'react';
 import { useContact } from '../hooks/useContact.js';
+import { useExternalLinks } from '../hooks/useExternalLinks.js';
+import { useSiteConfig } from '../hooks/useSiteConfig.js';
 
 export default function Button() {
   const { data } = useContact();
-  const url = data?.contact?.doctolib_url ?? 'https://www.doctolib.fr/osteopathe/vendargues/alissar-atik';
+  const { data: bookingLinks } = useExternalLinks('booking');
+  const { data: config } = useSiteConfig();
+  const url = bookingLinks?.[0]?.url ?? data?.contact?.doctolib_url ?? '#';
+  const label = config
+    ? `Cliquer pour prendre rendez-vous avec ${config.practitioner_name}`
+    : 'Prendre rendez-vous en ligne';
 
   return (
     <a
@@ -14,7 +21,7 @@ export default function Button() {
     >
       <button
         className="contact-button"
-        aria-label="Cliquer pour etre redirigé vers la page Doctolib de Alissar Atik Ostéopathe dans un nouvel onglet"
+        aria-label={label}
         type="button"
       >
         Prendre rendez-vous

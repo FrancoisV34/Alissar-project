@@ -2,6 +2,7 @@ import '../Style/Tarifs.scss';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTarifs } from '../hooks/useTarifs.js';
+import { useExternalLinks } from '../hooks/useExternalLinks.js';
 
 const containerVariants = {
   hidden: {},
@@ -15,6 +16,8 @@ const cardVariants = {
 
 export default function Tarifs() {
   const { data: tarifs, isLoading, isError } = useTarifs();
+  const { data: bookingLinks } = useExternalLinks('booking');
+  const bookingUrl = bookingLinks?.[0]?.url ?? '#';
 
   if (isLoading) return <div className="loading-placeholder" />;
   if (isError) return null;
@@ -34,7 +37,7 @@ export default function Tarifs() {
           key={tarif.id}
           target="_blank"
           rel="noopener noreferrer"
-          href="https://www.doctolib.fr/osteopathe/vendargues/alissar-atik/booking/motive-categories?specialityId=10&telehealth=false&placeId=practice-200784&bookingFunnelSource=profile"
+          href={bookingUrl}
           variants={cardVariants}
         >
           <h3>{tarif.prestation} : {tarif.prix}€</h3>

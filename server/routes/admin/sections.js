@@ -33,7 +33,7 @@ function deleteImage(filename) {
 }
 
 const router = Router();
-router.use(authenticate, requireRole('admin', 'alissar'));
+router.use(authenticate, requireRole('admin', 'praticien'));
 
 // GET /api/admin/sections
 router.get('/', (_req, res) => {

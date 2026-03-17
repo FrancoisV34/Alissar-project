@@ -6,7 +6,7 @@ import { authenticate, requireRole } from '../../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.use(authenticate, requireRole('admin', 'alissar'));
+router.use(authenticate, requireRole('admin', 'praticien'));
 
 // GET /api/admin/patients/search?q=...
 router.get('/search', (req, res) => {

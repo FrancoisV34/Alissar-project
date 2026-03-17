@@ -1,7 +1,7 @@
 const BASE_URL = '/api';
 
 export function authHeaders() {
-  const token = localStorage.getItem('alissar-token');
+  const token = localStorage.getItem('mb-token');
   return {
     'Content-Type': 'application/json',
     ...(token ? { Authorization: `Bearer ${token}` } : {}),

@@ -5,7 +5,7 @@ import { authenticate, requireRole } from '../../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.use(authenticate, requireRole('admin', 'alissar'));
+router.use(authenticate, requireRole('admin', 'praticien'));
 
 // POST /api/admin/users
 router.post('/', async (req, res) => {

@@ -4,7 +4,10 @@ import { useContact } from '../hooks/useContact.js';
 
 export default function Telephone() {
   const { data } = useContact();
-  const phone = data?.contact?.phone ?? '06 50 34 88 73';
+  const phone = data?.contact?.phone;
+
+  if (!phone) return null;
+
   const href = `tel:+33${phone.replace(/\s/g, '').slice(1)}`;
 
   return (

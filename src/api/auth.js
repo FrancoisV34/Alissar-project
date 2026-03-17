@@ -12,7 +12,7 @@ async function postJSON(path, body) {
 }
 
 async function fetchJSONAuth(path, options = {}) {
-  const token = localStorage.getItem('alissar-token');
+  const token = localStorage.getItem('mb-token');
   const res = await fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: {

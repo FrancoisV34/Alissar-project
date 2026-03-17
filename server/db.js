@@ -69,6 +69,35 @@ db.exec(`
     nb_avis INTEGER NOT NULL
   );
 
+  CREATE TABLE IF NOT EXISTS site_config (
+    id INTEGER PRIMARY KEY DEFAULT 1,
+    site_name TEXT NOT NULL DEFAULT 'Mon Cabinet',
+    practitioner_name TEXT NOT NULL DEFAULT 'Dr. Dupont',
+    profession TEXT NOT NULL DEFAULT 'Praticien',
+    phone TEXT NOT NULL DEFAULT '01 23 45 67 89',
+    email TEXT NOT NULL DEFAULT 'contact@moncabinet.fr',
+    address TEXT NOT NULL DEFAULT '1 Rue Exemple, 75001 Paris',
+    geo_lat REAL,
+    geo_lng REAL,
+    maps_embed_url TEXT,
+    logo_url TEXT,
+    favicon_url TEXT,
+    theme_color TEXT DEFAULT '#fa8072',
+    meta_description TEXT,
+    copyright_name TEXT,
+    elfsight_widget_id TEXT,
+    avis_note REAL,
+    avis_count INTEGER
+  );
+
+  CREATE TABLE IF NOT EXISTS external_links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT NOT NULL,
+    url TEXT NOT NULL,
+    label TEXT,
+    sort_order INTEGER NOT NULL DEFAULT 0
+  );
+
   CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT UNIQUE NOT NULL,
@@ -118,5 +147,8 @@ if (!cols.includes('nom'))                  db.exec('ALTER TABLE users ADD COLUM
 if (!cols.includes('prenom'))               db.exec('ALTER TABLE users ADD COLUMN prenom TEXT');
 if (!cols.includes('telephone'))            db.exec('ALTER TABLE users ADD COLUMN telephone TEXT');
 if (!cols.includes('must_change_password')) db.exec('ALTER TABLE users ADD COLUMN must_change_password INTEGER NOT NULL DEFAULT 0');
+
+// Migrate legacy role 'alissar' → 'praticien'
+db.exec("UPDATE users SET role = 'praticien' WHERE role = 'alissar'");
 
 export default db;

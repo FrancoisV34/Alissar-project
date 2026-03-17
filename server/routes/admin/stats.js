@@ -4,7 +4,7 @@ import { authenticate, requireRole } from '../../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.use(authenticate, requireRole('admin', 'alissar'));
+router.use(authenticate, requireRole('admin', 'praticien'));
 
 const MONTH_LABELS = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
 
