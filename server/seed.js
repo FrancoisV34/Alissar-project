@@ -1,6 +1,8 @@
 import db from './db.js';
+import { fileURLToPath } from 'url';
 
-// Clear existing data
+export function runSeed({ clean = true } = {}) {
+if (clean) {
 db.exec(`
   DELETE FROM formations;
   DELETE FROM pec_bubbles;
@@ -10,6 +12,7 @@ db.exec(`
   DELETE FROM external_links;
   DELETE FROM faqs;
 `);
+}
 
 // --- Site Config (defaults Alissar) ---
 db.prepare(`
@@ -162,5 +165,10 @@ const formationAlts = [
 ];
 const updateFormationAlt = db.prepare('UPDATE formations SET image_alt = ? WHERE sort_order = ?');
 formationAlts.forEach((alt, i) => updateFormationAlt.run(alt, i + 1));
+}
 
-console.log('Seed terminé avec succès.');
+// Run as CLI : node server/seed.js
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  runSeed({ clean: true });
+  console.log('Seed terminé avec succès.');
+}

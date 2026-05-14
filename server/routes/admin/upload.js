@@ -7,7 +7,7 @@ import { dirname } from 'path';
 import { authenticate, requireRole } from '../../middleware/authMiddleware.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const UPLOADS_DIR = path.join(__dirname, '../../../public/uploads');
+const UPLOADS_DIR = process.env.UPLOADS_PATH || path.join(__dirname, '../../../public/uploads');
 
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 

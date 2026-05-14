@@ -1,0 +1,42 @@
+# fly.toml — Configuration Fly.io
+# Renomme `app` après `fly launch` ou personnalise avant le 1er deploy.
+
+app = "alissar-vitrine"
+primary_region = "cdg"  # Paris
+
+[build]
+
+[env]
+  PORT = "3001"
+  NODE_ENV = "production"
+  DATABASE_PATH = "/data/database.sqlite"
+  UPLOADS_PATH = "/data/uploads"
+
+[[mounts]]
+  source = "alissar_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 3001
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0  # 0 = peut s'éteindre quand idle (économie free tier)
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
+[[http_service.checks]]
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "10s"
+  method = "GET"
+  path = "/healthz"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
