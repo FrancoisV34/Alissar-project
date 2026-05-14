@@ -1,53 +1,12 @@
-@use 'Variables' as *;
-@use 'Mixins' as *;
+@use 'Tokens';
+@use 'Vitrine';
+
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: $font-family;
-  color: $text-primary;
-  background: $background-color;
-  background-attachment: fixed;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  background: var(--bg, #fbf6f1);
+  color: var(--ink, #2a221d);
   min-height: 100vh;
-  position: relative;
-  transition: background $transition-speed ease, color $transition-speed ease;
-  line-height: 1.5;
-
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(
-        ellipse at top,
-        rgba($primary-color, 0.02) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        ellipse at bottom,
-        rgba($secondary-color, 0.01) 0%,
-        transparent 50%
-      );
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  [data-mantine-color-scheme='dark'] & {
-    background: linear-gradient(
-      135deg,
-      $dark-bg 0%,
-      $dark-surface 100%
-    );
-    color: $dark-text;
-  }
-}
-
-.loading-placeholder {
-  min-height: 200px;
-  width: 100%;
-}
-
-html {
-  scroll-behavior: smooth;
 }

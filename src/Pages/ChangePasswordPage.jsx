@@ -15,7 +15,7 @@ import useStore from '../store/useStore.js';
 
 export default function ChangePasswordPage() {
   const navigate = useNavigate();
-  const { user, updateUser } = useStore();
+  const { updateUser } = useStore();
   const [current, setCurrent] = useState('');
   const [next, setNext] = useState('');
   const [confirm, setConfirm] = useState('');

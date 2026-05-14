@@ -6,11 +6,9 @@ async function fetchJSON(path) {
   return res.json();
 }
 
-export const fetchSections = () => fetchJSON('/sections');
 export const fetchFormations = () => fetchJSON('/formations');
 export const fetchPec = () => fetchJSON('/pec');
 export const fetchTarifs = () => fetchJSON('/tarifs');
 export const fetchHoraires = () => fetchJSON('/horaires');
-export const fetchContact = () => fetchJSON('/contact');
 export const fetchSiteConfig = () => fetchJSON('/site-config');
 export const fetchExternalLinks = (type) => fetchJSON(type ? `/external-links?type=${type}` : '/external-links');

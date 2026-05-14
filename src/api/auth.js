@@ -29,9 +29,6 @@ async function fetchJSONAuth(path, options = {}) {
 export const postLogin = (email, password) =>
   postJSON('/auth/login', { email, password });
 
-export const postRegister = (email, password, role = 'patient') =>
-  postJSON('/auth/register', { email, password, role });
-
 export const getMe = () => fetchJSONAuth('/auth/me');
 
 export const postChangePassword = (currentPassword, newPassword) =>

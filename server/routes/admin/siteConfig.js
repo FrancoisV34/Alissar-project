@@ -12,7 +12,16 @@ router.put('/', (req, res) => {
     'site_name', 'practitioner_name', 'profession', 'phone', 'email', 'address',
     'geo_lat', 'geo_lng', 'maps_embed_url', 'logo_url', 'favicon_url',
     'theme_color', 'meta_description', 'copyright_name',
-    'elfsight_widget_id', 'avis_note', 'avis_count'
+    'elfsight_widget_id', 'avis_note', 'avis_count',
+    'palette', 'font_title', 'hero_variant', 'dark_mode',
+    'hero_title', 'hero_subtitle', 'hero_image_url', 'hero_image_alt',
+    'about_title', 'about_text', 'about_quote', 'about_image_url', 'about_image_alt',
+    'show_formations', 'show_reviews', 'show_faq',
+    'meta_title', 'meta_title_template', 'meta_keywords', 'canonical_base_url',
+    'og_image_url', 'og_image_alt',
+    'gsc_verification', 'bing_verification', 'ga_measurement_id', 'google_business_url',
+    'physician_specialties', 'physician_alumni',
+    'faq_eyebrow', 'faq_title', 'faq_lede'
   ];
 
   const existing = db.prepare('SELECT id FROM site_config WHERE id = 1').get();
@@ -36,12 +45,6 @@ router.put('/', (req, res) => {
 
   values.push(1);
   db.prepare(`UPDATE site_config SET ${setClauses.join(', ')} WHERE id = ?`).run(...values);
-
-  // Also sync contact_info for backward compatibility
-  const config = db.prepare('SELECT * FROM site_config WHERE id = 1').get();
-  const bookingLink = db.prepare("SELECT url FROM external_links WHERE type = 'booking' ORDER BY sort_order LIMIT 1").get();
-  db.prepare('UPDATE contact_info SET phone = ?, address = ?, doctolib_url = ? WHERE id = 1')
-    .run(config.phone, config.address, bookingLink?.url ?? 'https://www.doctolib.fr');
 
   res.json(db.prepare('SELECT * FROM site_config WHERE id = 1').get());
 });

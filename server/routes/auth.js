@@ -14,35 +14,6 @@ function signToken(user) {
   );
 }
 
-// POST /api/auth/register
-router.post('/register', async (req, res) => {
-  const { email, password, role = 'patient' } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email et mot de passe requis' });
-  }
-
-  const validRoles = ['admin', 'patient', 'praticien'];
-  if (!validRoles.includes(role)) {
-    return res.status(400).json({ error: 'Rôle invalide' });
-  }
-
-  const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-  if (existing) {
-    return res.status(409).json({ error: 'Email déjà utilisé' });
-  }
-
-  const password_hash = await bcrypt.hash(password, 10);
-  const result = db.prepare(
-    'INSERT INTO users (email, password_hash, role) VALUES (?, ?, ?)'
-  ).run(email, password_hash, role);
-
-  const user = { id: result.lastInsertRowid, email, role };
-  const token = signToken(user);
-
-  res.status(201).json({ token, user });
-});
-
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
