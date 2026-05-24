@@ -1,28 +1,57 @@
 {
-  "name": "alissar-project",
+  "name": "alissar-vitrine",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run server\" \"vite\"",
+    "server": "nodemon server/index.js",
+    "seed": "node server/seed.js",
     "build": "vite build",
+    "start": "NODE_ENV=production node server/index.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/core": "^8.3.16",
+    "@mantine/dates": "^8.3.17",
+    "@mantine/hooks": "^8.3.16",
+    "@tanstack/react-query": "^5.90.21",
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.6.2",
+    "cors": "^2.8.6",
+    "dayjs": "^1.11.20",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "framer-motion": "^12.35.2",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "postcss": "^8.5.8",
+    "postcss-preset-mantine": "^1.18.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.13.1",
+    "recharts": "^3.8.0",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@flydotio/dockerfile": "^0.7.10",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
+    "concurrently": "^9.2.1",
     "eslint": "^9.36.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
+    "nodemon": "^3.1.14",
     "sass-embedded": "^1.93.2",
     "vite": "^7.1.7"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

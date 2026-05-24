@@ -1,0 +1,44 @@
+# fly.toml app configuration file generated for alissar-vitrine on 2026-05-14T16:32:41+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'alissar-vitrine'
+primary_region = 'cdg'
+
+[build]
+
+[env]
+  DATABASE_PATH = '/data/database.sqlite'
+  NODE_ENV = 'production'
+  PORT = '3001'
+  UPLOADS_PATH = '/data/uploads'
+
+[[mounts]]
+  source = 'alissar_data'
+  destination = '/data'
+
+[http_service]
+  internal_port = 3001
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [http_service.concurrency]
+    type = 'requests'
+    hard_limit = 250
+    soft_limit = 200
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/healthz'
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 256

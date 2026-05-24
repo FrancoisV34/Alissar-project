@@ -1,34 +1,31 @@
-import React from 'react';
-import '../Style/Main.scss';
-import '../Style/Homepage.scss';
-import Lightcab from '/assets/FaceCab.jpg';
-import Section from '../Components/Section';
-import FormationArticle from '../Components/FormationArticle.jsx';
-import BullePEC from '../Components/BullePEC.jsx';
-import Tarifs from '../Components/Tarifs.jsx';
-import Accessibilite from '../Components/Accessibilite.jsx';
-import Map from '../Components/Map.jsx';
-import BulleAvis from '../Components/BulleAvis.jsx';
-import BaniereAvis from '../Components/BaniereAvis.jsx';
-import Contacts from '../Components/Contacts.jsx';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import Hero from '../Components/Hero.jsx';
+import Specialties from '../Components/Specialties.jsx';
+import About from '../Components/About.jsx';
+import Formations from '../Components/Formations.jsx';
+import Reviews from '../Components/Reviews.jsx';
+import Pratique from '../Components/Pratique.jsx';
+import Faq from '../Components/Faq.jsx';
 
 export default function Homepage() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    const el = document.getElementById(hash.slice(1));
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, [hash]);
+
   return (
     <>
-      <div className="backimg">
-        <img src={Lightcab} alt="Image du cabinet" className="cabimg" />
-      </div>
-      <Section />
-      <FormationArticle />
-      <BullePEC />
-      <div className="tarifs-access">
-        <Tarifs />
-        <Accessibilite />
-        <Map />
-      </div>
-      <BulleAvis />
-      <BaniereAvis />
-      <Contacts />
+      <Hero />
+      <Specialties />
+      <About />
+      <Formations />
+      <Reviews />
+      <Pratique />
+      <Faq />
     </>
   );
 }
