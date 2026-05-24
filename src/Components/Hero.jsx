@@ -50,7 +50,7 @@ function HeroFullbleed() {
                 Prendre rendez-vous <Icon.Arrow className="arrow" />
               </a>
               {phone && (
-                <a className="btn btn-ghost btn-lg" href={telHref} style={{ borderColor: 'rgba(255,255,255,0.4)', color: '#fff' }}>
+                <a className="btn btn-ghost btn-lg btn-ghost-on-media" href={telHref}>
                   <Icon.Phone /> {phone}
                 </a>
               )}
