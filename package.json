@@ -10,7 +10,10 @@
     "build": "vite build",
     "start": "NODE_ENV=production node server/index.js",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "db:migrate": "node -e \"import('./server/db.js').then(async ({default: db}) => (await import('./server/lib/migrate.js')).migrate(db))\"",
+    "db:backup": "node server/scripts/db-backup.js",
+    "db:restore": "node server/scripts/db-restore.js"
   },
   "dependencies": {
     "@mantine/core": "^8.3.16",
