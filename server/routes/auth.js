@@ -35,6 +35,7 @@ router.post('/login', validate(schemas.login), async (req, res) => {
     return res.status(401).json({ error: 'Identifiants invalides' });
   }
 
+  db.prepare("UPDATE users SET last_login_at = datetime('now') WHERE id = ?").run(row.id);
   res.json({ token: signToken(row), user: publicUser(row) });
 });
 

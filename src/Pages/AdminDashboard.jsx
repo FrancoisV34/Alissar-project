@@ -216,7 +216,7 @@ function UtilisateursTab() {
         <Button size="sm" onClick={() => setCreateOpen(true)}>+ Créer un utilisateur</Button>
       </Group>
       <Table striped highlightOnHover>
-        <Table.Thead><Table.Tr><Table.Th>Nom</Table.Th><Table.Th>Prénom</Table.Th><Table.Th>Email</Table.Th><Table.Th>Rôle</Table.Th><Table.Th>Actions</Table.Th></Table.Tr></Table.Thead>
+        <Table.Thead><Table.Tr><Table.Th>Nom</Table.Th><Table.Th>Prénom</Table.Th><Table.Th>Email</Table.Th><Table.Th>Rôle</Table.Th><Table.Th>Dernière connexion</Table.Th><Table.Th>Actions</Table.Th></Table.Tr></Table.Thead>
         <Table.Tbody>
           {users.map((u) => (
             <Table.Tr key={u.id}>
@@ -229,6 +229,7 @@ function UtilisateursTab() {
                   {u.must_change_password ? <Badge color="orange" variant="light">MDP temp.</Badge> : null}
                 </Group>
               </Table.Td>
+              <Table.Td>{u.last_login_at ? new Date(u.last_login_at.replace(' ', 'T') + 'Z').toLocaleString('fr-FR') : 'Jamais'}</Table.Td>
               <Table.Td>
                 <Group gap="xs">
                   <Button size="xs" variant="light" onClick={() => { setEditing(u); setForm({ nom: u.nom ?? '', prenom: u.prenom ?? '', telephone: u.telephone ?? '', role: u.role }); setEditOpen(true); }}>Modifier</Button>

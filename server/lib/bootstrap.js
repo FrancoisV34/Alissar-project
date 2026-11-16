@@ -2,12 +2,16 @@ import bcrypt from 'bcryptjs';
 import crypto from 'node:crypto';
 import db from '../db.js';
 import { runSeed } from '../seed.js';
+import { migrate } from './migrate.js';
 
 /**
- * First-boot bootstrap : seed la DB si elle est vide, et crée un admin si aucun
+ * Démarrage : applique les migrations, seed la DB si elle est vide, et crée un admin si aucun
  * n'existe. Idempotent — peut être appelé à chaque démarrage du serveur.
  */
 export function bootstrap() {
+  // 0. Migrations versionnées (schéma)
+  migrate(db);
+
   // 1. Seed si vide
   const siteCfg = db.prepare('SELECT id FROM site_config WHERE id = 1').get();
   if (!siteCfg) {

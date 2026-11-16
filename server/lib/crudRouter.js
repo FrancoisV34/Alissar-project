@@ -24,7 +24,8 @@ export function crudRouter({ table, schema, notFoundMessage }) {
 
   const columns = Object.keys(schema.shape);
   const idParam = validate(schemas.idParam, 'params');
-  const findById = db.prepare(`SELECT * FROM ${table} WHERE id = ?`);
+  // Prepared on demand: the table may not exist yet when the module is loaded (migrations run at start-up).
+  const findById = { get: (id) => db.prepare(`SELECT * FROM ${table} WHERE id = ?`).get(id) };
 
   // GET / : list, in display order
   router.get('/', (_req, res) => {

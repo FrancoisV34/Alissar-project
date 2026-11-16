@@ -27,7 +27,7 @@ router.post('/', validate(schemas.userCreate), async (req, res) => {
 // GET /api/admin/users
 router.get('/', (_req, res) => {
   const users = db.prepare(
-    'SELECT id, email, nom, prenom, telephone, role, must_change_password, created_at FROM users ORDER BY created_at DESC'
+    'SELECT id, email, nom, prenom, telephone, role, must_change_password, created_at, last_login_at FROM users ORDER BY created_at DESC'
   ).all();
   res.json(users);
 });

@@ -1,5 +1,6 @@
 import db from './db.js';
 import { fileURLToPath } from 'url';
+import { migrate } from './lib/migrate.js';
 
 export function runSeed({ clean = true } = {}) {
 if (clean) {
@@ -169,6 +170,7 @@ formationAlts.forEach((alt, i) => updateFormationAlt.run(alt, i + 1));
 
 // Run as CLI : node server/seed.js
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  migrate(db);
   runSeed({ clean: true });
   console.log('Seed terminé avec succès.');
 }
