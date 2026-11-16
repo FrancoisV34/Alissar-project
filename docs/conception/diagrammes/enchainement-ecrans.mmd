@@ -1,0 +1,28 @@
+flowchart TD
+  HOME["/ <b>Accueil</b> (page unique)<br/>Hero · À propos · Spécialités · Formations<br/>Avis · Pratique · FAQ · Pied de page"]
+  CB{"Bandeau cookies<br/>(1re visite)"}
+  DOC[["Doctolib<br/>(nouvel onglet)"]]
+  TEL[["Appel téléphonique<br/>(lien tel:)"]]
+  LOGIN["/login<br/><b>Connexion</b>"]
+  ERR["Message<br/>« Identifiants invalides »"]
+  CHG["/change-password<br/><b>Changement du mot de passe</b>"]
+  ADM["/admin<br/><b>Tableau de bord</b>"]
+  subgraph TABS["Onglets du tableau de bord"]
+    direction LR
+    T1[Personnalisation] ~~~ T2[Spécialités] ~~~ T3[Tarifs] ~~~ T4[Horaires] ~~~ T5[Formations]
+    T6[FAQ] ~~~ T7[SEO] ~~~ T8[Configuration générale] ~~~ T9[Liens externes] ~~~ T10[Utilisateurs]
+  end
+  HOME --> CB
+  CB -- Accepter / Refuser --> HOME
+  HOME -- « Prendre RDV » --> DOC
+  HOME -- « Appeler » (mobile) --> TEL
+  HOME -- lien « Espace praticien » --> LOGIN
+  LOGIN -- échec --> ERR --> LOGIN
+  LOGIN -- succès + mot de passe provisoire --> CHG
+  LOGIN -- succès --> ADM
+  CHG -- mot de passe changé --> ADM
+  ADM --> TABS
+  ADM -- « Retour au site » --> HOME
+  HOME -- bandeau connecté : « Tableau de bord » --> ADM
+  ADM -- « Déconnexion » (bandeau) --> HOME
+  ADM -. accès sans jeton .-> LOGIN

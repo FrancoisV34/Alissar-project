@@ -1,0 +1,82 @@
+erDiagram
+  USERS {
+    INTEGER id PK
+    TEXT email UK "NOT NULL"
+    TEXT password_hash "NOT NULL, bcrypt"
+    TEXT role "admin | praticien"
+    TEXT nom
+    TEXT prenom
+    TEXT telephone
+    INTEGER must_change_password "0 / 1"
+    TEXT created_at "datetime('now')"
+  }
+  SITE_CONFIG {
+    INTEGER id PK "toujours 1"
+    TEXT site_name
+    TEXT practitioner_name
+    TEXT phone
+    TEXT address
+    REAL geo_lat
+    REAL geo_lng
+    TEXT palette
+    TEXT hero_variant
+    TEXT hero_title
+    TEXT meta_title
+    TEXT ga_measurement_id
+    INTEGER show_faq "+ 35 autres colonnes"
+  }
+  PEC_BUBBLES {
+    INTEGER id PK
+    TEXT num
+    TEXT title "NOT NULL"
+    TEXT description
+    TEXT icon
+    TEXT image
+    TEXT image_alt
+    INTEGER sort_order "NOT NULL"
+  }
+  FORMATIONS {
+    INTEGER id PK
+    TEXT title "NOT NULL"
+    TEXT description
+    TEXT image
+    TEXT image_alt
+    INTEGER sort_order "NOT NULL"
+  }
+  TARIFS {
+    INTEGER id PK
+    TEXT prestation "NOT NULL"
+    INTEGER prix "NOT NULL, en euros"
+    TEXT texte
+    INTEGER sort_order "NOT NULL"
+  }
+  HORAIRES {
+    INTEGER id PK
+    TEXT jour "NOT NULL"
+    TEXT horaires "NOT NULL"
+    INTEGER sort_order "NOT NULL"
+  }
+  FAQS {
+    INTEGER id PK
+    TEXT question "NOT NULL"
+    TEXT answer "NOT NULL"
+    INTEGER sort_order
+  }
+  EXTERNAL_LINKS {
+    INTEGER id PK
+    TEXT type "booking, ..."
+    TEXT url "NOT NULL"
+    TEXT label
+    INTEGER sort_order
+  }
+  SCHEMA_MIGRATIONS {
+    TEXT version PK
+    TEXT applied_at
+  }
+  SITE_CONFIG ||--o{ PEC_BUBBLES : "présente"
+  SITE_CONFIG ||--o{ FORMATIONS : "présente"
+  SITE_CONFIG ||--o{ TARIFS : "affiche"
+  SITE_CONFIG ||--o{ HORAIRES : "affiche"
+  SITE_CONFIG ||--o{ FAQS : "affiche"
+  SITE_CONFIG ||--o{ EXTERNAL_LINKS : "référence"
+  USERS }o--|| SITE_CONFIG : "administre"
