@@ -35,7 +35,7 @@ Objectifs mesurables :
 
 ## 2. Besoins
 
-Détaillés dans [`besoins.md`](besoins.md) : 3 acteurs, 17 user stories avec critères d'acceptation, exigences non fonctionnelles et contraintes. Diagramme de cas d'utilisation : [`diagrammes/cas-utilisation.png`](diagrammes/cas-utilisation.png).
+Détaillés dans [`besoins.md`](besoins.md) : 3 acteurs, 18 user stories avec critères d’acceptation, exigences non fonctionnelles et contraintes. Diagramme de cas d'utilisation : [`diagrammes/cas-utilisation.png`](diagrammes/cas-utilisation.png).
 
 ## 3. Maquettes et parcours
 
