@@ -1,9 +1,7 @@
+import HtmlText from './SafeHtml.jsx';
 import { useSiteConfig } from '../hooks/useSiteConfig.js';
 import { useFaqs } from '../hooks/useFaqs.js';
 
-function HtmlText({ html }) {
-  return <span dangerouslySetInnerHTML={{ __html: html ?? '' }} />;
-}
 
 export default function Faq() {
   const { data: cfg } = useSiteConfig();

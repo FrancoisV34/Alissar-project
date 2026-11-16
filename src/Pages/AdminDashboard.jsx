@@ -5,6 +5,7 @@ import {
 } from '@mantine/core';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiFetch } from '../utils/api.js';
+import useStore from '../store/useStore.js';
 import PersonnalisationTab from '../Components/admin/PersonnalisationTab.jsx';
 import SpecialtiesTab from '../Components/admin/SpecialtiesTab.jsx';
 import SeoTab from '../Components/admin/SeoTab.jsx';
@@ -206,7 +207,8 @@ function UtilisateursTab() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['admin-users'] }),
   });
 
-  const roles = [{ value: 'praticien', label: 'Praticien' }, { value: 'admin', label: 'Admin' }];
+  // Le rôle admin n'est pas attribuable depuis l'interface (ni par l'API).
+  const roles = [{ value: 'praticien', label: 'Praticien' }];
 
   return (
     <>
@@ -243,7 +245,7 @@ function UtilisateursTab() {
           <TextInput label="Nom" value={createForm.nom} onChange={(e) => setCreateForm({ ...createForm, nom: e.currentTarget.value })} />
           <TextInput label="Prénom" value={createForm.prenom} onChange={(e) => setCreateForm({ ...createForm, prenom: e.currentTarget.value })} />
           <TextInput label="Email" type="email" required value={createForm.email} onChange={(e) => setCreateForm({ ...createForm, email: e.currentTarget.value })} />
-          <PasswordInput label="Mot de passe temporaire" required value={createForm.password} onChange={(e) => setCreateForm({ ...createForm, password: e.currentTarget.value })} />
+          <PasswordInput label="Mot de passe temporaire" description="12 caractères minimum" minLength={12} required value={createForm.password} onChange={(e) => setCreateForm({ ...createForm, password: e.currentTarget.value })} />
           <TextInput label="Téléphone" value={createForm.telephone} onChange={(e) => setCreateForm({ ...createForm, telephone: e.currentTarget.value })} />
           <Select label="Rôle" data={roles} value={createForm.role} onChange={(v) => setCreateForm({ ...createForm, role: v })} />
           <Button onClick={() => create.mutate()} loading={create.isPending}>Créer</Button>
@@ -414,6 +416,7 @@ function ExternalLinksTab() {
 
 // ── Dashboard principal ──────────────────────────────────────────────────────
 export default function AdminDashboard() {
+  const isAdmin = useStore((s) => s.user?.role === 'admin');
   return (
     <Container size="lg" py="xl">
       <Group justify="space-between" mb="xl">
@@ -431,7 +434,7 @@ export default function AdminDashboard() {
           <Tabs.Tab value="seo">SEO</Tabs.Tab>
           <Tabs.Tab value="site-config">Configuration générale</Tabs.Tab>
           <Tabs.Tab value="external-links">Liens externes</Tabs.Tab>
-          <Tabs.Tab value="utilisateurs">Utilisateurs</Tabs.Tab>
+          {isAdmin && <Tabs.Tab value="utilisateurs">Utilisateurs</Tabs.Tab>}
         </Tabs.List>
 
         <Tabs.Panel value="personnalisation"><PersonnalisationTab /></Tabs.Panel>
@@ -443,7 +446,7 @@ export default function AdminDashboard() {
         <Tabs.Panel value="seo"><SeoTab /></Tabs.Panel>
         <Tabs.Panel value="site-config"><SiteConfigTab /></Tabs.Panel>
         <Tabs.Panel value="external-links"><ExternalLinksTab /></Tabs.Panel>
-        <Tabs.Panel value="utilisateurs"><UtilisateursTab /></Tabs.Panel>
+        {isAdmin && <Tabs.Panel value="utilisateurs"><UtilisateursTab /></Tabs.Panel>}
       </Tabs>
     </Container>
   );

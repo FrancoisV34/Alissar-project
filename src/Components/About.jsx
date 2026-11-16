@@ -1,9 +1,7 @@
+import HtmlText from './SafeHtml.jsx';
 import { useSiteConfig } from '../hooks/useSiteConfig.js';
 import { Icon } from './IconSet.jsx';
 
-function HtmlText({ html }) {
-  return <span dangerouslySetInnerHTML={{ __html: html ?? '' }} />;
-}
 
 export default function About() {
   const { data: cfg } = useSiteConfig();

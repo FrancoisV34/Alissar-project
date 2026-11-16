@@ -7,6 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_PATH = process.env.DATABASE_PATH || join(__dirname, 'database.sqlite');
 
 // Ensure parent dir exists (utile quand DATABASE_PATH pointe vers un volume monté)
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- chemin issu de la configuration
 fs.mkdirSync(dirname(DB_PATH), { recursive: true });
 
 const db = new Database(DB_PATH);

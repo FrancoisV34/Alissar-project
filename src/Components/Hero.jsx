@@ -1,3 +1,4 @@
+import HtmlText from './SafeHtml.jsx';
 import { useSiteConfig } from '../hooks/useSiteConfig.js';
 import { useHoraires } from '../hooks/useHoraires.js';
 import { useTarifs } from '../hooks/useTarifs.js';
@@ -16,9 +17,6 @@ function useHeroData() {
   return { cfg, bookingUrl, phone, telHref };
 }
 
-function HtmlText({ html, ...rest }) {
-  return <span {...rest} dangerouslySetInnerHTML={{ __html: html ?? '' }} />;
-}
 
 export default function Hero() {
   const { data: cfg } = useSiteConfig();
