@@ -1,0 +1,17 @@
+# Configuration gitleaks : règles par défaut + exclusions justifiées.
+# Les fichiers exclus ne contiennent que des valeurs FACTICES, créées pour les tests
+# (mots de passe du jeu d'essai, secret JWT de test). Aucun secret réel n'est concerné :
+# les vrais secrets sont dans les secrets Fly.io et GitHub, jamais dans le dépôt.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Valeurs factices des tests automatisés"
+paths = [
+  '''^server/__tests__/''',
+  '''^server/test/''',
+  '''^e2e/''',
+  '''^server/seed-test\.js$''',
+]
+# Secret JWT factice présent dans une ancienne version de ci.yml (remplacé par un secret aléatoire).
+regexes = ['''secret-de-(ci|test|e2e)-uniquement''']
