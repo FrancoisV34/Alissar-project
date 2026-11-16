@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "db:migrate": "node -e \"import('./server/db.js').then(async ({default: db}) => (await import('./server/lib/migrate.js')).migrate(db))\"",
     "db:backup": "node server/scripts/db-backup.js",
-    "db:restore": "node server/scripts/db-restore.js"
+    "db:restore": "node server/scripts/db-restore.js",
+    "db:seed-test": "node server/seed-test.js"
   },
   "dependencies": {
     "@mantine/core": "^8.3.16",
