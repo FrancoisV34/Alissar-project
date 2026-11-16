@@ -34,7 +34,7 @@ branche de travail ──PR──▶ develop ──CI verte──▶ RECETTE (au
 
 Chaque déploiement (`.github/workflows/deploy.yml`) :
 1. ne démarre que si le workflow **CI** a réussi sur ce commit (lint, 168 tests, couverture ≥ 80 %, 15 tests e2e, audit, gitleaks, image Docker + test de fumée) ;
-2. en production : **sauvegarde la base** sur le volume avant toute chose (`db-backup.js`) ;
+2. en production : **instantané du volume** avant toute chose (bloquant), puis copie SQLite sur le volume avec `db-backup.js` (complément) ;
 3. construit l'image sur les serveurs de Fly (`--remote-only`) et remplace la machine ; Fly attend que la sonde `/healthz` réponde avant de basculer le trafic ;
 4. au démarrage, l'application applique les **migrations** en attente (une transaction par migration ; en cas d'erreur, la machine ne démarre pas et l'ancienne version reste en service) ;
 5. lance le **test de fumée** (`scripts/smoke-test.sh`) : sonde de santé, API publique, page d'accueil, administration protégée (401), en-tête CSP, `robots.txt`.
@@ -60,7 +60,7 @@ Le premier démarrage crée la base (migrations), le contenu par défaut et le c
 ```bash
 git switch main && git pull
 npm ci && npm run lint && npm test           # mêmes contrôles qu'en CI
-fly ssh console -a alissar-vitrine -C "node server/scripts/db-backup.js"
+fly volumes snapshots create $(fly volumes list -a alissar-vitrine --json | jq -r '.[0].id') -a alissar-vitrine
 fly deploy -a alissar-vitrine --remote-only
 sh scripts/smoke-test.sh https://alissar-vitrine.fly.dev
 ```
@@ -105,7 +105,8 @@ La restauration conserve la base abîmée (`database.sqlite.avant-restauration-<
 
 | Quand | Quoi | Où |
 |---|---|---|
-| Avant chaque déploiement en production | `db-backup.js` (automatique dans `deploy.yml`) | `/data/backups/` sur le volume, 14 conservées |
+| Avant chaque déploiement en production | Instantané du volume (`fly volumes snapshots create`), automatique dans `deploy.yml` | Infrastructure Fly |
+| Avant chaque déploiement en production | `db-backup.js` (automatique, non bloquant) | `/data/backups/` sur le volume, 14 conservées |
 | Chaque jour | Instantané du volume par Fly.io | Infrastructure Fly, 5 jours |
 | À la demande | `fly ssh console -C "node server/scripts/db-backup.js"` puis `fly ssh sftp get` pour une copie hors de Fly | Poste de l'administrateur |
 

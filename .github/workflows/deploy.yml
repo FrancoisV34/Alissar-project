@@ -45,10 +45,21 @@ jobs:
       - uses: actions/checkout@v5
         with: { ref: '${{ github.event.workflow_run.head_sha }}' }
       - uses: superfly/flyctl-actions/setup-flyctl@1.5
-      - name: Sauvegarde de la base avant déploiement
+      # Sauvegarde 1 (bloquante) : instantané du volume. Indépendante de l'image en
+      # service, elle fonctionne aussi pour le tout premier déploiement de cette chaîne.
+      - name: Instantané du volume avant déploiement
+        run: |
+          VOL=$(flyctl volumes list --app alissar-vitrine --json | jq -r '.[] | select(.name == "alissar_data") | .id' | head -1)
+          test -n "$VOL"
+          flyctl volumes snapshots create "$VOL" --app alissar-vitrine
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN }}' }
+      # Sauvegarde 2 (complément) : copie SQLite sur le volume, restaurable en quelques secondes.
+      # Non bloquante : le script n'existe pas dans les versions antérieures à cette chaîne.
+      - name: Sauvegarde SQLite sur le volume
+        continue-on-error: true
         run: |
           curl -fsS https://alissar-vitrine.fly.dev/healthz > /dev/null   # réveille la machine
-          flyctl ssh console --app alissar-vitrine -C "node server/scripts/db-backup.js"
+          flyctl ssh console --app alissar-vitrine -C "node /app/server/scripts/db-backup.js"
         env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN }}' }
       - name: Déploiement
         run: flyctl deploy --remote-only
