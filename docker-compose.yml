@@ -1,0 +1,30 @@
+# Environnement local identique à la production : même image, même chemin de
+# données (/data sur un volume), mêmes variables. Usage :
+#   cp .env.example .env   (renseigner JWT_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD)
+#   docker compose up --build
+#   → http://localhost:8080
+services:
+  app:
+    build: .
+    image: alissar-vitrine:local
+    ports:
+      - "8080:3001"
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      PORT: "3001"
+      DATABASE_PATH: /data/database.sqlite
+      UPLOADS_PATH: /data/uploads
+    volumes:
+      - donnees:/data
+    restart: unless-stopped
+    read_only: true            # système de fichiers en lecture seule…
+    tmpfs:
+      - /tmp                   # …sauf /tmp et le volume de données
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, SETUID, SETGID, FOWNER, DAC_OVERRIDE]   # nécessaires au seul point d'entrée
+
+volumes:
+  donnees:

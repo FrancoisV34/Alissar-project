@@ -17,3 +17,11 @@ public/uploads/*
 .DS_Store
 *.log
 .claude
+coverage
+playwright-report
+test-results
+e2e
+docs
+tests
+server/__tests__
+server/test
