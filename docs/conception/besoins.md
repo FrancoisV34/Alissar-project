@@ -39,7 +39,7 @@ Format : *En tant que … je veux … afin de …*. Priorité MoSCoW : **M** (mu
 |---|---|---|---|
 | US-01 | En tant que visiteur, je veux voir en arrivant qui est la praticienne et ce qu'elle soigne, afin de savoir si le cabinet me correspond | M | Le Hero affiche le titre, le sous-titre et une photo ; les spécialités sont listées sous forme de cartes |
 | US-02 | En tant que visiteur, je veux prendre rendez-vous en un clic, afin de ne pas chercher le lien | M | Un bouton « Prendre RDV » est visible dans l'en-tête, le Hero et la section pratique ; il ouvre Doctolib dans un nouvel onglet |
-| US-03 | En tant que visiteur sur mobile, je veux appeler le cabinet directement, afin de joindre la praticienne vite | M | Sous 720 px, une barre fixe propose « Appeler » (lien `tel:`) et « Prendre RDV » |
+| US-03 | En tant que visiteur sur mobile, je veux appeler le cabinet directement, afin de joindre la praticienne vite | M | Sous 880 px, la barre du haut reste visible au défilement, masque la navigation et ne garde que « Appeler » (lien `tel:`) et « Prendre RDV » |
 | US-04 | En tant que visiteur, je veux consulter les horaires, les tarifs et l'adresse avec un plan, afin de préparer ma venue | M | La section « Pratique » affiche les horaires par jour, les tarifs en euros et une carte Google Maps |
 | US-05 | En tant que visiteur, je veux lire les avis d'autres patients, afin d'être rassuré | S | La note moyenne et le nombre d'avis s'affichent ; le widget d'avis peut être masqué par la praticienne |
 | US-06 | En tant que visiteur, je veux trouver les réponses aux questions fréquentes, afin d'éviter un appel | S | La FAQ s'affiche en accordéon ; elle peut être masquée |

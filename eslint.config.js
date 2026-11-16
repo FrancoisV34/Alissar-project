@@ -43,4 +43,15 @@ export default defineConfig([
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
   },
+  {
+    // Tests et outillage : code Node exécuté seulement en développement et en CI.
+    // Les règles du plugin security (chemins de fichiers dynamiques, clés d'objet)
+    // n'y ont pas de sens : chemins temporaires et jeux d'essai.
+    files: ['server/__tests__/**', 'server/test/**', 'e2e/**', 'tests/**', '*.config.js'],
+    languageOptions: { ecmaVersion: 'latest', sourceType: 'module', globals: { ...globals.node, ...globals.browser } },
+    rules: {
+      'security/detect-object-injection': 'off',
+      'security/detect-non-literal-fs-filename': 'off',
+    },
+  },
 ])

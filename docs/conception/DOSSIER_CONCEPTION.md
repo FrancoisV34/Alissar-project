@@ -41,7 +41,7 @@ Détaillés dans [`besoins.md`](besoins.md) : 3 acteurs, 17 user stories avec cr
 
 - **Version 1** (octobre 2025 à mai 2026) : développée directement à partir des échanges téléphoniques, sans maquette formelle.
 - **Refonte** (mai 2026) : maquettée **en direct pendant des visios avec la cliente** à l'aide de Claude Design. Plusieurs variantes (palette, typographie, mise en page du Hero) ont été générées et comparées à l'écran ; la cliente a choisi en séance. Ces variantes sont devenues des options de l'administration (3 variantes de Hero, palettes, polices, mode sombre).
-- **Responsive** : trois points de rupture (720, 880 et 1080 px). Sous 720 px, une barre fixe ne conserve que les deux actions essentielles : « Appeler » et « Prendre RDV ».
+- **Responsive** : trois points de rupture (720, 880 et 1080 px). Sous 880 px, la barre du haut, qui reste visible au défilement, masque la navigation et ne conserve que les deux actions essentielles : « Appeler » et « Prendre RDV ».
 - Enchaînement des écrans : [`enchainement-ecrans.md`](enchainement-ecrans.md).
 
 ## 4. Architecture logicielle

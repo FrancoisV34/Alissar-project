@@ -342,6 +342,10 @@
   .fade-up.d2 { animation-delay: 160ms; }
   .fade-up.d3 { animation-delay: 240ms; }
   @keyframes fadeUp { to { opacity: 1; transform: none; } }
+  /* Accessibilité (RGAA 13.8) : pas d'animation si l'utilisateur a demandé à les réduire. */
+  @media (prefers-reduced-motion: reduce) {
+    .fade-up { animation: none; opacity: 1; transform: none; }
+  }
 
   /* Image placeholder fallback */
   .img-placeholder {
