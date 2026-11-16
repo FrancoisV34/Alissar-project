@@ -27,7 +27,7 @@ export default function VitrineFooter() {
             {tagline && <p style={{ marginTop: 24, maxWidth: '32ch' }}>{tagline}</p>}
           </div>
           <div>
-            <h5>Le cabinet</h5>
+            <h3>Le cabinet</h3>
             <ul>
               <li><a href="#about">À propos</a></li>
               <li><a href="#specialties">Spécialités</a></li>
@@ -37,7 +37,7 @@ export default function VitrineFooter() {
             </ul>
           </div>
           <div>
-            <h5>Pratique</h5>
+            <h3>Pratique</h3>
             <ul>
               <li><a href="#pratique">Tarifs</a></li>
               <li><a href="#pratique">Horaires</a></li>
@@ -46,7 +46,7 @@ export default function VitrineFooter() {
             </ul>
           </div>
           <div>
-            <h5>Contact</h5>
+            <h3>Contact</h3>
             <ul>
               {phone && <li><a href={telHref}>{phone}</a></li>}
               {addressLines.map((line, i) => <li key={i}>{line}</li>)}

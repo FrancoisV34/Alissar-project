@@ -10,3 +10,21 @@ body {
   color: var(--ink, #2a221d);
   min-height: 100vh;
 }
+
+/* Accessibilité (RGAA) : le gris « dimmed » de Mantine (#868e96) n'atteint que 3,3:1 sur fond blanc. */
+:root[data-mantine-color-scheme='light'] {
+  --mantine-color-dimmed: #5f6670;
+}
+/* Texte des boutons « light »/« subtle », badges et textes colorés de l'administration (RGAA, >= 4,5:1).
+   Sélecteur renforcé (html:root) : Mantine injecte ses propres variables au chargement. */
+html:root[data-mantine-color-scheme='light'] {
+  --mantine-color-salmon-light-color: #9c2e28;
+  --mantine-color-red-light-color: #a82020;
+  --mantine-color-red-text: #b02525;
+  --mantine-color-blue-light-color: #1c5d99;
+  --mantine-color-orange-light-color: #8f4200;
+  --mantine-color-green-text: #2b7a3b;
+  --mantine-color-orange-text: #a14a00;
+  --mantine-color-placeholder: #5f6670;
+  --mantine-color-anchor: #9c2e28;
+}

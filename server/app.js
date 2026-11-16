@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import compression from 'compression';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import path from 'path';
@@ -46,6 +47,9 @@ export function createApp({ serveFrontend = process.env.NODE_ENV === 'production
   // Fly.io sits in front of the app: trust exactly one proxy for req.ip.
   app.set('trust proxy', 1);
   app.disable('x-powered-by');
+
+  // gzip: divides the size of JS/CSS/JSON responses by about 3 (eco-design).
+  app.use(compression());
 
   app.use(helmet({ contentSecurityPolicy, crossOriginEmbedderPolicy: false }));
 

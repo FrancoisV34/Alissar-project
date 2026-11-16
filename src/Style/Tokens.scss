@@ -6,14 +6,16 @@
 .palette-coral-cream {
   --accent: #e87265;
   --accent-soft: #fce4df;
-  --accent-deep: #b8473b;
+  --accent-deep: #b34539; /* RGAA : était #b8473b */
   --accent-ink: #fff;
+  --accent-strong: #cb301e; /* fond des boutons, petits textes : contraste >= 4,5:1 */
+  --accent-large: #e45c4d;  /* grands titres (>= 24 px) : contraste >= 3:1 */
   --bg: #fbf6f1;
   --bg-alt: #f4ece2;
   --bg-card: #ffffff;
   --ink: #2a221d;
   --ink-soft: #6b5e54;
-  --ink-mute: #9b8e83;
+  --ink-mute: #75695f; /* RGAA : était #9b8e83 */
   --line: #e8ddd0;
   --line-strong: #d6c7b3;
   --tint: #f4ece2;
@@ -22,14 +24,16 @@
 .palette-coral-sage {
   --accent: #e87265;
   --accent-soft: #fce4df;
-  --accent-deep: #b8473b;
+  --accent-deep: #b34539; /* RGAA : était #b8473b */
   --accent-ink: #fff;
+  --accent-strong: #c72e1e; /* fond des boutons, petits textes : contraste >= 4,5:1 */
+  --accent-large: #e45747;  /* grands titres (>= 24 px) : contraste >= 3:1 */
   --bg: #f5f3ec;
   --bg-alt: #e6ebe0;
   --bg-card: #ffffff;
   --ink: #25302a;
   --ink-soft: #5a685e;
-  --ink-mute: #8a9789;
+  --ink-mute: #606c5f; /* RGAA : était #8a9789 */
   --line: #d8dcd2;
   --line-strong: #b8c1b5;
   --tint: #d6e0d2;
@@ -40,12 +44,14 @@
   --accent-soft: #f3dfd2;
   --accent-deep: #8e4530;
   --accent-ink: #fff;
+  --accent-strong: #9e4c33; /* fond des boutons, petits textes : contraste >= 4,5:1 */
+  --accent-large: #c46548;  /* grands titres (>= 24 px) : contraste >= 3:1 */
   --bg: #f7efe4;
   --bg-alt: #ecdfca;
   --bg-card: #fffaf2;
   --ink: #2d2218;
   --ink-soft: #6e5a44;
-  --ink-mute: #a09080;
+  --ink-mute: #706153; /* RGAA : était #a09080 */
   --line: #e0d3bd;
   --line-strong: #c8b59a;
   --tint: #ecdfca;
@@ -56,12 +62,14 @@
   --accent-soft: #f6dfe7;
   --accent-deep: #8a3a55;
   --accent-ink: #fff;
+  --accent-strong: #b33d62; /* fond des boutons, petits textes : contraste >= 4,5:1 */
+  --accent-large: #c75c7d;  /* grands titres (>= 24 px) : contraste >= 3:1 */
   --bg: #faf3f4;
   --bg-alt: #f1e4e7;
   --bg-card: #ffffff;
   --ink: #2c1f24;
   --ink-soft: #6b525a;
-  --ink-mute: #a3899a;
+  --ink-mute: #7b6072; /* RGAA : était #a3899a */
   --line: #ead8de;
   --line-strong: #d3b9c2;
   --tint: #f1e4e7;
@@ -72,12 +80,14 @@
   --accent-soft: #d8e3d8;
   --accent-deep: #2f5238;
   --accent-ink: #fff;
+  --accent-strong: #466e52; /* fond des boutons, petits textes : contraste >= 4,5:1 */
+  --accent-large: #4d7a5b;  /* grands titres (>= 24 px) : contraste >= 3:1 */
   --bg: #f6f3ea;
   --bg-alt: #e6e3d4;
   --bg-card: #fffdf6;
   --ink: #1f2a23;
   --ink-soft: #4f5a4f;
-  --ink-mute: #88927f;
+  --ink-mute: #606859; /* RGAA : était #88927f */
   --line: #d8d3c1;
   --line-strong: #b6b09a;
   --tint: #e6e3d4;
@@ -90,7 +100,7 @@
   --bg-card: #2a201b;
   --ink: #f4ece2;
   --ink-soft: #c5b6a8;
-  --ink-mute: #8a7c6f;
+  --ink-mute: #a19385; /* RGAA : était #8a7c6f */
   --line: #3a2d25;
   --line-strong: #50403a;
   --tint: #2c211c;

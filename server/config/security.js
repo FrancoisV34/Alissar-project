@@ -13,7 +13,7 @@ export const contentSecurityPolicy = {
   directives: {
     defaultSrc: ["'self'"],
     scriptSrc: ["'self'", 'https://www.googletagmanager.com', 'https://elfsightcdn.com', 'https://*.elfsightcdn.com', 'https://*.elfsight.com'],
-    // Mantine and framer-motion write inline style attributes.
+    // Mantine writes inline style attributes.
     styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://*.elfsightcdn.com'],
     fontSrc: ["'self'", 'data:', 'https://fonts.gstatic.com', 'https://*.elfsightcdn.com'],
     imgSrc: ["'self'", 'data:', 'blob:', 'https:'],

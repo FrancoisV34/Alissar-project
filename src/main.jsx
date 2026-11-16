@@ -1,14 +1,14 @@
-import { StrictMode } from 'react';
+import { StrictMode, lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MantineProvider, createTheme, localStorageColorSchemeManager } from '@mantine/core';
 import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
 import Homepage from './Pages/Homepage.jsx';
-import LoginPage from './Pages/LoginPage.jsx';
-import AdminDashboard from './Pages/AdminDashboard.jsx';
-import ChangePasswordPage from './Pages/ChangePasswordPage.jsx';
+// Pages privées chargées à la demande : les visiteurs ne téléchargent pas le code de l'administration.
+const LoginPage = lazy(() => import('./Pages/LoginPage.jsx'));
+const AdminDashboard = lazy(() => import('./Pages/AdminDashboard.jsx'));
+const ChangePasswordPage = lazy(() => import('./Pages/ChangePasswordPage.jsx'));
 import ProtectedRoute from './Components/ProtectedRoute.jsx';
 import ThemeProvider from './Components/ThemeProvider.jsx';
 import VitrineLayout from './Components/VitrineLayout.jsx';
@@ -33,6 +33,8 @@ const theme = createTheme({
       '#f76558', '#f55a4c', '#da4b3d', '#c34136', '#ab342d',
     ],
   },
+  // Nuance 8 : texte blanc sur bouton à 5,1:1 (la nuance 6 par défaut donnait 3,25:1).
+  primaryShade: 8,
   fontFamily: 'Inter, sans-serif',
 });
 
@@ -42,6 +44,7 @@ createRoot(document.getElementById('root')).render(
       <MantineProvider theme={theme} colorSchemeManager={colorSchemeManager} defaultColorScheme="light">
         <ThemeProvider>
           <BrowserRouter>
+            <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<VitrineLayout><Homepage /></VitrineLayout>} />
               <Route path="/login" element={<LoginPage />} />
@@ -52,6 +55,7 @@ createRoot(document.getElementById('root')).render(
                 <Route path="/admin" element={<AdminDashboard />} />
               </Route>
             </Routes>
+            </Suspense>
           </BrowserRouter>
         </ThemeProvider>
       </MantineProvider>
