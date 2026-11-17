@@ -32,7 +32,7 @@ branche de travail ──PR──▶ develop ──CI verte──▶ RECETTE (au
                           PR develop → main ──CI verte──▶ approbation ──▶ PRODUCTION
 ```
 
-Chaque déploiement (`.github/workflows/deploy.yml`) :
+Chaque déploiement (jobs `recette` et `production` de `.github/workflows/ci.yml`) :
 1. ne démarre que si le workflow **CI** a réussi sur ce commit (lint, 168 tests, couverture ≥ 80 %, 15 tests e2e, audit, gitleaks, image Docker + test de fumée) ;
 2. en production : **instantané du volume** avant toute chose (bloquant), puis copie SQLite sur le volume avec `db-backup.js` (complément) ;
 3. construit l'image sur les serveurs de Fly (`--remote-only`) et remplace la machine ; Fly attend que la sonde `/healthz` réponde avant de basculer le trafic ;
@@ -105,7 +105,7 @@ La restauration conserve la base abîmée (`database.sqlite.avant-restauration-<
 
 | Quand | Quoi | Où |
 |---|---|---|
-| Avant chaque déploiement en production | Instantané du volume (`fly volumes snapshots create`), automatique dans `deploy.yml` | Infrastructure Fly |
+| Avant chaque déploiement en production | Instantané du volume (`fly volumes snapshots create`), automatique dans le job `production` de `ci.yml` | Infrastructure Fly |
 | Avant chaque déploiement en production | `db-backup.js` (automatique, non bloquant) | `/data/backups/` sur le volume, 14 conservées |
 | Chaque jour | Instantané du volume par Fly.io | Infrastructure Fly, 5 jours |
 | À la demande | `fly ssh console -C "node server/scripts/db-backup.js"` puis `fly ssh sftp get` pour une copie hors de Fly | Poste de l'administrateur |

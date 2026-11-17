@@ -1,6 +1,6 @@
 # Environnement de RECETTE : même image et même configuration que la production,
 # application et volume séparés (aucune donnée partagée avec la production).
-# Déployé automatiquement depuis la branche develop (voir .github/workflows/deploy.yml).
+# Déployé automatiquement depuis la branche develop (voir le job recette de .github/workflows/ci.yml).
 app = 'alissar-staging'
 primary_region = 'cdg'
 
