@@ -1,34 +1,39 @@
-# Compte rendu de réunion : recueil des besoins
-
-> **[À COMPLÉTER par François avec les faits réels.]** Les éléments ci-dessous sont déduits du site livré et doivent être corrigés.
+# Compte rendu de réunion n° 1 : recueil des besoins
 
 | | |
 |---|---|
-| Date | **[À COMPLÉTER]** (octobre 2025), durée **[À COMPLÉTER]** |
+| Date | 20/10/2025 |
 | Format | Téléphone |
 | Participants | La praticienne (cliente), François Vittecoq (développeur) |
 | Rédacteur | François Vittecoq |
 
+## Contexte
+La praticienne ouvre son cabinet d'ostéopathie à Vendargues. Elle n'a pas de site, et ses patients la trouvent par Doctolib et par le bouche-à-oreille. Le projet est bénévole.
+
 ## Ordre du jour
-1. Présentation de l'activité du cabinet et des attentes
-2. Contenu du site
-3. Contraintes (budget, mise à jour, rendez-vous)
+1. Présentation de l'activité et des attentes
+2. Contenu du site : ce que le patient doit trouver
+3. Idées visuelles
+4. Contraintes
 
 ## Points abordés
-- Spécialités à mettre en avant : santé de la femme, fertilité, grossesse, sport.
-- Les patients prennent déjà rendez-vous sur Doctolib.
-- La cliente veut pouvoir modifier horaires et tarifs elle-même.
-- **[À COMPLÉTER : autres demandes, exemples de sites qu'elle aimait…]**
+- **Ce que le patient doit trouver en arrivant :** qui elle est, ce qu'elle soigne, combien ça coûte, quand elle consulte, où se trouve le cabinet, et comment prendre rendez-vous.
+- **Ses spécialités à mettre en avant :** santé de la femme, fertilité, grossesse, sport.
+- **Ses formations :** son diplôme D.O. et ses formations complémentaires, qui doivent rassurer le patient.
+- **Les avis de ses patients :** elle veut les montrer.
+- **La prise de rendez-vous :** les patients réservent déjà sur Doctolib, il ne faut pas créer un deuxième agenda.
+- **Les idées visuelles :** elle a montré des sites qu'elle aimait. Ce qui en est ressorti : un style doux et chaleureux plutôt que médical, de la place pour les photos du cabinet, et une lecture facile sur téléphone.
 
 ## Décisions
 | # | Décision | Validée par |
 |---|---|---|
-| D1 | Site d'une seule page avec renvoi vers Doctolib (pas de module de réservation) | Cliente |
-| D2 | Espace d'administration pour les horaires, tarifs et textes | Cliente |
-| D3 | Projet bénévole, hébergement au coût le plus bas | Cliente et développeur |
+| D1 | Site vitrine d'une seule page : Spécialités, À propos, Formations, Tarifs, Horaires, Accès (carte), Avis, Contact | Cliente |
+| D2 | Bouton « Prendre rendez-vous » qui renvoie vers Doctolib, sans module de réservation sur le site | Cliente |
+| D3 | Priorité au mobile (*responsive*), puisque la plupart des patients arrivent depuis leur téléphone | Cliente et développeur |
+| D4 | Hébergement au coût le plus bas, compte tenu du projet bénévole | Cliente et développeur |
 
 ## Actions
 | # | Action | Responsable | Échéance | Statut |
 |---|---|---|---|---|
-| A1 | Envoyer textes et photos du cabinet | Cliente | **[À COMPLÉTER]** | Fait |
-| A2 | Livrer une première version en ligne | François | **[À COMPLÉTER]** | Fait |
+| A1 | Envoyer les textes, les tarifs, les horaires et les photos du cabinet | Cliente | Novembre 2025 | Fait |
+| A2 | Réaliser une première version (React + SCSS) et la présenter | François | Décembre 2025 | Fait (version responsive terminée le 05/12/2025) |
