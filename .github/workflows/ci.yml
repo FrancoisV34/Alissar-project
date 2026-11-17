@@ -1,5 +1,12 @@
-# Intégration continue : chaque push et chaque pull request passe par ces contrôles.
-# Le déploiement (deploy.yml) ne se déclenche que si ce workflow réussit.
+# Intégration et déploiement continus. Chaque push et chaque pull request passe par
+# les contrôles ci-dessous. Les deux jobs de déploiement, en fin de fichier, ne
+# démarrent que si TOUS les contrôles ont réussi (needs), et uniquement sur un push :
+#   develop → recette    (alissar-staging, automatique)
+#   main    → production (alissar-vitrine, après approbation dans l'environnement
+#                         GitHub « production », limité à la branche main)
+# Les déploiements sont dans ce workflow, et non dans un workflow déclenché par
+# workflow_run : ce dernier s'exécute toujours sur la branche par défaut, ce qui rendait
+# la restriction de branche de l'environnement inapplicable (incident du 17/11/2026).
 name: CI
 
 on:
@@ -12,7 +19,8 @@ permissions:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # On n'interrompt jamais une exécution sur develop ou main : elle peut être en train de déployer.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && github.ref != 'refs/heads/develop' }}
 
 env:
   NODE_VERSION: 22
@@ -117,3 +125,54 @@ jobs:
       - name: Journaux du conteneur
         if: always()
         run: docker logs app 2>&1 | grep -v -i password | tail -30
+
+  recette:
+    name: Déploiement en recette
+    needs: [lint, tests, e2e, audit, secrets, docker]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-24.04
+    environment:
+      name: recette
+      url: https://alissar-staging.fly.dev
+    concurrency: deploy-recette
+    steps:
+      - uses: actions/checkout@v5
+      - uses: superfly/flyctl-actions/setup-flyctl@1.5
+      - name: Déploiement
+        run: flyctl deploy --config fly.staging.toml --remote-only
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN_STAGING }}' }
+      - name: Test de fumée
+        run: sh scripts/smoke-test.sh https://alissar-staging.fly.dev
+
+  production:
+    name: Déploiement en production
+    needs: [lint, tests, e2e, audit, secrets, docker]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment:
+      name: production          # protections : approbation manuelle + branche main uniquement
+      url: https://alissar-vitrine.fly.dev
+    concurrency: deploy-production
+    steps:
+      - uses: actions/checkout@v5
+      - uses: superfly/flyctl-actions/setup-flyctl@1.5
+      # Sauvegarde 1 (bloquante) : instantané du volume, indépendant de l'image en service.
+      - name: Instantané du volume avant déploiement
+        run: |
+          VOL=$(flyctl volumes list --app alissar-vitrine --json | jq -r '.[] | select(.name == "alissar_data") | .id' | head -1)
+          test -n "$VOL"
+          flyctl volumes snapshots create "$VOL" --app alissar-vitrine
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN }}' }
+      # Sauvegarde 2 (complément) : copie SQLite sur le volume, restaurable en quelques secondes.
+      # Non bloquante : le script n'existe pas dans les versions antérieures à cette chaîne.
+      - name: Sauvegarde SQLite sur le volume
+        continue-on-error: true
+        run: |
+          curl -fsS https://alissar-vitrine.fly.dev/healthz > /dev/null   # réveille la machine
+          flyctl ssh console --app alissar-vitrine -C "node /app/server/scripts/db-backup.js"
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN }}' }
+      - name: Déploiement
+        run: flyctl deploy --remote-only
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN }}' }
+      - name: Test de fumée
+        run: sh scripts/smoke-test.sh https://alissar-vitrine.fly.dev

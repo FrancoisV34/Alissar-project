@@ -81,7 +81,7 @@ Details: [`docs/securite/AUDIT.md`](docs/securite/AUDIT.md).
 ## Quality and delivery
 
 - **CI** (`.github/workflows/ci.yml`): lint, tests with coverage gate, end-to-end and accessibility tests, dependency audit, secret scanning (gitleaks), Docker image build and smoke test — on every push and pull request.
-- **CD** (`.github/workflows/deploy.yml`): only after a green CI. `develop` → staging, `main` → production after manual approval, with a volume snapshot before each production deployment.
+- **CD** (`recette` and `production` jobs in `.github/workflows/ci.yml`): only after every CI check passes. `develop` → staging, `main` → production after manual approval, with a volume snapshot before each production deployment.
 - Deployment, rollback and backup procedures: [`DEPLOY.md`](DEPLOY.md).
 
 ## Environment variables
