@@ -1,0 +1,30 @@
+flowchart LR
+  V(["👤 Visiteur"])
+  P(["👩‍⚕️ Praticienne"])
+  A(["🛠️ Administrateur"])
+  subgraph S["Site vitrine du cabinet"]
+    direction TB
+    UC1(["Consulter la présentation et les spécialités"])
+    UC2(["Consulter horaires, tarifs, adresse"])
+    UC3(["Lire les avis et la FAQ"])
+    UC4(["Accepter / refuser la mesure d'audience"])
+    UC5(["Prendre rendez-vous"])
+    UC10(["Se connecter"])
+    UC11(["Changer son mot de passe"])
+    UC12(["Gérer horaires et tarifs"])
+    UC13(["Gérer textes, images, spécialités, formations, FAQ"])
+    UC14(["Personnaliser l'apparence"])
+    UC15(["Gérer le référencement"])
+    UC20(["Gérer les comptes"])
+  end
+  DOC[["Doctolib"]]
+  V --- UC1 & UC2 & UC3 & UC4 & UC5
+  UC5 -. redirige vers .-> DOC
+  P --- UC10 & UC11 & UC12 & UC13 & UC14 & UC15
+  A --- UC20
+  A -. hérite de .-> P
+  UC12 -. include .-> UC10
+  UC13 -. include .-> UC10
+  UC14 -. include .-> UC10
+  UC15 -. include .-> UC10
+  UC20 -. include .-> UC10

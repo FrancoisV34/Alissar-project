@@ -1,0 +1,37 @@
+# Environnement de RECETTE : même image et même configuration que la production,
+# application et volume séparés (aucune donnée partagée avec la production).
+# Déployé automatiquement depuis la branche develop (voir .github/workflows/deploy.yml).
+app = 'alissar-staging'
+primary_region = 'cdg'
+
+[build]
+
+[env]
+  DATABASE_PATH = '/data/database.sqlite'
+  NODE_ENV = 'production'
+  PORT = '3001'
+  UPLOADS_PATH = '/data/uploads'
+
+[[mounts]]
+  source = 'alissar_staging_data'
+  destination = '/data'
+
+[http_service]
+  internal_port = 3001
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/healthz'
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 256

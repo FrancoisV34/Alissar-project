@@ -14,7 +14,10 @@ export async function apiFetch(path, options = {}) {
     headers: { ...authHeaders(), ...options.headers },
   });
   if (res.status === 204) return null;
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error ?? `Erreur ${res.status}`);
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const details = data.details?.map((d) => `${d.field} : ${d.message}`).join(' ; ');
+    throw new Error(details ? `${data.error} (${details})` : (data.error ?? `Erreur ${res.status}`));
+  }
   return data;
 }

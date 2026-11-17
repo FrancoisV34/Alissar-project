@@ -1,0 +1,68 @@
+# Déploiement continu, CONDITIONNÉ à la réussite de l'intégration continue.
+#   develop → recette    (alissar-staging, automatique si la CI est verte)
+#   main    → production (alissar-vitrine, si la CI est verte ET après approbation
+#                         dans l'environnement GitHub « production » = recette validée)
+# Remplace l'ancien fly-deploy.yml, qui déployait la production à chaque push sans contrôle.
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  recette:
+    name: Déploiement en recette
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'develop'
+    runs-on: ubuntu-24.04
+    environment:
+      name: recette
+      url: https://alissar-staging.fly.dev
+    concurrency: deploy-recette
+    steps:
+      - uses: actions/checkout@v5
+        with: { ref: '${{ github.event.workflow_run.head_sha }}' }
+      - uses: superfly/flyctl-actions/setup-flyctl@1.5
+      - name: Déploiement
+        run: flyctl deploy --config fly.staging.toml --remote-only
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN_STAGING }}' }
+      - name: Test de fumée
+        run: sh scripts/smoke-test.sh https://alissar-staging.fly.dev
+
+  production:
+    name: Déploiement en production
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-24.04
+    environment:
+      name: production          # règle de protection : approbation manuelle requise
+      url: https://alissar-vitrine.fly.dev
+    concurrency: deploy-production
+    steps:
+      - uses: actions/checkout@v5
+        with: { ref: '${{ github.event.workflow_run.head_sha }}' }
+      - uses: superfly/flyctl-actions/setup-flyctl@1.5
+      # Sauvegarde 1 (bloquante) : instantané du volume. Indépendante de l'image en
+      # service, elle fonctionne aussi pour le tout premier déploiement de cette chaîne.
+      - name: Instantané du volume avant déploiement
+        run: |
+          VOL=$(flyctl volumes list --app alissar-vitrine --json | jq -r '.[] | select(.name == "alissar_data") | .id' | head -1)
+          test -n "$VOL"
+          flyctl volumes snapshots create "$VOL" --app alissar-vitrine
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN }}' }
+      # Sauvegarde 2 (complément) : copie SQLite sur le volume, restaurable en quelques secondes.
+      # Non bloquante : le script n'existe pas dans les versions antérieures à cette chaîne.
+      - name: Sauvegarde SQLite sur le volume
+        continue-on-error: true
+        run: |
+          curl -fsS https://alissar-vitrine.fly.dev/healthz > /dev/null   # réveille la machine
+          flyctl ssh console --app alissar-vitrine -C "node /app/server/scripts/db-backup.js"
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN }}' }
+      - name: Déploiement
+        run: flyctl deploy --remote-only
+        env: { FLY_API_TOKEN: '${{ secrets.FLY_API_TOKEN }}' }
+      - name: Test de fumée
+        run: sh scripts/smoke-test.sh https://alissar-vitrine.fly.dev

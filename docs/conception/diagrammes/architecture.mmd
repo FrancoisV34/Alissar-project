@@ -1,0 +1,29 @@
+flowchart LR
+  subgraph C["Navigateur (présentation)"]
+    R["SPA React 19 + Vite<br/>React Router · TanStack Query · Zustand · Mantine"]
+  end
+  subgraph F["Fly.io, région Paris"]
+    direction TB
+    subgraph E["API Express 5 (traitement)"]
+      direction TB
+      M["Middlewares<br/>Helmet (CSP) · CORS restreint · JSON 1 Mo<br/>limitation des connexions"]
+      RT["Routes publiques /api/…<br/>Routes admin /api/admin/…"]
+      AU["authenticate (JWT)<br/>requireRole(admin, praticien)"]
+      V["Validation des entrées"]
+      DA["Accès aux données<br/>better-sqlite3, requêtes préparées"]
+      M --> RT --> AU --> V --> DA
+    end
+    ST["Fichiers statiques<br/>dist/ (front buildé), /uploads"]
+    subgraph VOL["Volume /data"]
+      DB[("SQLite<br/>database.sqlite")]
+      UP[["uploads/"]]
+    end
+    DA --> DB
+    ST --> UP
+  end
+  R -- "HTTPS, JSON<br/>Authorization: Bearer" --> M
+  R -- HTTPS --> ST
+  R -. "après consentement" .-> GA[["Google Analytics"]]
+  R -.-> DOC[["Doctolib"]]
+  R -.-> GM[["Google Maps"]]
+  R -.-> EL[["Elfsight (avis)"]]

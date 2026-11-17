@@ -25,6 +25,10 @@ export default function ChangePasswordPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     setError(null);
+    if (next.length < 12) {
+      setError('Le nouveau mot de passe doit contenir au moins 12 caractères');
+      return;
+    }
     if (next !== confirm) {
       setError('Les nouveaux mots de passe ne correspondent pas');
       return;

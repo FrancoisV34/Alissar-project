@@ -112,7 +112,7 @@ export default function Pratique() {
         )}
 
         <div className="cta-banner">
-          <span className="eyebrow" style={{ color: 'rgba(255,255,255,0.85)' }}>Prêt(e) ?</span>
+          <span className="eyebrow" style={{ color: '#fff' }}>Prêt(e) ?</span>
           <h3>Réservez votre <em>première consultation</em>.</h3>
           <a className="btn btn-primary btn-lg" href={bookingUrl} target="_blank" rel="noopener noreferrer">
             Prendre rendez-vous sur Doctolib <Icon.Arrow className="arrow" />

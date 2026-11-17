@@ -44,3 +44,8 @@ Thumbs.db
 
 # Claude Code
 .claude/
+
+# Tests
+coverage/
+playwright-report/
+test-results/

@@ -36,7 +36,7 @@ export default function Formations() {
                     ? <img src={imgSrc} alt={f.image_alt ?? cleanTitle} loading="lazy" />
                     : <div className="img-placeholder">{cleanTitle}</div>}
                 </div>
-                <h4>{cleanTitle}</h4>
+                <h3>{cleanTitle}</h3>
                 {f.description && <p>{f.description}</p>}
               </article>
             );
